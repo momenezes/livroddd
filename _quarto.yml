@@ -1,0 +1,28 @@
+project:
+  type: book
+  output-dir: _book
+
+book:
+  title: "Design Driven Development na Prática"
+  subtitle: "Da Arquitetura Regulatória ao Código em Sistemas de Missão Crítica"
+  author: "Mario Olímpio de Menezes"
+  date: today
+  page-navigation: true
+  chapters:
+    - index.qmd
+    - 01-visao-geral-e-motivacao.qmd
+    - 02-principios-design-driven.qmd
+    - 03-arquitetura-e-modelagem.qmd
+    - 04-implementacao-e-contratos.qmd
+    - 05-licoes-aprendidas.qmd
+    - referencias.qmd
+
+format:
+  html:
+    theme: flatly
+    code-copy: true
+    code-fold: show
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    highlight-style: github

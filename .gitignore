@@ -1,0 +1,7 @@
+# Cache e arquivos temporários de compilação do Quarto
+.quarto/
+
+# Arquivos temporários de sistema e editores
+.DS_Store
+*~
+*.swp

@@ -1,0 +1,90 @@
+# Visão Geral e Motivação
+
+## O Cenário da Pós-Graduação Brasileira e a Necessidade de Soberania
+
+A pós-graduação *stricto sensu* no Brasil, compreendendo os programas de mestrado e doutorado acadêmicos e profissionais, constitui a espinha dorsal da produção científica e tecnológica nacional. Esse ecossistema é submetido a uma regulação rigorosa exercida pela **Coordenação de Aperfeiçoamento de Pessoal de Nível Superior (CAPES)** e pelo **Ministério da Educação (MEC)**.
+
+Diferentemente dos cursos de graduação ou de extensão — nos quais a gestão acadêmica limita-se majoritariamente ao registro de frequência e notas —, um Programa de Pós-Graduação (PPG) exige conformidade operacional com uma vasta teia de obrigações normativas:
+
+* **Avaliação Quadrienal e Coleta CAPES**: Envio contínuo e estruturado de dados para a **Plataforma Sucupira** e o sistema **DAV (Diretoria de Avaliação)**, compreendendo corpo docente, discentes matriculados e titulados, projetos de pesquisa financiados, produções intelectuais e técnicas.
+* **Governança Regimental Específica**: Cada PPG opera sob regimento próprio e versões curriculares dinâmicas, com regras heterogêneas de créditos mínimos, proficiência em línguas estrangeiras, prazos peremptórios para exames de qualificação e defesas de dissertação ou tese.
+* **Produção Técnica e Tecnológica (PTT)**: Exigência crescente, sobretudo nos mestrados e doutorados profissionais, de catalogação e avaliação de artefatos de impacto social e tecnológico (softwares, patentes, relatórios técnicos, protocolos e normas), submetidos a matrizes de ponderação complexas.
+* **Diplomação Digital e Segurança Jurídica**: Cumprimento das Portarias MEC nº 330/2018, 554/2019 e 70/2025, exigindo emissão de diplomas e históricos em formatos digitais assinados digitalmente no padrão XAdES com certificados ICP-Brasil, preservando a inviolabilidade do ato acadêmico.
+
+Historicamente, as Instituições de Ensino Superior (IES) brasileiras encontram-se presas em um dilema: ou contratam softwares proprietários de alto custo e código fechado — cujos fornecedores demoram meses para adaptar telas às portarias ministeriais —, ou mantêm sistemas legados obsoletos mantidos por equipes sobrecarregadas, culminando em planilhas paralelas desestruturadas e perda de pontuação nas avaliações quadrienais.
+
+A construção de um ecossistema de software livre e soberano, capaz de rodar na infraestrutura institucional e se amoldar às exigências do Estado brasileiro, tornou-se um imperativo estratégico para a soberania acadêmica.
+
+```mermaid
+flowchart TD
+    subgraph OrgaosReguladores["Órgãos Reguladores e Normas Federais"]
+        CAPES["CAPES / MEC<br/>(Portarias 81/2016, 133/2023, 70/2025)"]
+        Sucupira["Plataforma Sucupira / DAV<br/>(Coleta Quadrienal)"]
+        ICP["Infraestrutura de Chaves Públicas<br/>(ICP-Brasil / XAdES)"]
+    end
+
+    subgraph ERPInstitucional["Ecossistema Livre de Gestão (Odoo 19 + OpenEduCat 19)"]
+        Core["l10n_br_openeducat_capes_core<br/>(PIDs, Censo IBGE, Governança)"]
+        Academic["l10n_br_openeducat_capes_academic<br/>(Versões Regimentais & Livro-Razão)"]
+        Admission["l10n_br_openeducat_capes_admission<br/>(Editais & Heteroidentificação)"]
+        Research["l10n_br_openeducat_capes_research<br/>(Linhas & Projetos CNPq)"]
+        Thesis["l10n_br_openeducat_capes_thesis<br/>(Qualificações & Bancas)"]
+        PTT["l10n_br_openeducat_capes_ptt<br/>(4 Eixos & Estratos T1-T5)"]
+        Diploma["l10n_br_openeducat_capes_diploma<br/>(XML MEC & Histórico)"]
+        Scholarship["l10n_br_openeducat_capes_scholarship<br/>(Cotas & Avaliação Cega)"]
+        Integration["l10n_br_openeducat_capes_integration<br/>(APIs REST /api/capes/v1/dav/*)"]
+    end
+
+    CAPES --> ERPInstitucional
+    ERPInstitucional --> Sucupira
+    ERPInstitucional --> ICP
+```
+
+## O Colapso do "Vibe Coding" em Sistemas de Missão Crítica
+
+Com o surgimento de Modelos de Linguagem de Grande Escala (LLMs) integrados a Ambientes de Desenvolvimento Integrado (IDEs), consolidou-se uma prática que a indústria apelidou de *"vibe coding"*. Nessa abordagem, o desenvolvedor renuncia à modelagem formal, lança comandos genéricos no chat de IA (*"crie uma classe de discente para pós-graduação"*) e adota por tentativa e erro qualquer trecho gerado que pareça plausível à primeira vista.
+
+Em scripts de automação cotidiana ou protótipos descartáveis, o *vibe coding* entrega resultados rápidos. Entretanto, em **sistemas corporativos de missão crítica e regulação estrita**, essa prática conduz invariavelmente ao desastre técnico:
+
+1. **Débito Técnico Exponencial**: A IA cria modelos desconexos, inventa nomes de colunas com variações ortográficas sutis (`student_id` versus `discente_id`), duplica tabelas que já existem nativamente no ERP e quebra convenções essenciais de performance relacional (como decoradores `@api.depends` versus `@api.onchange` no ORM Odoo).
+2. **Alucinação Regulatória**: A IA projeta regras de negócio fictícias que violam normas legais explícitas. Exemplos observados na prática incluem permitir mais de três vínculos docentes permanentes em programas *stricto sensu* (violando a Portaria CAPES 81/2016), omitir campos obrigatórios de raça/cor exigidos pelo censo do IBGE, ou calcular prazos com fórmulas estáticas arbitrárias.
+3. **Fragmentação de Estado e Violação Legal**: Em sistemas jurídicos e contábeis, a deleção destrutiva (`unlink` / `DELETE`) de registros de aproveitamento de disciplinas ou vínculos viola o princípio do **ato jurídico perfeito** (Art. 5º, XXXVI da Constituição Federal). O *vibe coding* rotineiramente introduz operações destrutivas, destruindo a trilha de auditoria exigida pelo Ministério Público e pelos tribunais de contas.
+
+::: {.callout-warning}
+### Risco do Código sem Design
+A pressa em gerar código executável nos estágios embrionários transfere a resolução de inconsistências arquiteturais para a fase de produção. O custo de corrigir uma chave estrangeira mal modelada com o banco em produção é ordens de grandeza superior ao custo de ajustar uma linha de especificação técnica em um documento preliminar de design.
+:::
+
+## Por que OpenEduCat e Odoo 19?
+
+Para viabilizar uma solução viável e sustentável, evitou-se a tentação pueril de construir um sistema ERP educacional a partir do zero. A estratégia adotada fundamentou-se em **estender e tropicalizar** uma plataforma consagrada de software livre: o **OpenEduCat**, executado sobre o motor empresarial do **Odoo 19.0**.
+
+### Vantagens Estruturais da Pilha
+
+* **Motor Relacional Maduro**: O Odoo provê nativamente um ORM avançado em Python, persistência em PostgreSQL, controle transacional rigoroso, mensageria integrada de auditoria (`mail.thread`) e segurança baseada em permissões por modelo (`ir.model.access`) e linhas de banco de dados (*Record Rules* - `ir.rule`).
+* **Ecossistema Educacional Aberto**: O OpenEduCat disponibiliza abstrações fundamentadas no domínio acadêmico universal: alunos (`op.student`), professores (`op.faculty`), disciplinas (`op.subject`), turmas (`op.batch`), departamentos e calendários escolares.
+* **Componentes Especializados Disponíveis**: O catálogo do OpenEduCat já contemplava módulos como *Thesis* (gestão de teses), *Student Mentor* (orientação acadêmica), *E-Sign* (assinatura eletrônica de termos) e *Alumni* (acompanhamento de egressos).
+
+### Trade-offs Identificados
+
+| Dimensão Técnica | Benefício da Pilha | Limitação e Mitigação via Design |
+| :--- | :--- | :--- |
+| **Arquitetura de Herança** | Não há duplicação de dados básicos (endereços, cadastros de pessoas). | A herança desordenada pode introduzir dependências cíclicas entre submódulos. Mitigado pela topologia estrita de monorepo. |
+| **Curva de Aprendizado** | Framework completo de frontend reativo (OWL) e backend (ORM Python). | Exige conhecimento especializado de decorators e ciclo de vida do framework. Mitigado por contratos de interface explícitos. |
+| **Conformidade Regulatória** | O Odoo é agnóstico à legislação de países específicos. | Módulos internacionais não conhecem o vocabulário CAPES/MEC. Mitigado pela criação da suíte `l10n_br_openeducat_capes`. |
+
+## O Estudo de Caso: Do Piloto MPTRCS à Universidade Complexa
+
+O desenvolvimento do ecossistema documentado neste livro utilizou como ambiente de validação inicial o **Mestrado Profissional em Tecnologia das Radiações em Ciências da Saúde (MPTRCS)**, sediado no **IPEN-CNEN/SP** (Instituto de Pesquisas Energéticas e Nucleares).
+
+O MPTRCS apresentava características ideais para teste de estresse do modelo conceitual:
+1. Programa de pós-graduação *stricto sensu* nota 4 na CAPES, com demanda intensa de registro de Produção Técnica e Tecnológica (PTT).
+2. IES de natureza não-universitária (Instituto de Pesquisa vinculado à Comissão Nacional de Energia Nuclear - CNEN), exigindo que a diplomação digital possuísse tramitação híbrida com registro externo em universidade registradora parceira (Universidade de São Paulo - USP).
+3. Convivência de docentes credenciados em múltiplos programas e discentes com diferentes versões de regimento interno.
+
+Conforme o design do sistema amadureceu, o modelo foi submetido a um segundo desafio: a expansão para **Universidades Multiprograma Complexas** (como o cenário sintético da Universidade XYZQ), nas quais múltiplos programas de pós-graduação convivem na mesma instituição, compartilhando infraestrutura e professores, porém exigindo segregação total de visão acadêmica e dados confidenciais por parte das secretarias departamentais.
+
+::: {.callout-note}
+### Racional do Design Driven Development
+O sucesso do projeto residiu na recusa terminante em codificar funcionalidades antes que o ecossistema estivesse matematicamente modelado em documentos textuais e diagramas canônicos. O design foi a fonte única da verdade que guiou tanto o backend quanto o frontend e a governança executiva.
+:::

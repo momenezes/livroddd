@@ -1,0 +1,31 @@
+# Prefácio {.unnumbered}
+
+## Sobre Este Livro
+
+Este livro documenta a transição metodológica entre a prototipagem experimental e a engenharia de software de missão crítica assistida por Inteligência Artificial. Utilizando como estudo de caso a concepção, modelagem e implementação do ecossistema **`l10n_br_openeducat_capes`** — uma suíte de 9 submódulos que adapta o ERP educacional *OpenEduCat* e o framework *Odoo 19.0* à complexa legislação da pós-graduação *stricto sensu* brasileira —, a obra formaliza o paradigma do **Design-Driven Development (DDD)** (*Desenvolvimento Orientado por Design e Arquitetura Prévia*).
+
+A motivação central desta obra reside no diagnóstico de uma armadilha contemporânea na computação: a difusão do chamado *"vibe coding"*. Em sistemas corporativos regulados por normas estritas de órgãos fiscalizadores (como CAPES, MEC, Plataforma Sucupira/DAV e segurança jurídica do ato acadêmico perfeito), delegar o raciocínio arquitetural a prompts genéricos de IA gera débito técnico explosivo, esquemas de dados inconsistentes e vulnerabilidades legais insanáveis.
+
+Como contrapartida, apresentamos uma metodologia rigorosa em que:
+
+1. A **legislação e o domínio de negócio** são mapeados exaustivamente antes de qualquer linha de código.
+2. A **documentação arquitetural técnica** atua como a *fonte única da verdade* (Single Source of Truth - SSOT).
+3. A **implementação no ORM, views e frontend reativo (OWL)** é estritamente derivada das especificações formais.
+4. Uma **auditoria reversa pente-fino (*back-audit*)** confronta o código executável com os documentos canônicos, eliminando discrepâncias.
+5. Os **relatórios executivos e apresentações de alto nível** mantêm simetria com a realidade do banco de dados relacional.
+
+## Estrutura da Obra
+
+O livro está organizado em cinco capítulos progressivos e um compêndio de referências normativas:
+
+* **Capítulo 1 — Visão Geral e Motivação**: Examina o cenário da pós-graduação brasileira, a necessidade de soberania tecnológica via software livre e a insuficiência das abordagens informais (*vibe coding*) diante da conformidade legal estrita.
+* **Capítulo 2 — Princípios do Design-Driven Development**: Apresenta os axiomas fundamentais do método, o ciclo de vida dos 6 passos de ouro e o papel do desenvolvedor sênior na governança e orquestração de agentes autônomos de IA.
+* **Capítulo 3 — Arquitetura e Modelagem do Domínio**: Detalha a topologia do monorepo em 9 submódulos, a extensão não destrutiva de 11 modelos nativos do Odoo e do OpenEduCat, e a modelagem formal de motores complexos (Produção Técnica e Tecnológica - PTT, Diploma Digital MEC, Governança Regimental e Gestão de Bolsas).
+* **Capítulo 4 — Implementação, Contratos e Integridade**: Demonstra a tradução dos modelos para o ORM Python, contratos de interfaces, livros-razão *append-only*, comutador multiprograma reativo em OWL, estratégias de dados sintéticos densos com 33 entidades relacionais e segurança via *Record Rules*.
+* **Capítulo 5 — Lições Aprendidas e Guia Prático**: Sistematiza sete lições de engenharia de software para estudantes e pesquisadores, a anatomia de um caso real de depuração forense no Quarto/RevealJS e um checklist aplicável a projetos de graduação, pós-graduação e sistemas empresariais.
+* **Referências e Fontes Normativas**: Consolida portarias federais (CAPES/MEC), preceitos constitucionais, documentações oficiais de frameworks e literaturas seminais de engenharia de software.
+
+::: {.callout-note}
+### Público-Alvo
+Esta obra destina-se a estudantes de Ciência da Computação e Engenharia de Software, pesquisadores acadêmicos, líderes técnicos, arquitetos de sistemas e gestores institucionais que buscam projetar e implementar sistemas empresariais robustos, auditáveis e resilientes com auxílio de Inteligência Artificial.
+:::

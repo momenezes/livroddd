@@ -1,0 +1,126 @@
+# Princípios do Design-Driven Development
+
+## O Manifesto do Design-Driven Development (DDD)
+
+O **Design-Driven Development (DDD)** — no escopo desta obra compreendido como a confluência entre a modelagem rica de domínio (*Domain-Driven Design*) e a arquitetura formal prévia (*Documentation-First Architecture*) assistida por Inteligência Artificial — estabelece que **nenhum código de produção deve ser redigido antes que o modelo conceitual, os contratos de interface e as regras regulatórias estejam formalmente documentados e validados**.
+
+Em contraposição à cultura da experimentação indiscriminada (*vibe coding*), o DDD define o documento arquitetural não como um memorial descritivo passivo pós-fato, mas como o **código-fonte primário da inteligência do sistema**. Quando se trabalha com agentes autônomos de IA (LLMs), a qualidade da especificação formal determina de maneira determinística a qualidade do código gerado.
+
+```mermaid
+flowchart TD
+    subgraph FaseConceitual["1. Domínio & Especificação"]
+        Regulacao["Mapeamento Normativo<br/>(CAPES, MEC, Regimento)"]
+        DocOuro["Documentação Arquitetural Ouro<br/>(Modelos, Diagramas, Contratos)"]
+        Impacto["Análise de Impacto<br/>(Dependências & Herança)"]
+    end
+
+    subgraph FaseExecutiva["2. Materialização & Teste"]
+        Implementacao["Implementação Estrita<br/>(ORM Python, Views, OWL)"]
+        CargaSintetica["Validação com Dados Sintéticos<br/>(Escala Real & Integridade)"]
+        BackAudit["Auditoria Reversa Pente-Fino<br/>(Código vs. Arquitetura)"]
+    end
+
+    subgraph FaseGovernanca["3. Entrega & Sincronização"]
+        Commit["GitOps Atômico Dual-Remote<br/>(GitLab Institucional + GitHub)"]
+        SincExecutiva["Sincronização Executiva & Pitch<br/>(Simetria Semântica com o Banco)"]
+    end
+
+    Regulacao --> DocOuro
+    DocOuro --> Impacto
+    Impacto --> Implementacao
+    Implementacao --> CargaSintetica
+    CargaSintetica --> BackAudit
+    BackAudit -->|Inconsistência| DocOuro
+    BackAudit -->|Aprovado| Commit
+    Commit --> SincExecutiva
+```
+
+## Os Seis Passos de Ouro do Ciclo DDD
+
+Durante o desenvolvimento do ecossistema educacional, o Arquiteto Humano e o Agente de IA operaram sob um protocolo rigoroso de seis fases sequenciais:
+
+### 1. Mapeamento da Base Regulatória Formal
+Antes de estruturar qualquer entidade no banco de dados, o engenheiro realiza a engenharia reversa das leis, portarias e manuais dos órgãos fiscalizadores. No caso brasileiro:
+* Portaria CAPES nº 81/2016 (normas de credenciamento docente e teto de vínculos permanentes).
+* Portarias CAPES nº 133/2023 e 158/2023 (acumulação de bolsas e atividade remunerada).
+* Portarias MEC nº 330/2018, 554/2019 e 70/2025 (infraestrutura do Diploma Digital).
+* Dicionários de Dados da Plataforma Sucupira e Coleta DAV.
+
+### 2. Redação da Documentação Arquitetural Ouro
+Criação dos memoriais técnicos em arquivos textuais versionados (`.md` / `.qmd`). O documento deve conter diagramas de entidade-relacionamento, especificações de campos com restrições (`required`, `readonly`, `tracking`), máquinas de estado e diagramas de sequência das operações críticas.
+
+### 3. Análise de Impacto no Ecossistema
+Identificação explícita dos modelos já existentes no framework base (Odoo) ou nos pacotes de terceiros (OpenEduCat). Para cada modelo a ser estendido, o engenheiro responde:
+* Quais campos estão sendo injetados?
+* Há risco de sobrescrita de métodos nativos sem chamar `super()`?
+* Quais regras de acesso (`ir.rule`) são necessárias para garantir a segregação de dados?
+
+### 4. Implementação Estrita no ORM e Views
+O agente de IA é acionado com instruções restritas: *"Codifique os modelos estritamente conforme a seção X do documento de arquitetura. É terminantemente proibido criar tabelas ou campos não documentados."* O código gerado deve conter tipagem forte, constraints de integridade (`@api.constrains`) e rastreamento de auditoria (`tracking=True`).
+
+### 5. Teste de Estresse com Dados Sintéticos Densos
+Rejeição imediata de testes com dados triviais (*"Aluno Teste 1"*). Criação de geradores de dados sintéticos determinísticos e complexos, contendo turmas inteiras, anos letivos passados, docentes em múltiplos programas e discentes com diferentes níveis de integralização curricular.
+
+### 6. Auditoria Reversa Pente-Fino (*Back-Audit*)
+Confronto exaustivo entre o código-fonte executável e o documento de arquitetura. Se o código implementou uma validação que não estava documentada, a arquitetura é atualizada; se o código omitiu uma regra descrita no memorial técnico, o código é retificado. Somente após a perfeita convergência entre ambos é realizado o commit Git atômico.
+
+## Os Três Axiomas Inegociáveis da Arquitetura
+
+Para preservar a integridade matemática e jurídica do sistema, três princípios fundamentais foram instituídos como inegociáveis:
+
+### Axioma 1: Proibição Absoluta de Hardcode Regimental
+
+Em sistemas convencionais, é frequente encontrar lógicas condicionais estáticas em Python, tais como:
+
+```python
+# MÁ PRÁTICA: HARDCODE REGIMENTAL
+if student.course_type == 'master' and student.months_enrolled > 24:
+    raise ValidationError("Prazo de mestrado estourado!")
+```
+
+Esse padrão é catastrófico no ambiente acadêmico. Um programa pode alterar seu prazo de mestrado de 24 para 30 meses em uma reunião de Congregação; discentes de turmas distintas ingressam sob regimentos diferentes; prazos de trancamento variam por área de conhecimento.
+
+**Solução DDD**: O sistema introduziu a entidade `op.curriculum.version` (Versão Curricular Regimental). Toda e qualquer regra temporal, fator de crédito ou quórum de banca é consultado dinamicamente no objeto regimental associado à matrícula específica do discente.
+
+```mermaid
+flowchart LR
+    Discente["Discente<br/>(op.student)"] --> Matricula["Matrícula no Curso<br/>(op.student.course)"]
+    Matricula --> VersaoCurricular["Versão Curricular Regimental<br/>(op.curriculum.version)"]
+    VersaoCurricular --> RegrasPrazos["Prazos Regulares e Prorrogações"]
+    VersaoCurricular --> RegrasCreditos["Pesos e Mínimos de Disciplinas/PTT"]
+    VersaoCurricular --> RegrasBancas["Quórum Mínimo e Titulação Exigida"]
+```
+
+### Axioma 2: Imutabilidade e Append-Only em Livros-Razão
+
+A operação destrutiva `DELETE` (`unlink` no Odoo) é estritamente proibida em entidades que conferem direitos jurídicos ou titulação acadêmica. 
+
+Se um discente cursa uma disciplina e posteriormente solicita equivalência de créditos externos, a nota original jamais é apagada do banco. O sistema utiliza uma arquitetura de livro-razão (*ledger*) puramente *append-only* (`op.student.credit.ledger`). 
+
+Eventuais anulações, transferências ou revalidações são registradas como **novas linhas de movimentação com valor negativo ou corretivo**, vinculadas à portaria deliberativa da comissão de pós-graduação. Isso garante auditabilidade forense integral perante a CAPES, o MEC e o Ministério Público.
+
+::: {.callout-note}
+### Decisão de Design: Livros-Razão Append-Only
+A mesma filosofia de livro-razão foi aplicada à governança do corpo docente em `op.faculty.category.ledger`. Quando um professor transita da categoria de *Colaborador* para *Permanente*, não se altera o registro existente: registra-se um evento de transição com a ata da Congregação e a data de eficácia jurídica.
+:::
+
+### Axioma 3: Respeito ao Ato Jurídico Perfeito e Não-Retroatividade
+
+Conforme a jurisprudência consolidada dos tribunais superiores brasileiros, não existe direito adquirido a regime jurídico institucional: a universidade detém autonomia para atualizar seus regimentos pedagógicos e elevar critérios de excelência a qualquer momento.
+
+Entretanto, essa faculdade encontra barreira intransponível na proteção ao **ato jurídico perfeito** (Art. 5º, XXXVI da CF/88): etapas formativas já integralizadas e registradas sob o império da norma anterior não podem ser invalidadas.
+
+| Situação Acadêmica | Natureza Jurídica | Comportamento do Sistema |
+| :--- | :--- | :--- |
+| **Disciplinas já cursadas e aprovadas** | Ato Jurídico Perfeito | Créditos permanecem intocados no livro-razão, mesmo se a disciplina for extinta na nova grade. |
+| **Exame de qualificação já homologado** | Ato Jurídico Perfeito | Não se exige reavaliação sob novos critérios introduzidos posteriormente. |
+| **Prazo de defesa ainda não atingido** | Expectativa de Direito | Aplica-se a regra da nova versão curricular, salvo se houver cláusula de transição regimental expressa. |
+
+## O Papel do Arquiteto Humano na Governança da IA
+
+O paradigma Design-Driven Development redefine a atuação do desenvolvedor em tempos de Inteligência Artificial: o profissional deixa de ser um mero digitador de sintaxe para assumir a postura de **Arquiteto de Sistemas e Auditor Crítico**.
+
+A governança do agente de IA requer:
+1. **Comandos Imperativos e Delimitados**: O engenheiro formula instruções de alta especificidade, delimitando arquivos alvo, modelos a inspecionar e padrões de saída esperados.
+2. **Exigência de Rastreabilidade**: Cada alteração de código deve ser justificada à luz do documento arquitetural. Snippets que não apresentem correspondência na documentação são prontamente rejeitados.
+3. **Análise Forense de Falhas**: Diante de erros em tempo de execução (como violações de chave ou exceções no frontend OWL), o engenheiro não pede *"conserte esse erro"*; ele fornece o traceback completo, diagnostica a camada subjacente e instrui a retificação da causa raiz.

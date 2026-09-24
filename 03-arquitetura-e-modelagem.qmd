@@ -1,0 +1,196 @@
+# Arquitetura e Modelagem do Domínio
+
+## A Topologia do Monorepo e os 9 Submódulos
+
+O ecossistema `l10n_br_openeducat_capes` foi estruturado sob o padrão arquitetural de **monorepo modular**. Em vez de concentrar centenas de tabelas em um único pacote monolítico ou pulverizar o código em repositórios desconexos, o sistema divide-se em **nove submódulos especializados**, garantindo alto desacoplamento e isolamento de responsabilidades.
+
+```mermaid
+flowchart TD
+    Core["l10n_br_openeducat_capes_core<br/>(PIDs, Censo IBGE, Governança Multiprograma)"]
+    Academic["l10n_br_openeducat_capes_academic<br/>(Versões Regimentais, Livro-Razão)"]
+    Admission["l10n_br_openeducat_capes_admission<br/>(Editais, Cotas, Heteroidentificação)"]
+    Research["l10n_br_openeducat_capes_research<br/>(Áreas CAPES, Linhas CNPq, Projetos)"]
+    Thesis["l10n_br_openeducat_capes_thesis<br/>(Bancas, Qualificação, Defesa)"]
+    PTT["l10n_br_openeducat_capes_ptt<br/>(Motor 4 Eixos, Estratos T1-T5)"]
+    Diploma["l10n_br_openeducat_capes_diploma<br/>(XML MEC, Assinatura ICP, Histórico)"]
+    Integration["l10n_br_openeducat_capes_integration<br/>(APIs REST /api/capes/v1/dav/*)"]
+    Scholarship["l10n_br_openeducat_capes_scholarship<br/>(Cotas de Bolsas, Avaliação Cega)"]
+
+    Core --> Academic
+    Core --> Admission
+    Core --> Scholarship
+    Core --> Integration
+    Academic --> Research
+    Academic --> Thesis
+    Admission --> Thesis
+    Research --> Thesis
+    Thesis --> PTT
+    Thesis --> Diploma
+    Core --> PTT
+    Core --> Diploma
+    Admission --> Scholarship
+    Academic --> Scholarship
+    PTT --> Integration
+```
+
+### Matriz de Responsabilidades dos Submódulos
+
+| Submódulo | Dependências | Responsabilidade Primária de Negócio |
+| :--- | :--- | :--- |
+| **`core`** | `openeducat_core` | Identificadores persistentes (CNPJ, e-MEC, ROR, ISNI), censo demográfico (CPF com Módulo 11, ORCiD ISO 7064, raça/cor IBGE, PCD), governança multiprograma (`res.users`, `ir.http`) e trava da Portaria CAPES 81/2016. |
+| **`academic`** | `core`, `mail` | Gestão da vida discente e docente, versionamento regimental de currículos (`op.curriculum.version`), livro-razão de créditos *append-only* (`op.student.credit.ledger`), PHEA e governança de colegiados (CPG). |
+| **`admission`** | `core`, `academic` | Editais de processos seletivos *stricto sensu*, reserva de vagas (cotas étnico-raciais e PCD), bancas de heteroidentificação, pontuação de currículo lattes e plano de trabalho discente (`op.student.work_plan`). |
+| **`research`** | `academic`, `project` | Pesquisa institucional: áreas de concentração e avaliação CAPES, linhas de pesquisa institucionais, grupos certificados no CNPq e integração com projetos de fomento no Odoo Project (`project.project`). |
+| **`thesis`** | `academic`, `admission`, `research` | Ritos de passagem: exames de qualificação, comissões examinadoras de defesa, verificação algorítmica de quórum regimental e repositório de teses e dissertações. |
+| **`ptt`** | `core`, `academic`, `thesis` | Produção Técnica e Tecnológica: catalogação conforme taxonomia CAPES e cálculo matricial de pontuação em 4 eixos (Aderência, Impacto, Inovação, Complexidade) com estratificação T1 a T5/TNC. |
+| **`diploma`** | `core`, `academic`, `thesis` | Emissão e registro de diplomas conforme Portarias MEC 330/2018, 554/2019 e 70/2025: geração do XML assinado em XAdES com certificado ICP-Brasil, representação visual em PDF com QR-Code de validação e controle de tramitação externa para IES não-universitárias. |
+| **`integration`** | `core`, `ptt` | Barramento de interoperabilidade e exportação: rotas REST `/api/capes/v1/dav/*` autenticadas via Bearer Token e relatórios padronizados para alimentação da Coleta CAPES / Sucupira. |
+| **`scholarship`** | `core`, `academic`, `admission`, `mail` | Governança de bolsas de fomento: cotas por agência (CAPES, CNPq, FAPs), editais de seleção, avaliação cega concorrente por múltiplos pareceristas, termos de compromisso e regras de acúmulo (Portarias 81/2016, 133/2023 e 158/2023). |
+
+## Decisão Arquitetural (ADR): Multiprograma Lógico vs. Multicompany Odoo
+
+Um dos momentos mais decisivos do projeto ocorreu diante do seguinte dilema arquitetural: *como representar uma universidade complexa que abriga dezenas de Programas de Pós-Graduação (PPGs), cada um com regras próprias, mas compartilhando docentes e disciplinas?*
+
+### Opções Avaliadas
+
+* **Opção A: Abordagem Multicompany Nativa do Odoo**
+  * *Mecanismo*: Modelar cada programa de pós-graduação como uma `res.company` independente no banco de dados.
+  * *Vantagens aparentes*: Isolamento imediato de telas através do filtro nativo de empresas do Odoo.
+  * *Desvantagens fatais*: Criação de barreiras severas ao compartilhamento de docentes e discentes; duplicação burocrática de tabelas de disciplinas e departamentos; overhead computacional extremo; e complexidade insustentável para professores credenciados em múltiplos programas.
+* **Opção B: Hierarquia com Multiprograma Lógico e Record Rules (Selecionada)**
+  * *Mecanismo*: A Universidade como um todo é mantida como a única entidade `res.company`. Cria-se a entidade de domínio `op.program.capes` vinculada ao catálogo acadêmico. A segregação de acesso é realizada por **regras de registro (*Record Rules* - `ir.rule`)** associadas ao contexto ativo do usuário (`current_program_id`).
+  * *Vantagens*: Docentes e discentes existem como registros unificados no banco de dados; disciplinas e turmas podem ser transversais; e os usuários alternam de programa instantaneamente através de um comutador reativo na barra superior (*Systray*) construído em OWL.
+
+::: {.callout-note}
+### Decisão Arquitetural Registrada (ADR)
+Adotou-se a **Opção B**. O isolamento lógico por Record Rules preserva a coesão do banco de dados relacional e reflete fielmente a estrutura das Pró-Reitorias de Pós-Graduação, onde a reitoria é a IES e os programas são unidades operacionais com autonomia pedagógica.
+:::
+
+## Os 11 Modelos Nativos do Odoo e OpenEduCat Estendidos
+
+Para evitar a redundância de tabelas e assegurar a compatibilidade com a suíte padrão, o ecossistema estendeu 11 modelos canônicos via herança do ORM (`_inherit`):
+
+```mermaid
+classDiagram
+    class op_student {
+        +Char ra_number
+        +Char cpf
+        +Char orcid
+        +Many2one current_program_id
+        +Many2one advisor_id
+        +Selection capes_status
+        +One2many credit_ledger_ids
+        +action_view_360()
+    }
+    class op_faculty {
+        +Selection work_regime
+        +Selection degree_level
+        +Char lattes_url
+        +One2many program_link_ids
+        +Char programs_summary
+        +check_max_permanent_programs()
+    }
+    class op_subject {
+        +Float credit_hours
+        +Text syllabus
+        +Text basic_bibliography
+        +Boolean is_phea_remote
+    }
+    class res_partner {
+        +Char cpf_validated
+        +Char orcid_iso7064
+        +Selection ibge_race_color
+        +Boolean is_pcd
+        +Char mother_name
+    }
+    class res_users {
+        +Many2many allowed_program_ids
+        +Many2one current_program_id
+        +Boolean is_central_admin
+        +action_switch_program()
+    }
+    class op_batch {
+        +Many2one program_id
+    }
+    class op_student_course {
+        +Selection course_type
+        +Many2one curriculum_version_id
+        +Date max_defense_date
+    }
+    class res_company {
+        +Char cnpj
+        +Char emec_code
+        +Char capes_ies_code
+        +Char ror_id
+    }
+    class ir_http {
+        +session_info()
+    }
+    class project_project {
+        +Many2one capes_research_project_id
+    }
+    class mail_thread {
+        +message_post()
+        +activity_schedule()
+    }
+```
+
+1. **`op.student`**: Enriquecido com RA institucional permanente, chave estrangeira para o programa ativo, orientador principal, status perante a CAPES e livro-razão de créditos com botões de visão 360°.
+2. **`op.faculty`**: Adicionados PIDs, regime de trabalho (20h, 40h, Dedicação Exclusiva), titulação máxima, vínculos interinstitucionais (`op.faculty.program.link`) e o resumo computado `programs_summary` com trava da Portaria CAPES 81/2016.
+3. **`op.subject`**: Sincronização de créditos com pesos avaliativos, ementa curricular, bibliografia básica e complementar e indicador de oferta remota emergencial (PHEA).
+4. **`op.batch`**: Associação explícita da turma com o programa de pós-graduação correspondente (`program_id`).
+5. **`op.student.course`**: Multi-vínculo com o tipo de curso (`master_prof`, `master_acad`, `phd_prof`, `phd_acad`), versão regimental de currículo e balizas de prazo de defesa.
+6. **`res.company`**: Metadados de identificação institucional nacional e internacional (CNPJ, código e-MEC, código da IES na CAPES, ROR e ISNI).
+7. **`res.partner`**: Censo biográfico e demográfico exigido pelo DAV/Coleta CAPES (CPF com algoritmo Módulo 11, ORCiD com validação ISO 7064, raça/cor IBGE, deficiência/PCD e filiação).
+8. **`res.users`**: Governança de permissões multiprograma (`allowed_program_ids`, `current_program_id`, indicador de administrador da Pró-Reitoria e método de comutação).
+9. **`ir.http`**: Interceptação do método `session_info()` do Odoo Web para disponibilizar o contexto do programa ativo no frontend reativo OWL.
+10. **`project.project`**: Integração de projetos de pesquisa *stricto sensu* aos projetos de financiamento gerenciados no módulo nativo Project.
+11. **`mail.thread` / `mail.activity.mixin`**: Rastreabilidade cronológica e agendamento de tarefas em todos os modelos transacionais.
+
+## Modelagem de Domínio dos Pilares Críticos
+
+### 1. O Motor da Produção Técnica e Tecnológica (PTT)
+
+Nos programas profissionais, a avaliação da CAPES não se restringe à produção bibliográfica convencional. O submódulo `l10n_br_openeducat_capes_ptt` implementou a taxonomia oficial da CAPES (subdividida em 4 eixos ponderados):
+
+$$\text{Pontuação PTT} = 0.25 \times \text{Aderência} + 0.30 \times \text{Impacto} + 0.25 \times \text{Inovação} + 0.20 \times \text{Complexidade}$$
+
+Cada eixo é avaliado em uma escala de 0 a 100 pontos por pareceristas designados. O sistema consolida a nota final e realiza o enquadramento automático nos estratos:
+
+* **T1**: Pontuação $\ge 85$ (Impacto de referência nacional/internacional)
+* **T2**: Pontuação $\ge 70$ e $< 85$
+* **T3**: Pontuação $\ge 55$ e $< 70$
+* **T4**: Pontuação $\ge 40$ e $< 55$
+* **T5**: Pontuação $\ge 25$ e $< 40$
+* **TNC (Não Classificado)**: Pontuação $< 25$
+
+### 2. A Esteira Dual de Diplomação Digital MEC
+
+Em conformidade com as Portarias MEC 330/2018, 554/2019 e a novel Portaria 70/2025, o submódulo `l10n_br_openeducat_capes_diploma` foi concebido para atender a duas realidades jurídicas distintas:
+
+```mermaid
+flowchart TD
+    Inicio["Aprovação na Defesa e Integralização de Créditos"] --> Dossiê["Montagem do Dossiê Acadêmico"]
+    Dossiê --> DecisaoTipoIES{"Tipo de Instituição (IES)?"}
+    
+    DecisaoTipoIES -->|Universidade Plena| RegistroInterno["Emissão de Livro/Folha Internos"]
+    RegistroInterno --> AssinaturaXAdES["Assinatura Digital XML XAdES (ICP-Brasil)"]
+    
+    DecisaoTipoIES -->|Instituto de Pesquisa / IES Não-Universitária<br/>(Ex: IPEN)| TramitacaoExterna["Tramitação Externa do Dossiê para a Universidade Registradora (Ex: USP)"]
+    TramitacaoExterna --> ProtocoloExterno["Protocolo e Inserção do Número de Registro Homologado"]
+    ProtocoloExterno --> AssinaturaXAdES
+    
+    AssinaturaXAdES --> PDFVisual["Geração da Representação Visual em PDF com QR-Code de Validação e Histórico Oficial"]
+    PDFVisual --> Arquivamento["Arquivamento Permanente e Auditoria"]
+```
+
+Além disso, o modelo preserva compatibilidade com o formato de **emissão física tradicional (pergaminho/papel)** através do campo `issuance_format`, haja vista que o MEC ainda conclui a normatização total do diploma digital para todos os ramos da pós-graduação *stricto sensu*.
+
+### 3. Governança de Bolsas de Fomento e Acúmulos
+
+O submódulo `l10n_br_openeducat_capes_scholarship` respondeu a uma necessidade premente das secretarias de pós-graduação: a gestão de cotas concedidas por agências financiadoras (CAPES PROEX/PROAP, CNPq, FAPESP) sem assumir a execução bancária (que é realizada diretamente pela agência ao bolsista).
+
+O modelo assegura:
+* **Editais com Rubricas**: Definição de notas mínimas, pesos e critérios de desempate.
+* **Avaliação Cega Concorrente**: Distribuição de inscrições a múltiplos docentes avaliadores em paralelo, com segregação total das notas entre si até a homologação da comissão.
+* **Termo de Compromisso e Acúmulos**: Validação automática dos requisitos das Portarias CAPES 81/2016, 133/2023 e 158/2023, permitindo o acúmulo de bolsa com atividade remunerada ou vínculo empregatício somente quando houver anuência do orientador e compatibilidade de carga horária demonstrada em sistema.

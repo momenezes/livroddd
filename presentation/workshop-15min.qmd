@@ -1,0 +1,198 @@
+---
+title: "Design Driven Development na Prática"
+subtitle: "Da Arquitetura Regulatória ao Código em Sistemas de Missão Crítica"
+author: "Mario Olímpio de Menezes"
+format:
+  revealjs:
+    theme: black
+    slide-number: "c/t"
+    show-slide-number: all
+    hash-type: number
+    transition: slide
+    width: 1600
+    height: 900
+---
+
+## Design Driven Development
+
+### Construindo Software Sustentável a Partir do Design
+
+* **Palestrante**: Mario Olímpio de Menezes
+* **Contexto**: Engenharia de Software Crítica, Modelagem Regulatória e IA
+* **Caso Prático**: Ecossistema `l10n_br_openeducat_capes` (Odoo 19 / OpenEduCat 19)
+
+::: {.notes}
+Tempo acumulado: 0:00 - 1:00 (1 min).
+Boas-vindas a todos. Neste workshop de 15 minutos, vamos explorar como transformar o processo de desenvolvimento assistido por Inteligência Artificial, superando a armadilha do código imediato e adotando o Design-Driven Development na prática.
+:::
+
+## Agenda do Workshop (15 min)
+
+* **O Desafio**: A armadilha do "vibe coding" em sistemas regulatórios (2 min)
+* **O Paradigma**: Fundamentos e o Ciclo dos 6 Passos de DDD (3 min)
+* **Axiomas e Modelagem**: Regimento dinâmico e monorepo modular (3 min)
+* **Estudo de Caso**: Da arquitetura ao código no ecossistema CAPES (4 min)
+* **Lições e Depuração Forense**: Do banco ao frontend RevealJS (3 min)
+
+::: {.notes}
+Tempo acumulado: 1:00 - 2:00 (1 min).
+Apresentar a estrutura da sessão. Enfatizar que veremos tanto a teoria metodológica quanto casos reais de código, depuração e governança de software corporativo.
+:::
+
+## O Problema: A Ilusão do "Vibe Coding"
+
+* **A Pressa do Código Precoce**: Pedir snippets para LLMs antes de entender a regulação gera arquiteturas frágeis e desconexas.
+* **Débito Técnico Exponencial**: Nomes de campos duplicados, falta de integridade relacional e quebra de convenções do framework.
+* **Alucinação Regulatória**: Violação direta de normas legais (ex: permitir mais de 3 vínculos permanentes vedados pela CAPES).
+* **Violação do Ato Jurídico Perfeito**: Deleções destrutivas (`DELETE`/`unlink`) que destroem a rastreabilidade exigida por órgãos de controle.
+
+::: {.notes}
+Tempo acumulado: 2:00 - 3:15 (1 min 15 s).
+Destacar o problema central: o vibe coding funciona para protótipos de brinquedo, mas colapsa em sistemas de missão crítica. Em sistemas educacionais ou contábeis, a falta de design prévio gera prejuízos legais e operacionais graves.
+:::
+
+## O Paradigma DDD (Design-Driven Development)
+
+* **O Design como Fonte Única da Verdade**: A documentação arquitetural não é um memorial passivo, mas a especificação formal do comportamento.
+* **A Regra de Ouro**: Nenhum código de produção é escrito antes do mapeamento normativo e validação do modelo conceitual.
+* **Redução Drástica do Custo de Mudança**: Corrigir uma inconsistência na modelagem textual consome 2 minutos; refatorar o banco de dados em produção consome dias de migração.
+
+::: {.notes}
+Tempo acumulado: 3:15 - 4:30 (1 min 15 s).
+Explicar a inversão de postura: o design atua como a âncora que guia os agentes de IA. Quando fornecemos uma arquitetura densa ao modelo de linguagem, a geração de código torna-se determinística e auditável.
+:::
+
+## O Ciclo dos Seis Passos de Ouro do DDD
+
+1. **Mapeamento Normativo**: Análise profunda de portarias e leis federais (CAPES, MEC, DAV).
+2. **Documentação Ouro**: Redação de especificações técnicas completas em Markdown.
+3. **Análise de Impacto**: Mapeamento de dependências e classes nativas herdadas.
+4. **Implementação Estrita**: Programação no ORM, Views e OWL rigorosamente derivada do documento.
+5. **Teste com Dados Sintéticos Densos**: Carga em escala real com 33 entidades interligadas.
+6. **Auditoria Reversa (*Back-Audit*)**: Comparação pente-fino entre código real e arquitetura.
+
+::: {.notes}
+Tempo acumulado: 4:30 - 5:45 (1 min 15 s).
+Percorrer as 6 fases do ciclo de ouro. Destacar a auditoria reversa como a garantia de que não haverá descompasso entre o que foi documentado e o que foi codificado.
+:::
+
+## Os Três Axiomas Inegociáveis da Arquitetura
+
+* **1. Proibição Absoluta de Hardcode Regimental**:
+  * Prazos e quóruns nunca ficam fixos no código Python; são consultados dinamicamente em `op.curriculum.version`.
+* **2. Imutabilidade e Append-Only em Livros-Razão**:
+  * Registros consolidados de créditos e vínculos utilizam tabelas *append-only* (`op.student.credit.ledger`); estornos exigem lançamentos corretivos com justificativa legal.
+* **3. Respeito ao Ato Jurídico Perfeito**:
+  * Novas regras aplicam-se a eventos futuros, preservando integralizações curriculares já concluídas.
+
+::: {.notes}
+Tempo acumulado: 5:45 - 7:00 (1 min 15 s).
+Enfatizar a importância dos axiomas para proteger o sistema contra mudanças frequentes na legislação universitária sem quebrar o histórico dos alunos veteranos.
+:::
+
+## Estudo de Caso: Monorepo `l10n_br_openeducat_capes`
+
+* **Suíte Modular Especializada (9 Submódulos)**:
+  * `core`: PIDs, censo demográfico IBGE, governança multiprograma e trava da Portaria 81/2016.
+  * `academic`: Livro-razão de créditos *append-only*, versões regimentais e comissões da CPG.
+  * `admission`: Editais *stricto sensu*, cotas afirmativas e bancas de heteroidentificação.
+  * `research` & `thesis`: Áreas de avaliação, linhas CNPq, qualificações e comissões examinadoras.
+  * `ptt`: Motor avaliativo da Produção Técnica em 4 eixos (estratos T1 a T5/TNC).
+  * `diploma`: Diploma digital MEC (Portarias 330/554/70) com XML XAdES e representação visual.
+  * `integration` & `scholarship`: APIs REST `/api/capes/v1/dav/*` e governança de bolsas de estudos.
+
+::: {.notes}
+Tempo acumulado: 7:00 - 8:15 (1 min 15 s).
+Apresentar a topologia do monorepo. Explicar como a divisão em 9 submódulos desacoplados evitou o surgimento de um monólito incontrolável.
+:::
+
+## Decisão Arquitetural (ADR): Multiprograma Lógico
+
+* **O Desafio**: Como gerenciar uma universidade com múltiplos programas de pós-graduação?
+* **Opção A (Descartada - Multicompany Odoo)**:
+  * Tratar cada programa como uma empresa independente no ERP.
+  * *Impacto*: Duplicação de cadastros, barreira para docentes compartilhados e alto overhead.
+* **Opção B (Adotada - Multiprograma Lógico)**:
+  * Uma única empresa (`res.company`) institucional com segregação lógica por `op.program.capes`.
+  * Isolamento de visão via *Record Rules* (`ir.rule`) vinculadas à sessão HTTP.
+  * Comutação instantânea no frontend através do menu Systray em OWL.
+
+::: {.notes}
+Tempo acumulado: 8:15 - 9:30 (1 min 15 s).
+Explicar a decisão arquitetural chave: a segregação por regras de registro preservou a integridade dos dados e permitiu que professores atuem em múltiplos programas sem duplicação de cadastros.
+:::
+
+## Motores Regulatórios: PTT e Diploma Digital
+
+* **Motor PTT (Produção Técnica e Tecnológica)**:
+  * Ponderação matricial: $\text{Nota} = 0.25 \times \text{Aderência} + 0.30 \times \text{Impacto} + 0.25 \times \text{Inovação} + 0.20 \times \text{Complexidade}$.
+  * Enquadramento automático nos estratos oficiais da CAPES (T1 a T5 e TNC).
+* **Diplomação Digital MEC Dual**:
+  * *Universidades Plenas*: Emissão, assinatura XAdES (ICP-Brasil) e registro direto.
+  * *Institutos de Pesquisa (Ex: IPEN)*: Tramitação externa do dossiê com universidade registradora (USP) e suporte híbrido físico/digital.
+
+::: {.notes}
+Tempo acumulado: 9:30 - 10:45 (1 min 15 s).
+Demonstrar como as regras complexas de avaliação quadrienal da CAPES e portarias do MEC foram traduzidas em algoritmos exatos dentro do sistema.
+:::
+
+## Integridade Técnica: Livro-Razão e Dados Sintéticos
+
+* **Código de Defesa do Livro-Razão**:
+  * Sobrescrita de `unlink()` em `op.student.credit.ledger` impedindo deleção de créditos.
+  * Restrição `@api.constrains` bloqueando cadastros que excedam 3 programas permanentes.
+* **A Força dos Dados Sintéticos Determinísticos**:
+  * Script gerador com semente fixa (`seed(42)`) criando 33 entidades relacionais completas.
+  * 86 discentes, turmas reais, anos acadêmicos passados e atas mensais de CPG.
+  * Validador forense prévio assegurando zero erros de chave estrangeira antes da carga.
+
+::: {.notes}
+Tempo acumulado: 10:45 - 12:00 (1 min 15 s).
+Enfatizar a superioridade de testar sistemas com dados densos e realistas. Sem esses dados, falhas sutis de permissões e relatórios nunca teriam sido descobertas em desenvolvimento.
+:::
+
+## Anatomia de um Debug Forense: O Caso dos Slides RevealJS
+
+* **O Sintoma Misterioso**:
+  * O contador do RevealJS pulava números (do slide 4 ia para 7, do 9 para 13), somando 57 seções para apenas 20 telas visíveis.
+* **A Causa Raiz Descoberta no DOM**:
+  * Títulos de nível 4 (`####`) dentro de cards estilizados eram interpretados pelo Pandoc como divisores de sub-seções, criando tags `<section>` filhas aninhadas.
+  * O contador nativo somava todas as seções do DOM.
+* **A Solução Elegante**:
+  * Substituição de `####` por `<div class="card-title">...</div>`.
+  * Redução imediata para exatamente 22 seções sequenciais perfeitas.
+
+::: {.notes}
+Tempo acumulado: 12:00 - 13:00 (1 min).
+Compartilhar essa rica lição de depuração: compreender as abstrações do compilador (Markdown -> Pandoc -> HTML -> RevealJS) é o que diferencia o programador que adivinha do engenheiro que soluciona.
+:::
+
+## Sete Lições Práticas para Engenheiros e Alunos
+
+1. **Documentar Primeiro**: A especificação arquitetural é a vacina contra a entropia da IA.
+2. **Postura Sênior**: Forneça tracebacks exatos e delimite escopos com precisão cirúrgica.
+3. **Imutabilidade Jurídica**: Adote livros-razão *append-only* em sistemas corporativos.
+4. **Isolamento Multiprograma**: Utilize *Record Rules* em vez de instâncias redundantes.
+5. **Dados Sintéticos Densos**: Crie massas de dados realistas e determinísticas.
+6. **Depuração Fullstack**: Domine a cadeia completa (ORM, OWL, QWeb e Compiladores).
+7. **Três Registros de Comunicação**: Separe documentação técnica, manual e pitch executivo.
+
+::: {.notes}
+Tempo acumulado: 13:00 - 14:00 (1 min).
+Recapitular as 7 lições mestras. Estas diretrizes são universais e se aplicam a qualquer projeto de computação moderno assistido por Inteligência Artificial.
+:::
+
+## Conclusão e Recursos
+
+* **Soberania Tecnológica**: O ecossistema `l10n_br_openeducat_capes` viabiliza uma pós-graduação moderna, livre e aderente às leis brasileiras.
+* **O Livro Técnico Completo**:
+  * Disponível em formato Quarto Book (`livro-ddd/index.html`).
+  * Contratos de código, diagramas de arquitetura e modelos detalhados.
+* **Repositório do Projeto**: Código aberto para a comunidade acadêmica nacional.
+
+**Muito obrigado! Aberto para perguntas.**
+
+::: {.notes}
+Tempo acumulado: 14:00 - 15:00 (1 min).
+Agradecer a atenção do público, convidar todos a acessarem o Quarto Book completo para consulta detalhada do código e abrir a sessão para debate e perguntas.
+:::
