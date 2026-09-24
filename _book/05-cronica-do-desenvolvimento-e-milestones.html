@@ -72,6 +72,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
@@ -223,7 +226,12 @@ ul.task-list li input[type="checkbox"] {
 <li><strong>A Era da Exploração Conceitual no Gemini (Web Chat)</strong>: Caracterizada pelo pensamento divergente, levantamento exaustivo de portarias ministeriais, análise de viabilidade de software livre e redação dos primeiros memoriais arquiteturais teóricos.</li>
 <li><strong>A Era da Engenharia de Produção no Antigravity (Agentic IDE)</strong>: Caracterizada pela materialização do código no ORM Odoo, manipulação direta de sistema de arquivos, orquestração de containers Docker, depuração fullstack (Python, PostgreSQL, OWL, QWeb, RevealJS), auditoria reversa (<em>back-audit</em>) e governança GitOps dual-remote.</li>
 </ol>
-<pre class="mermaid"><code>timeline
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">timeline
     title Cronologia Evolutiva do Projeto l10n_br_openeducat_capes
     section Fase 1: Exploração (Gemini)
         Concepção e Viabilidade : Avaliação do OpenEduCat no MPTRCS / IPEN
@@ -239,7 +247,13 @@ ul.task-list li input[type="checkbox"] {
                                : Criação do Módulo de Bolsas e Regra dos 6 Passos de DDD
         Fullstack &amp; Auditoria  : Seletor OWL no Systray e Trava da Portaria CAPES 81/2016
                                : Auditoria Pente-Fino em 23 Documentos de Arquitetura
-        Publicação e Síntese   : Debug Forense Quarto/RevealJS e Quarto Book no GitHub Pages</code></pre>
+        Publicação e Síntese   : Debug Forense Quarto/RevealJS e Quarto Book no GitHub Pages
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <hr>
 </section>
 <section id="a-era-gemini-concepção-pesquisa-regulatória-e-hipóteses-iniciais" class="level2" data-number="5.2">
@@ -248,11 +262,24 @@ ul.task-list li input[type="checkbox"] {
 <section id="o-marco-zero-viabilidade-do-openeducat-para-o-mptrcs" class="level3" data-number="5.2.1">
 <h3 data-number="5.2.1" class="anchored" data-anchor-id="o-marco-zero-viabilidade-do-openeducat-para-o-mptrcs"><span class="header-section-number">5.2.1</span> 1. O Marco Zero: Viabilidade do OpenEduCat para o MPTRCS</h3>
 <p>A primeira provocação feita à IA partiu de um cenário institucional concreto: o <strong>Mestrado Profissional em Tecnologia das Radiações em Ciências da Saúde (MPTRCS)</strong>, sediado no <strong>IPEN-CNEN/SP</strong>. O pesquisador questionou a viabilidade de adotar o <em>OpenEduCat</em> — um ERP educacional de código aberto baseado no framework empresarial <em>Odoo</em> — sobre a infraestrutura de servidores de alta performance do instituto (processadores AMD Epyc/Threadripper, ZFS e arranjos RAID).</p>
-<p>A análise inicial estabeleceu as premissas tecnológicas fundamentais: * Adoção de arquitetura conteinerizada em <strong>Docker</strong>. * Roteamento e certificação SSL automatizada via proxy reverso <strong>Traefik</strong>. * Banco de dados relacional <strong>PostgreSQL</strong> com suporte a consultas e relatórios estatísticos em R (Tidyverse) e Quarto. * Rejeição de desenvolvimento a partir do zero: a estratégia vencedora seria <strong>estender e tropicalizar</strong> os módulos nativos do ecossistema.</p>
+<p>A análise inicial estabeleceu as premissas tecnológicas fundamentais:</p>
+<ul>
+<li>Adoção de arquitetura conteinerizada em <strong>Docker</strong>.</li>
+<li>Roteamento e certificação SSL automatizada via proxy reverso <strong>Traefik</strong>.</li>
+<li>Banco de dados relacional <strong>PostgreSQL</strong> com suporte a consultas e relatórios estatísticos em R (Tidyverse) e Quarto.</li>
+<li>Rejeição de desenvolvimento a partir do zero: a estratégia vencedora seria <strong>estender e tropicalizar</strong> os módulos nativos do ecossistema.</li>
+</ul>
 </section>
 <section id="o-mapeamento-dos-módulos-nativos" class="level3" data-number="5.2.2">
 <h3 data-number="5.2.2" class="anchored" data-anchor-id="o-mapeamento-dos-módulos-nativos"><span class="header-section-number">5.2.2</span> 2. O Mapeamento dos Módulos Nativos</h3>
-<p>Em seguida, a documentação oficial do OpenEduCat foi submetida a uma triagem funcional detalhada: * <strong>Módulo Thesis</strong>: Identificado como o componente mais promissor, cobrindo o ciclo de registro de projetos de dissertação, relatórios de progresso periódicos, pedidos de extensão de prazo e entrega de versão final. * <strong>Módulos Student Mentor &amp; Student Progression</strong>: Estruturação formal da relação orientador-orientando e parametrização dos marcos regimentais obrigatórios (créditos, proficiência em línguas, qualificação e defesa). * <strong>Módulos DMS &amp; E-Sign</strong>: Gestão eletrônica de documentos e fluxo de assinatura digital para atas de deliberação e reuniões de bancas examinadoras. * <strong>Módulo Alumni</strong>: Acompanhamento longitudinal de egressos, essencial para evidenciar a inserção social e profissional exigida pela CAPES na avaliação quadrienal. * <strong>Módulos SIS e Grade Book</strong>: Catálogo flexível de disciplinas e suporte a notas conceituais (A, B, C) e Coeficiente de Rendimento (CR).</p>
+<p>Em seguida, a documentação oficial do OpenEduCat foi submetida a uma triagem funcional detalhada:</p>
+<ul>
+<li><strong>Módulo Thesis</strong>: Identificado como o componente mais promissor, cobrindo o ciclo de registro de projetos de dissertação, relatórios de progresso periódicos, pedidos de extensão de prazo e entrega de versão final.</li>
+<li><strong>Módulos Student Mentor &amp; Student Progression</strong>: Estruturação formal da relação orientador-orientando e parametrização dos marcos regimentais obrigatórios (créditos, proficiência em línguas, qualificação e defesa).</li>
+<li><strong>Módulos DMS &amp; E-Sign</strong>: Gestão eletrônica de documentos e fluxo de assinatura digital para atas de deliberação e reuniões de bancas examinadoras.</li>
+<li><strong>Módulo Alumni</strong>: Acompanhamento longitudinal de egressos, essencial para evidenciar a inserção social e profissional exigida pela CAPES na avaliação quadrienal.</li>
+<li><strong>Módulos SIS e Grade Book</strong>: Catálogo flexível de disciplinas e suporte a notas conceituais (A, B, C) e Coeficiente de Rendimento (CR).</li>
+</ul>
 </section>
 <section id="a-imersão-regulatória-capes-gopg-e-a-inexistência-de-direito-adquirido" class="level3" data-number="5.2.3">
 <h3 data-number="5.2.3" class="anchored" data-anchor-id="a-imersão-regulatória-capes-gopg-e-a-inexistência-de-direito-adquirido"><span class="header-section-number">5.2.3</span> 3. A Imersão Regulatória: CAPES, GoPG e a Inexistência de Direito Adquirido</h3>
@@ -260,16 +287,28 @@ ul.task-list li input[type="checkbox"] {
 <p>Dois estudos de pesquisa aprofundada (<em>Deep Research</em>) foram conduzidos:</p>
 <section id="deep-research-1-o-impacto-de-múltiplos-regimentos-acadêmicos" class="level4" data-number="5.2.3.1">
 <h4 data-number="5.2.3.1" class="anchored" data-anchor-id="deep-research-1-o-impacto-de-múltiplos-regimentos-acadêmicos"><span class="header-section-number">5.2.3.1</span> Deep Research 1: O Impacto de Múltiplos Regimentos Acadêmicos</h4>
-<p>O estudo investigou a jurisprudência dos tribunais superiores e as normas de câmaras de pós-graduação sobre a transição de regulamentos. Consolidou-se a premissa de que <strong>não existe direito adquirido a regime acadêmico</strong>: a instituição detém autonomia (Art. 207 da CF/88) para alterar prazos e regras a qualquer momento. Contudo, essa autonomia encontra limite estrito no <strong>Ato Jurídico Perfeito</strong> (Art. 5º, XXXVI da CF/88), impedindo a anulação de créditos já homologados. * <em>Solução Conceitual Derivada</em>: Criação do versionamento curricular dinâmico (<code>op.curriculum.version</code>) e do livro-razão imutável de créditos (<code>op.student.credit.ledger</code>).</p>
+<p>O estudo investigou a jurisprudência dos tribunais superiores e as normas de câmaras de pós-graduação sobre a transição de regulamentos. Consolidou-se a premissa de que <strong>não existe direito adquirido a regime acadêmico</strong>: a instituição detém autonomia (Art. 207 da CF/88) para alterar prazos e regras a qualquer momento. Contudo, essa autonomia encontra limite estrito no <strong>Ato Jurídico Perfeito</strong> (Art. 5º, XXXVI da CF/88), impedindo a anulação de créditos já homologados.</p>
+<ul>
+<li><em>Solução Conceitual Derivada</em>: Criação do versionamento curricular dinâmico (<code>op.curriculum.version</code>) e do livro-razão imutável de créditos (<code>op.student.credit.ledger</code>).</li>
+</ul>
 </section>
 <section id="deep-research-2-a-modelagem-da-produção-técnica-e-tecnológica-ptt" class="level4" data-number="5.2.3.2">
 <h4 data-number="5.2.3.2" class="anchored" data-anchor-id="deep-research-2-a-modelagem-da-produção-técnica-e-tecnológica-ptt"><span class="header-section-number">5.2.3.2</span> Deep Research 2: A Modelagem da Produção Técnica e Tecnológica (PTT)</h4>
-<p>Nos mestrados profissionais, a produção acadêmica convencional (artigos científicos) é complementada pela PTT (patentes, softwares, relatórios técnicos, normas e protocolos). Mapeou-se a metodologia oficial da Diretoria de Avaliação da CAPES (DAV): * Matriz de 4 eixos ponderados: Aderência (25%), Impacto (30%), Inovação (25%) e Complexidade (20%). * Escala de 0 a 100 pontos e estratificação nos níveis T1 a T5 e TNC.</p>
+<p>Nos mestrados profissionais, a produção acadêmica convencional (artigos científicos) é complementada pela PTT (patentes, softwares, relatórios técnicos, normas e protocolos). Mapeou-se a metodologia oficial da Diretoria de Avaliação da CAPES (DAV):</p>
+<ul>
+<li>Matriz de 4 eixos ponderados: Aderência (25%), Impacto (30%), Inovação (25%) e Complexidade (20%).</li>
+<li>Escala de 0 a 100 pontos e estratificação nos níveis T1 a T5 e TNC.</li>
+</ul>
 </section>
 </section>
 <section id="os-limites-da-fase-conversacional" class="level3" data-number="5.2.4">
 <h3 data-number="5.2.4" class="anchored" data-anchor-id="os-limites-da-fase-conversacional"><span class="header-section-number">5.2.4</span> 4. Os Limites da Fase Conversacional</h3>
-<p>Apesar da riqueza teórica, o Gemini apresentava a barreira clássica das interfaces puramente baseadas em chat: * <strong>Falta de Persistência e Acesso a Arquivos</strong>: Os snippets de código Python ficavam restritos a caixas de texto no navegador, sem validação em compiladores reais. * <strong>Impossibilidade de Execução Transacional</strong>: Não era possível testar se uma constraint do Odoo funcionava no PostgreSQL ou se uma view XML possuía erros de sintaxe. * <strong>Risco de Ilusão de Conclusão</strong>: Documentos conceituais extensos criavam a impressão de que o sistema estava pronto, quando na realidade nenhuma linha de código real havia sido executada em containers de produção.</p>
+<p>Apesar da riqueza teórica, o Gemini apresentava a barreira clássica das interfaces puramente baseadas em chat:</p>
+<ul>
+<li><strong>Falta de Persistência e Acesso a Arquivos</strong>: Os snippets de código Python ficavam restritos a caixas de texto no navegador, sem validação em compiladores reais.</li>
+<li><strong>Impossibilidade de Execução Transacional</strong>: Não era possível testar se uma constraint do Odoo funcionava no PostgreSQL ou se uma view XML possuía erros de sintaxe.</li>
+<li><strong>Risco de Ilusão de Conclusão</strong>: Documentos conceituais extensos criavam a impressão de que o sistema estava pronto, quando na realidade nenhuma linha de código real havia sido executada em containers de produção.</li>
+</ul>
 <p>Fazia-se necessária a transição para um ambiente de engenharia ativa.</p>
 <hr>
 </section>
@@ -278,7 +317,12 @@ ul.task-list li input[type="checkbox"] {
 <h2 data-number="5.3" class="anchored" data-anchor-id="a-transição-para-o-antigravity-da-hipótese-à-engenharia-de-produção"><span class="header-section-number">5.3</span> A Transição para o Antigravity: Da Hipótese à Engenharia de Produção</h2>
 <p>A migração para o <strong>Google Antigravity (AGY)</strong> transformou radicalmente a dinâmica de trabalho. O assistente deixou de ser um gerador de texto conversacional para se tornar um <strong>Agente de Engenharia Autônomo com Acesso ao Terminal e ao Sistema de Arquivos</strong>.</p>
 <p>No Antigravity, o Arquiteto Humano assumiu o papel de gestor e auditor sênior, enquanto o agente executava scripts, manipulava arquivos de código, disparava comandos do Git e compilava documentos técnicos em tempo real.</p>
-<pre class="mermaid"><code>flowchart LR
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
     subgraph Gemini["Era Gemini (Concepção Teórica)"]
         Chat["Web Chat Conversacional"]
         DocAbstrata["Documentos Teóricos &amp; Hipóteses"]
@@ -300,7 +344,13 @@ ul.task-list li input[type="checkbox"] {
     PromptVago --&gt; Migracao
     Migracao --&gt; AgenticIDE
     AgenticIDE --&gt; CodeORM
-    CodeORM --&gt; BackAudit</code></pre>
+    CodeORM --&gt; BackAudit
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <hr>
 </section>
 <section id="os-nove-grandes-marcos-milestones-no-antigravity" class="level2" data-number="5.4">
@@ -333,8 +383,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="milestone-4-expansão-regulatória-o-módulo-de-bolsas-e-os-6-passos-de-ddd-18092026" class="level3" data-number="5.4.4">
 <h3 data-number="5.4.4" class="anchored" data-anchor-id="milestone-4-expansão-regulatória-o-módulo-de-bolsas-e-os-6-passos-de-ddd-18092026"><span class="header-section-number">5.4.4</span> Milestone 4: Expansão Regulatória — O Módulo de Bolsas e os 6 Passos de DDD (18/09/2026)</h3>
 <ul>
-<li><strong>Desafio</strong>: O sistema cobria admissão discente, mas não a gestão de cotas de bolsas das agências de fomento (CAPES PROEX/PROAP, CNPq, FAPs).</li>
-<li><strong>Aplicação Rigorosa do DDD</strong>: O usuário impôs o protocolo em 6 etapas:
+<li><p><strong>Desafio</strong>: O sistema cobria admissão discente, mas não a gestão de cotas de bolsas das agências de fomento (CAPES PROEX/PROAP, CNPq, FAPs).</p></li>
+<li><p><strong>Aplicação Rigorosa do DDD</strong>: O usuário impôs o protocolo em 6 etapas:</p>
 <ol type="1">
 <li><em>Arquitetura Técnica Primeiro</em>: Redação completa do documento do novo submódulo <code>scholarship</code>.</li>
 <li><em>Análise de Impacto</em>: Mapeamento de dependências (<code>core</code>, <code>academic</code>, <code>admission</code>, <code>mail</code>) sem ciclos.</li>
@@ -348,8 +398,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="milestone-5-frontend-reativo-owl-no-systray-e-sessão-http-18092026" class="level3" data-number="5.4.5">
 <h3 data-number="5.4.5" class="anchored" data-anchor-id="milestone-5-frontend-reativo-owl-no-systray-e-sessão-http-18092026"><span class="header-section-number">5.4.5</span> Milestone 5: Frontend Reativo OWL no Systray e Sessão HTTP (18/09/2026)</h3>
 <ul>
-<li><strong>Desafio</strong>: Secretárias e coordenadores autorizados em múltiplos programas precisavam alternar de contexto sem sair do ERP.</li>
-<li><strong>Solução Fullstack</strong>:
+<li><p><strong>Desafio</strong>: Secretárias e coordenadores autorizados em múltiplos programas precisavam alternar de contexto sem sair do ERP.</p></li>
+<li><p><strong>Solução Fullstack</strong>:</p>
 <ul>
 <li>Injeção do programa ativo no payload <code>session_info</code> em <code>ir.http</code>.</li>
 <li>Criação do componente visual de barra superior (<em>Systray</em>) em OWL (<code>program_menu.js</code> e <code>program_menu.xml</code>).</li>
@@ -369,8 +419,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="milestone-7-design-editorial-e-os-três-registros-de-comunicação-18092026" class="level3" data-number="5.4.7">
 <h3 data-number="5.4.7" class="anchored" data-anchor-id="milestone-7-design-editorial-e-os-três-registros-de-comunicação-18092026"><span class="header-section-number">5.4.7</span> Milestone 7: Design Editorial e os Três Registros de Comunicação (18/09/2026)</h3>
 <ul>
-<li><strong>Desafio</strong>: A documentação executiva continha códigos Python inacessíveis para reitores, e os manuais do usuário apresentavam problemas tipográficos e listas truncadas.</li>
-<li><strong>Ações</strong>:
+<li><p><strong>Desafio</strong>: A documentação executiva continha códigos Python inacessíveis para reitores, e os manuais do usuário apresentavam problemas tipográficos e listas truncadas.</p></li>
+<li><p><strong>Ações</strong>:</p>
 <ul>
 <li>Unificação de quatro manuais legados em um compêndio estruturado com tipografia limpa (<code>custom_manual.css</code>) e correção de mais de 270 itens de lista.</li>
 <li>Purga de código-fonte na documentação executiva.</li>
@@ -382,8 +432,8 @@ ul.task-list li input[type="checkbox"] {
 <section id="milestone-8-auditoria-pente-fino-reversa-e-o-debug-do-revealjs-24092026" class="level3" data-number="5.4.8">
 <h3 data-number="5.4.8" class="anchored" data-anchor-id="milestone-8-auditoria-pente-fino-reversa-e-o-debug-do-revealjs-24092026"><span class="header-section-number">5.4.8</span> Milestone 8: Auditoria Pente-Fino Reversa e o Debug do RevealJS (24/09/2026)</h3>
 <ul>
-<li><strong>Desafio</strong>: Garantir que todos os 23 documentos técnicos de arquitetura em <code>docs/</code> refletissem matematicamente o código em produção.</li>
-<li><strong>Ações</strong>:
+<li><p><strong>Desafio</strong>: Garantir que todos os 23 documentos técnicos de arquitetura em <code>docs/</code> refletissem matematicamente o código em produção.</p></li>
+<li><p><strong>Ações</strong>:</p>
 <ul>
 <li>Varredura reversa de todas as classes Python e detecção de um bug real de importação no controller de rotas REST do DAV (<code>controllers/__init__.py</code>).</li>
 <li>Inserção padronizada da seção <em>Dependências e Impactos nos Módulos Nativos</em> em todos os documentos.</li>
@@ -394,7 +444,7 @@ ul.task-list li input[type="checkbox"] {
 <section id="milestone-9-compilação-do-quarto-book-e-publicação-contínua-24092026" class="level3" data-number="5.4.9">
 <h3 data-number="5.4.9" class="anchored" data-anchor-id="milestone-9-compilação-do-quarto-book-e-publicação-contínua-24092026"><span class="header-section-number">5.4.9</span> Milestone 9: Compilação do Quarto Book e Publicação Contínua (24/09/2026)</h3>
 <ul>
-<li><strong>Ações</strong>:
+<li><p><strong>Ações</strong>:</p>
 <ul>
 <li>Execução da skill <code>chat-to-quarto-book</code> sintetizando todo o histórico no Quarto Book <a href="file:///home/mario/progs/workspace_educat/tmp/livro-ddd"><code>livro-ddd</code></a>.</li>
 <li>Criação do branch <code>gh-pages</code> e automação de CI/CD nativo no GitHub Actions (<a href="file:///home/mario/progs/workspace_educat/tmp/livro-ddd/.github/workflows/publish.yml"><code>.github/workflows/publish.yml</code></a>), publicando o livro online em <code>https://momenezes.github.io/livroddd/</code>.</li>

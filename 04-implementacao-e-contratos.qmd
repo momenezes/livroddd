@@ -185,7 +185,7 @@ Um dos erros mais comuns em projetos universitários é a validação de softwar
 
 Para validar o ecossistema, foi desenvolvido o script `scripts/gerador_dados_sinteticos.py`, que adota os seguintes princípios:
 
-```mermaid
+```{mermaid}
 flowchart LR
     Seed["Seed Determinístico<br/>(random.seed(42))"] --> Infra["Infraestrutura Acadêmica<br/>(Anos, Termos, Departamentos, Cursos)"]
     Infra --> Pessoas["Corpo Social<br/>(86 Discentes, 24 Docentes, CPG)"]
@@ -203,11 +203,13 @@ flowchart LR
 Para viabilizar que secretarias de departamentos distintos operem no mesmo sistema sem vazamento de informações confidenciais, foram combinados dois mecanismos:
 
 1. **Permissões por Modelo (`ir.model.access.csv`)**: Estabelece privilégios CRUD (Create, Read, Update, Delete) com base em grupos de acesso formais:
+
    * *Grupo Discente*: Leitura estrita da sua própria vida acadêmica e editais públicos.
    * *Grupo Docente / Avaliador*: Acesso aos seus orientandos e às inscrições a ele distribuídas para avaliação cega.
    * *Grupo Secretaria de Programa*: Operação acadêmica no âmbito do seu programa ativo.
    * *Grupo Coordenação de PPG*: Homologação de bancas, matrículas e deliberações de CPG.
    * *Grupo Pró-Reitoria (Admin Central)*: Visão macroscópica transversal de todos os programas da IES.
+
 2. **Segurança de Linha (*Record Rules* - `ir.rule`)**: Aplica cláusulas `WHERE` automáticas em nível de banco de dados PostgreSQL. Por exemplo, a visualização de discentes é restrita ao programa selecionado:
 
 ```xml

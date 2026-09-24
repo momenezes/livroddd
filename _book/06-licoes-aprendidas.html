@@ -107,6 +107,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
@@ -254,7 +257,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="lição-2-como-comandar-agentes-de-ia-com-postura-sênior" class="level3" data-number="6.1.2">
 <h3 data-number="6.1.2" class="anchored" data-anchor-id="lição-2-como-comandar-agentes-de-ia-com-postura-sênior"><span class="header-section-number">6.1.2</span> Lição 2: Como Comandar Agentes de IA com Postura Sênior</h3>
-<p>Em sistemas complexos, o desenvolvedor não pode se portar como um espectador passivo do chat. Quando ocorrem falhas, frases genéricas como <em>“não funcionou, tente de novo”</em> induzem a IA a alucinações repetitivas. O Arquiteto Humano deve: * Fornecer o traceback exato do erro (<code>AttributeError: 'op.student' object has no attribute 'code'</code>). * Delimitar o perímetro da intervenção (<em>“remova os trechos de código Python da documentação executiva mantendo o restante intacto”</em>). * Impor mandatos metodológicos estritos (<em>“primeiro atualize o documento de arquitetura; só então implemente o código”</em>).</p>
+<p>Em sistemas complexos, o desenvolvedor não pode se portar como um espectador passivo do chat. Quando ocorrem falhas, frases genéricas como <em>“não funcionou, tente de novo”</em> induzem a IA a alucinações repetitivas. O Arquiteto Humano deve:</p>
+<ul>
+<li>Fornecer o traceback exato do erro (<code>AttributeError: 'op.student' object has no attribute 'code'</code>).</li>
+<li>Delimitar o perímetro da intervenção (<em>“remova os trechos de código Python da documentação executiva mantendo o restante intacto”</em>).</li>
+<li>Impor mandatos metodológicos estritos (<em>“primeiro atualize o documento de arquitetura; só então implemente o código”</em>).</li>
+</ul>
 </section>
 <section id="lição-3-imutabilidade-jurídica-e-livros-razão-append-only" class="level3" data-number="6.1.3">
 <h3 data-number="6.1.3" class="anchored" data-anchor-id="lição-3-imutabilidade-jurídica-e-livros-razão-append-only"><span class="header-section-number">6.1.3</span> Lição 3: Imutabilidade Jurídica e Livros-Razão (<em>Append-Only</em>)</h3>
@@ -270,11 +278,22 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="lição-6-anatomia-da-depuração-fullstack-do-orm-ao-owl-e-ao-qweb" class="level3" data-number="6.1.6">
 <h3 data-number="6.1.6" class="anchored" data-anchor-id="lição-6-anatomia-da-depuração-fullstack-do-orm-ao-owl-e-ao-qweb"><span class="header-section-number">6.1.6</span> Lição 6: Anatomia da Depuração Fullstack (Do ORM ao OWL e ao QWeb)</h3>
-<p>Nenhum sistema corporativo falha em uma camada isolada. Durante a trajetória do projeto, a equipe superou defeitos em quatro níveis distintos: 1. <em>Backend Python</em>: Ajustes no <code>controllers/__init__.py</code> para importação correta de rotas REST. 2. <em>ORM e Cache</em>: Sincronização de campos computados (<code>programs_summary</code>) no banco antes da chamada pelas views. 3. <em>Frontend OWL</em>: Resolução de exceções de ciclo de vida reativo e atualização de permissões de leitura no Systray. 4. <em>Renderizadores de Relatório QWeb</em>: Tratamento de campos correlacionados na geração do Histórico Escolar em PDF.</p>
+<p>Nenhum sistema corporativo falha em uma camada isolada. Durante a trajetória do projeto, a equipe superou defeitos em quatro níveis distintos:</p>
+<ol type="1">
+<li><em>Backend Python</em>: Ajustes no <code>controllers/__init__.py</code> para importação correta de rotas REST.</li>
+<li><em>ORM e Cache</em>: Sincronização de campos computados (<code>programs_summary</code>) no banco antes da chamada pelas views.</li>
+<li><em>Frontend OWL</em>: Resolução de exceções de ciclo de vida reativo e atualização de permissões de leitura no Systray.</li>
+<li><em>Renderizadores de Relatório QWeb</em>: Tratamento de campos correlacionados na geração do Histórico Escolar em PDF.</li>
+</ol>
 </section>
 <section id="lição-7-os-três-registros-de-comunicação-de-um-projeto-de-ti" class="level3" data-number="6.1.7">
 <h3 data-number="6.1.7" class="anchored" data-anchor-id="lição-7-os-três-registros-de-comunicação-de-um-projeto-de-ti"><span class="header-section-number">6.1.7</span> Lição 7: Os Três Registros de Comunicação de um Projeto de TI</h3>
-<p>Um projeto de engenharia sério precisa dialogar em três registros semânticos distintos: 1. <strong>Linguagem Arquitetural (Docs Técnicos)</strong>: Precisa, formal, exaustiva, com modelos relacionais e contratos (voltada a desenvolvedores e auditores). 2. <strong>Linguagem Operacional (Manual do Usuário)</strong>: Passo a passo, amigável, orientada a tarefas cotidianas (voltada a secretarias e coordenadores). 3. <strong>Linguagem Estratégica (Documentação Executiva e Pitch)</strong>: Focada em conformidade normativa, mitigação de riscos institucionais e soberania tecnológica (voltada a reitores e diretores).</p>
+<p>Um projeto de engenharia sério precisa dialogar em três registros semânticos distintos:</p>
+<ol type="1">
+<li><strong>Linguagem Arquitetural (Docs Técnicos)</strong>: Precisa, formal, exaustiva, com modelos relacionais e contratos (voltada a desenvolvedores e auditores).</li>
+<li><strong>Linguagem Operacional (Manual do Usuário)</strong>: Passo a passo, amigável, orientada a tarefas cotidianas (voltada a secretarias e coordenadores).</li>
+<li><strong>Linguagem Estratégica (Documentação Executiva e Pitch)</strong>: Focada em conformidade normativa, mitigação de riscos institucionais e soberania tecnológica (voltada a reitores e diretores).</li>
+</ol>
 <div class="callout callout-style-default callout-important callout-titled">
 <div class="callout-header d-flex align-content-center">
 <div class="callout-icon-container">
@@ -310,7 +329,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><p>O parser do Pandoc/Quarto interpretava títulos dentro de seções como possíveis divisores de sub-seções ou slides verticais, encapsulando cada card dentro de uma nova tag <code>&lt;section class="card"&gt;</code> filha.</p></li>
 <li><p>O contador nativo do RevealJS contabilizava <strong>todas as tags <code>&lt;section&gt;</code> existentes no DOM</strong>. Um único slide contendo 3 cards consumia 4 índices (1 seção-mãe + 3 seções filhas).</p></li>
 </ol>
-<pre class="mermaid"><code>flowchart TD
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
     subgraph CodigoProblematico["Estrutura Incorreta (Inflação de Seções)"]
         H2A["## Título do Slide"] --&gt; SecMaeA["&amp;lt;section&amp;gt; (Página)"]
         CardA["#### Card 1"] --&gt; SecFilha1["&amp;lt;section class='card'&amp;gt; (+1 no contador)"]
@@ -325,25 +349,42 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
         DivB["&amp;lt;div class='card-title'&amp;gt; Card 2 &amp;lt;/div&amp;gt;"]
         SecMaeB --&gt; DivA
         SecMaeB --&gt; DivB
-    end</code></pre>
+    end
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 </section>
 <section id="a-solução-canônica" class="level3" data-number="6.2.3">
 <h3 data-number="6.2.3" class="anchored" data-anchor-id="a-solução-canônica"><span class="header-section-number">6.2.3</span> A Solução Canônica</h3>
 <p>Substituíram-se todos os cabeçalhos de título interno <code>####</code> por tags semânticas neutras:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb3"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"card-title"</span><span class="dt">&gt;</span>Núcleo Institucional e Base<span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"card-title"</span><span class="dt">&gt;</span>Núcleo Institucional e Base<span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Com essa refatoração, a contagem de tags <code>&lt;section&gt;</code> no HTML reduziu-se de 57 para <strong>exatamente 22</strong>, restabelecendo a numeração sequencial perfeita (1/22, 2/22… 22/22). Compreender o funcionamento interno do compilador e do DOM é a fronteira que separa a tentativa e erro da engenharia sólida.</p>
 </section>
 </section>
 <section id="o-checklist-de-7-etapas-para-o-aluno-desenvolvedor" class="level2" data-number="6.3">
 <h2 data-number="6.3" class="anchored" data-anchor-id="o-checklist-de-7-etapas-para-o-aluno-desenvolvedor"><span class="header-section-number">6.3</span> O Checklist de 7 Etapas para o Aluno-Desenvolvedor</h2>
 <p>Para aplicar o método Design-Driven Development em projetos de graduação, iniciação científica, dissertações de mestrado ou projetos corporativos, siga este roteiro prático:</p>
-<pre class="mermaid"><code>flowchart TD
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
     E1["1. Mapeie o Domínio e a Regulação"] --&gt; E2["2. Documente a Arquitetura em Markdown"]
     E2 --&gt; E3["3. Defina a Matriz de Dependências"]
     E3 --&gt; E4["4. Implemente Guiado pela Arquitetura"]
     E4 --&gt; E5["5. Crie Dados Sintéticos Realistas"]
     E5 --&gt; E6["6. Conduza a Auditoria Reversa (Back-Audit)"]
-    E6 --&gt; E7["7. Isole a Documentação por Público"]</code></pre>
+    E6 --&gt; E7["7. Isole a Documentação por Público"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <ol type="1">
 <li><strong>Etapa 1: Mapeie o Domínio e a Regulação</strong>: Não abra o editor de código. Liste todas as regras de negócio, normas legais, prazos e exceções do mundo real que o software deve satisfazer.</li>
 <li><strong>Etapa 2: Documente a Arquitetura em Markdown</strong>: Desenhe o modelo de entidade-relacionamento, liste campos, restrições e máquinas de estado em documentos textuais versionados no Git.</li>

@@ -6,7 +6,7 @@ O **Design-Driven Development (DDD)** — no escopo desta obra compreendido como
 
 Em contraposição à cultura da experimentação indiscriminada (*vibe coding*), o DDD define o documento arquitetural não como um memorial descritivo passivo pós-fato, mas como o **código-fonte primário da inteligência do sistema**. Quando se trabalha com agentes autônomos de IA (LLMs), a qualidade da especificação formal determina de maneira determinística a qualidade do código gerado.
 
-```mermaid
+```{mermaid}
 flowchart TD
     subgraph FaseConceitual["1. Domínio & Especificação"]
         Regulacao["Mapeamento Normativo<br/>(CAPES, MEC, Regimento)"]
@@ -41,6 +41,7 @@ Durante o desenvolvimento do ecossistema educacional, o Arquiteto Humano e o Age
 
 ### 1. Mapeamento da Base Regulatória Formal
 Antes de estruturar qualquer entidade no banco de dados, o engenheiro realiza a engenharia reversa das leis, portarias e manuais dos órgãos fiscalizadores. No caso brasileiro:
+
 * Portaria CAPES nº 81/2016 (normas de credenciamento docente e teto de vínculos permanentes).
 * Portarias CAPES nº 133/2023 e 158/2023 (acumulação de bolsas e atividade remunerada).
 * Portarias MEC nº 330/2018, 554/2019 e 70/2025 (infraestrutura do Diploma Digital).
@@ -51,6 +52,7 @@ Criação dos memoriais técnicos em arquivos textuais versionados (`.md` / `.qm
 
 ### 3. Análise de Impacto no Ecossistema
 Identificação explícita dos modelos já existentes no framework base (Odoo) ou nos pacotes de terceiros (OpenEduCat). Para cada modelo a ser estendido, o engenheiro responde:
+
 * Quais campos estão sendo injetados?
 * Há risco de sobrescrita de métodos nativos sem chamar `super()`?
 * Quais regras de acesso (`ir.rule`) são necessárias para garantir a segregação de dados?
@@ -82,7 +84,7 @@ Esse padrão é catastrófico no ambiente acadêmico. Um programa pode alterar s
 
 **Solução DDD**: O sistema introduziu a entidade `op.curriculum.version` (Versão Curricular Regimental). Toda e qualquer regra temporal, fator de crédito ou quórum de banca é consultado dinamicamente no objeto regimental associado à matrícula específica do discente.
 
-```mermaid
+```{mermaid}
 flowchart LR
     Discente["Discente<br/>(op.student)"] --> Matricula["Matrícula no Curso<br/>(op.student.course)"]
     Matricula --> VersaoCurricular["Versão Curricular Regimental<br/>(op.curriculum.version)"]
@@ -121,6 +123,7 @@ Entretanto, essa faculdade encontra barreira intransponível na proteção ao **
 O paradigma Design-Driven Development redefine a atuação do desenvolvedor em tempos de Inteligência Artificial: o profissional deixa de ser um mero digitador de sintaxe para assumir a postura de **Arquiteto de Sistemas e Auditor Crítico**.
 
 A governança do agente de IA requer:
+
 1. **Comandos Imperativos e Delimitados**: O engenheiro formula instruções de alta especificidade, delimitando arquivos alvo, modelos a inspecionar e padrões de saída esperados.
 2. **Exigência de Rastreabilidade**: Cada alteração de código deve ser justificada à luz do documento arquitetural. Snippets que não apresentem correspondência na documentação são prontamente rejeitados.
 3. **Análise Forense de Falhas**: Diante de erros em tempo de execução (como violações de chave ou exceções no frontend OWL), o engenheiro não pede *"conserte esse erro"*; ele fornece o traceback completo, diagnostica a camada subjacente e instrui a retificação da causa raiz.

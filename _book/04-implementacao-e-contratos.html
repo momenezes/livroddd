@@ -107,6 +107,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
@@ -418,12 +421,23 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="4.5" class="anchored" data-anchor-id="a-estratégia-de-dados-sintéticos-determinísticos"><span class="header-section-number">4.5</span> A Estratégia de Dados Sintéticos Determinísticos</h2>
 <p>Um dos erros mais comuns em projetos universitários é a validação de software com conjuntos de dados triviais. Quando um desenvolvedor testa um ERP com três alunos fictícios, 95% das falhas de concorrência, junções relacionais e limites regimentais permanecem ocultas.</p>
 <p>Para validar o ecossistema, foi desenvolvido o script <code>scripts/gerador_dados_sinteticos.py</code>, que adota os seguintes princípios:</p>
-<pre class="mermaid"><code>flowchart LR
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
     Seed["Seed Determinístico&lt;br/&gt;(random.seed(42))"] --&gt; Infra["Infraestrutura Acadêmica&lt;br/&gt;(Anos, Termos, Departamentos, Cursos)"]
     Infra --&gt; Pessoas["Corpo Social&lt;br/&gt;(86 Discentes, 24 Docentes, CPG)"]
     Pessoas --&gt; Eventos["Eventos Acadêmicos&lt;br/&gt;(Disciplinas, Créditos, Bancas, PTT)"]
     Eventos --&gt; Validador["Script de Auditoria Forense&lt;br/&gt;(validar_integridade_sintetica.py)"]
-    Validador --&gt;|0 Erros| Carga["Carga via CSV no Odoo"]</code></pre>
+    Validador --&gt;|0 Erros| Carga["Carga via CSV no Odoo"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <ul>
 <li><strong>Determinismo Absoluto</strong>: Uso de semente fixa (<code>random.seed(42)</code>), garantindo que os mesmos cenários de teste sejam reproduzíveis em qualquer máquina ou pipeline de Integração Contínua.</li>
 <li><strong>Cobertura Relacional Completa</strong>: Geração de <strong>33 entidades relacionais interconectadas</strong>, abrangendo desde o cadastro demográfico com CPFs e ORCiDs algorítmicamente válidos até atas de reuniões mensais da Comissão de Pós-Graduação (CPG) com quórum formal.</li>
@@ -434,7 +448,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="4.6" class="anchored" data-anchor-id="matriz-de-permissões-e-segurança-de-linha-record-rules"><span class="header-section-number">4.6</span> Matriz de Permissões e Segurança de Linha (<em>Record Rules</em>)</h2>
 <p>Para viabilizar que secretarias de departamentos distintos operem no mesmo sistema sem vazamento de informações confidenciais, foram combinados dois mecanismos:</p>
 <ol type="1">
-<li><strong>Permissões por Modelo (<code>ir.model.access.csv</code>)</strong>: Estabelece privilégios CRUD (Create, Read, Update, Delete) com base em grupos de acesso formais:
+<li><p><strong>Permissões por Modelo (<code>ir.model.access.csv</code>)</strong>: Estabelece privilégios CRUD (Create, Read, Update, Delete) com base em grupos de acesso formais:</p>
 <ul>
 <li><em>Grupo Discente</em>: Leitura estrita da sua própria vida acadêmica e editais públicos.</li>
 <li><em>Grupo Docente / Avaliador</em>: Acesso aos seus orientandos e às inscrições a ele distribuídas para avaliação cega.</li>
@@ -442,19 +456,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <li><em>Grupo Coordenação de PPG</em>: Homologação de bancas, matrículas e deliberações de CPG.</li>
 <li><em>Grupo Pró-Reitoria (Admin Central)</em>: Visão macroscópica transversal de todos os programas da IES.</li>
 </ul></li>
-<li><strong>Segurança de Linha (<em>Record Rules</em> - <code>ir.rule</code>)</strong>: Aplica cláusulas <code>WHERE</code> automáticas em nível de banco de dados PostgreSQL. Por exemplo, a visualização de discentes é restrita ao programa selecionado:</li>
+<li><p><strong>Segurança de Linha (<em>Record Rules</em> - <code>ir.rule</code>)</strong>: Aplica cláusulas <code>WHERE</code> automáticas em nível de banco de dados PostgreSQL. Por exemplo, a visualização de discentes é restrita ao programa selecionado:</p></li>
 </ol>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb7"><pre class="sourceCode xml code-with-copy"><code class="sourceCode xml"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">record</span> <span class="ot">id=</span><span class="st">"capes_student_program_rule"</span> <span class="ot">model=</span><span class="st">"ir.rule"</span>&gt;</span>
-<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">field</span> <span class="ot">name=</span><span class="st">"name"</span>&gt;Discentes Restritos ao Programa Ativo&lt;/<span class="kw">field</span>&gt;</span>
-<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">field</span> <span class="ot">name=</span><span class="st">"model_id"</span> <span class="ot">ref=</span><span class="st">"openeducat_core.model_op_student"</span>/&gt;</span>
-<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">field</span> <span class="ot">name=</span><span class="st">"domain_force"</span>&gt;</span>
-<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>        ['|', </span>
-<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>            ('user_id', '=', user.id),</span>
-<span id="cb7-7"><a href="#cb7-7" aria-hidden="true" tabindex="-1"></a>            ('current_program_id', '=', user.current_program_id.id)</span>
-<span id="cb7-8"><a href="#cb7-8" aria-hidden="true" tabindex="-1"></a>        ]</span>
-<span id="cb7-9"><a href="#cb7-9" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">field</span>&gt;</span>
-<span id="cb7-10"><a href="#cb7-10" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">field</span> <span class="ot">name=</span><span class="st">"groups"</span> <span class="ot">eval=</span><span class="st">"[(4, ref('openeducat_core.group_op_back_office'))]"</span>/&gt;</span>
-<span id="cb7-11"><a href="#cb7-11" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">record</span>&gt;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb6"><pre class="sourceCode xml code-with-copy"><code class="sourceCode xml"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>&lt;<span class="kw">record</span> <span class="ot">id=</span><span class="st">"capes_student_program_rule"</span> <span class="ot">model=</span><span class="st">"ir.rule"</span>&gt;</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">field</span> <span class="ot">name=</span><span class="st">"name"</span>&gt;Discentes Restritos ao Programa Ativo&lt;/<span class="kw">field</span>&gt;</span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">field</span> <span class="ot">name=</span><span class="st">"model_id"</span> <span class="ot">ref=</span><span class="st">"openeducat_core.model_op_student"</span>/&gt;</span>
+<span id="cb6-4"><a href="#cb6-4" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">field</span> <span class="ot">name=</span><span class="st">"domain_force"</span>&gt;</span>
+<span id="cb6-5"><a href="#cb6-5" aria-hidden="true" tabindex="-1"></a>        ['|', </span>
+<span id="cb6-6"><a href="#cb6-6" aria-hidden="true" tabindex="-1"></a>            ('user_id', '=', user.id),</span>
+<span id="cb6-7"><a href="#cb6-7" aria-hidden="true" tabindex="-1"></a>            ('current_program_id', '=', user.current_program_id.id)</span>
+<span id="cb6-8"><a href="#cb6-8" aria-hidden="true" tabindex="-1"></a>        ]</span>
+<span id="cb6-9"><a href="#cb6-9" aria-hidden="true" tabindex="-1"></a>    &lt;/<span class="kw">field</span>&gt;</span>
+<span id="cb6-10"><a href="#cb6-10" aria-hidden="true" tabindex="-1"></a>    &lt;<span class="kw">field</span> <span class="ot">name=</span><span class="st">"groups"</span> <span class="ot">eval=</span><span class="st">"[(4, ref('openeducat_core.group_op_back_office'))]"</span>/&gt;</span>
+<span id="cb6-11"><a href="#cb6-11" aria-hidden="true" tabindex="-1"></a>&lt;/<span class="kw">record</span>&gt;</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 
 
 </section>

@@ -107,6 +107,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
@@ -249,7 +252,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 data-number="2.1" class="anchored" data-anchor-id="o-manifesto-do-design-driven-development-ddd"><span class="header-section-number">2.1</span> O Manifesto do Design-Driven Development (DDD)</h2>
 <p>O <strong>Design-Driven Development (DDD)</strong> — no escopo desta obra compreendido como a confluência entre a modelagem rica de domínio (<em>Domain-Driven Design</em>) e a arquitetura formal prévia (<em>Documentation-First Architecture</em>) assistida por Inteligência Artificial — estabelece que <strong>nenhum código de produção deve ser redigido antes que o modelo conceitual, os contratos de interface e as regras regulatórias estejam formalmente documentados e validados</strong>.</p>
 <p>Em contraposição à cultura da experimentação indiscriminada (<em>vibe coding</em>), o DDD define o documento arquitetural não como um memorial descritivo passivo pós-fato, mas como o <strong>código-fonte primário da inteligência do sistema</strong>. Quando se trabalha com agentes autônomos de IA (LLMs), a qualidade da especificação formal determina de maneira determinística a qualidade do código gerado.</p>
-<pre class="mermaid"><code>flowchart TD
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
     subgraph FaseConceitual["1. Domínio &amp; Especificação"]
         Regulacao["Mapeamento Normativo&lt;br/&gt;(CAPES, MEC, Regimento)"]
         DocOuro["Documentação Arquitetural Ouro&lt;br/&gt;(Modelos, Diagramas, Contratos)"]
@@ -274,14 +282,26 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     CargaSintetica --&gt; BackAudit
     BackAudit --&gt;|Inconsistência| DocOuro
     BackAudit --&gt;|Aprovado| Commit
-    Commit --&gt; SincExecutiva</code></pre>
+    Commit --&gt; SincExecutiva
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 </section>
 <section id="os-seis-passos-de-ouro-do-ciclo-ddd" class="level2" data-number="2.2">
 <h2 data-number="2.2" class="anchored" data-anchor-id="os-seis-passos-de-ouro-do-ciclo-ddd"><span class="header-section-number">2.2</span> Os Seis Passos de Ouro do Ciclo DDD</h2>
 <p>Durante o desenvolvimento do ecossistema educacional, o Arquiteto Humano e o Agente de IA operaram sob um protocolo rigoroso de seis fases sequenciais:</p>
 <section id="mapeamento-da-base-regulatória-formal" class="level3" data-number="2.2.1">
 <h3 data-number="2.2.1" class="anchored" data-anchor-id="mapeamento-da-base-regulatória-formal"><span class="header-section-number">2.2.1</span> 1. Mapeamento da Base Regulatória Formal</h3>
-<p>Antes de estruturar qualquer entidade no banco de dados, o engenheiro realiza a engenharia reversa das leis, portarias e manuais dos órgãos fiscalizadores. No caso brasileiro: * Portaria CAPES nº 81/2016 (normas de credenciamento docente e teto de vínculos permanentes). * Portarias CAPES nº 133/2023 e 158/2023 (acumulação de bolsas e atividade remunerada). * Portarias MEC nº 330/2018, 554/2019 e 70/2025 (infraestrutura do Diploma Digital). * Dicionários de Dados da Plataforma Sucupira e Coleta DAV.</p>
+<p>Antes de estruturar qualquer entidade no banco de dados, o engenheiro realiza a engenharia reversa das leis, portarias e manuais dos órgãos fiscalizadores. No caso brasileiro:</p>
+<ul>
+<li>Portaria CAPES nº 81/2016 (normas de credenciamento docente e teto de vínculos permanentes).</li>
+<li>Portarias CAPES nº 133/2023 e 158/2023 (acumulação de bolsas e atividade remunerada).</li>
+<li>Portarias MEC nº 330/2018, 554/2019 e 70/2025 (infraestrutura do Diploma Digital).</li>
+<li>Dicionários de Dados da Plataforma Sucupira e Coleta DAV.</li>
+</ul>
 </section>
 <section id="redação-da-documentação-arquitetural-ouro" class="level3" data-number="2.2.2">
 <h3 data-number="2.2.2" class="anchored" data-anchor-id="redação-da-documentação-arquitetural-ouro"><span class="header-section-number">2.2.2</span> 2. Redação da Documentação Arquitetural Ouro</h3>
@@ -289,7 +309,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </section>
 <section id="análise-de-impacto-no-ecossistema" class="level3" data-number="2.2.3">
 <h3 data-number="2.2.3" class="anchored" data-anchor-id="análise-de-impacto-no-ecossistema"><span class="header-section-number">2.2.3</span> 3. Análise de Impacto no Ecossistema</h3>
-<p>Identificação explícita dos modelos já existentes no framework base (Odoo) ou nos pacotes de terceiros (OpenEduCat). Para cada modelo a ser estendido, o engenheiro responde: * Quais campos estão sendo injetados? * Há risco de sobrescrita de métodos nativos sem chamar <code>super()</code>? * Quais regras de acesso (<code>ir.rule</code>) são necessárias para garantir a segregação de dados?</p>
+<p>Identificação explícita dos modelos já existentes no framework base (Odoo) ou nos pacotes de terceiros (OpenEduCat). Para cada modelo a ser estendido, o engenheiro responde:</p>
+<ul>
+<li>Quais campos estão sendo injetados?</li>
+<li>Há risco de sobrescrita de métodos nativos sem chamar <code>super()</code>?</li>
+<li>Quais regras de acesso (<code>ir.rule</code>) são necessárias para garantir a segregação de dados?</li>
+</ul>
 </section>
 <section id="implementação-estrita-no-orm-e-views" class="level3" data-number="2.2.4">
 <h3 data-number="2.2.4" class="anchored" data-anchor-id="implementação-estrita-no-orm-e-views"><span class="header-section-number">2.2.4</span> 4. Implementação Estrita no ORM e Views</h3>
@@ -310,17 +335,28 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="axioma-1-proibição-absoluta-de-hardcode-regimental" class="level3" data-number="2.3.1">
 <h3 data-number="2.3.1" class="anchored" data-anchor-id="axioma-1-proibição-absoluta-de-hardcode-regimental"><span class="header-section-number">2.3.1</span> Axioma 1: Proibição Absoluta de Hardcode Regimental</h3>
 <p>Em sistemas convencionais, é frequente encontrar lógicas condicionais estáticas em Python, tais como:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MÁ PRÁTICA: HARDCODE REGIMENTAL</span></span>
-<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> student.course_type <span class="op">==</span> <span class="st">'master'</span> <span class="kw">and</span> student.months_enrolled <span class="op">&gt;</span> <span class="dv">24</span>:</span>
-<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> ValidationError(<span class="st">"Prazo de mestrado estourado!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
+<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="co"># MÁ PRÁTICA: HARDCODE REGIMENTAL</span></span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="cf">if</span> student.course_type <span class="op">==</span> <span class="st">'master'</span> <span class="kw">and</span> student.months_enrolled <span class="op">&gt;</span> <span class="dv">24</span>:</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>    <span class="cf">raise</span> ValidationError(<span class="st">"Prazo de mestrado estourado!"</span>)</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
 <p>Esse padrão é catastrófico no ambiente acadêmico. Um programa pode alterar seu prazo de mestrado de 24 para 30 meses em uma reunião de Congregação; discentes de turmas distintas ingressam sob regimentos diferentes; prazos de trancamento variam por área de conhecimento.</p>
 <p><strong>Solução DDD</strong>: O sistema introduziu a entidade <code>op.curriculum.version</code> (Versão Curricular Regimental). Toda e qualquer regra temporal, fator de crédito ou quórum de banca é consultado dinamicamente no objeto regimental associado à matrícula específica do discente.</p>
-<pre class="mermaid"><code>flowchart LR
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart LR
     Discente["Discente&lt;br/&gt;(op.student)"] --&gt; Matricula["Matrícula no Curso&lt;br/&gt;(op.student.course)"]
     Matricula --&gt; VersaoCurricular["Versão Curricular Regimental&lt;br/&gt;(op.curriculum.version)"]
     VersaoCurricular --&gt; RegrasPrazos["Prazos Regulares e Prorrogações"]
     VersaoCurricular --&gt; RegrasCreditos["Pesos e Mínimos de Disciplinas/PTT"]
-    VersaoCurricular --&gt; RegrasBancas["Quórum Mínimo e Titulação Exigida"]</code></pre>
+    VersaoCurricular --&gt; RegrasBancas["Quórum Mínimo e Titulação Exigida"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 </section>
 <section id="axioma-2-imutabilidade-e-append-only-em-livros-razão" class="level3" data-number="2.3.2">
 <h3 data-number="2.3.2" class="anchored" data-anchor-id="axioma-2-imutabilidade-e-append-only-em-livros-razão"><span class="header-section-number">2.3.2</span> Axioma 2: Imutabilidade e Append-Only em Livros-Razão</h3>
@@ -381,7 +417,12 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <section id="o-papel-do-arquiteto-humano-na-governança-da-ia" class="level2" data-number="2.4">
 <h2 data-number="2.4" class="anchored" data-anchor-id="o-papel-do-arquiteto-humano-na-governança-da-ia"><span class="header-section-number">2.4</span> O Papel do Arquiteto Humano na Governança da IA</h2>
 <p>O paradigma Design-Driven Development redefine a atuação do desenvolvedor em tempos de Inteligência Artificial: o profissional deixa de ser um mero digitador de sintaxe para assumir a postura de <strong>Arquiteto de Sistemas e Auditor Crítico</strong>.</p>
-<p>A governança do agente de IA requer: 1. <strong>Comandos Imperativos e Delimitados</strong>: O engenheiro formula instruções de alta especificidade, delimitando arquivos alvo, modelos a inspecionar e padrões de saída esperados. 2. <strong>Exigência de Rastreabilidade</strong>: Cada alteração de código deve ser justificada à luz do documento arquitetural. Snippets que não apresentem correspondência na documentação são prontamente rejeitados. 3. <strong>Análise Forense de Falhas</strong>: Diante de erros em tempo de execução (como violações de chave ou exceções no frontend OWL), o engenheiro não pede <em>“conserte esse erro”</em>; ele fornece o traceback completo, diagnostica a camada subjacente e instrui a retificação da causa raiz.</p>
+<p>A governança do agente de IA requer:</p>
+<ol type="1">
+<li><strong>Comandos Imperativos e Delimitados</strong>: O engenheiro formula instruções de alta especificidade, delimitando arquivos alvo, modelos a inspecionar e padrões de saída esperados.</li>
+<li><strong>Exigência de Rastreabilidade</strong>: Cada alteração de código deve ser justificada à luz do documento arquitetural. Snippets que não apresentem correspondência na documentação são prontamente rejeitados.</li>
+<li><strong>Análise Forense de Falhas</strong>: Diante de erros em tempo de execução (como violações de chave ou exceções no frontend OWL), o engenheiro não pede <em>“conserte esse erro”</em>; ele fornece o traceback completo, diagnostica a camada subjacente e instrui a retificação da causa raiz.</li>
+</ol>
 
 
 </section>

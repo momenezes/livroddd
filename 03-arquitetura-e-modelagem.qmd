@@ -4,7 +4,7 @@
 
 O ecossistema `l10n_br_openeducat_capes` foi estruturado sob o padrão arquitetural de **monorepo modular**. Em vez de concentrar centenas de tabelas em um único pacote monolítico ou pulverizar o código em repositórios desconexos, o sistema divide-se em **nove submódulos especializados**, garantindo alto desacoplamento e isolamento de responsabilidades.
 
-```mermaid
+```{mermaid}
 flowchart TD
     Core["l10n_br_openeducat_capes_core<br/>(PIDs, Censo IBGE, Governança Multiprograma)"]
     Academic["l10n_br_openeducat_capes_academic<br/>(Versões Regimentais, Livro-Razão)"]
@@ -70,7 +70,7 @@ Adotou-se a **Opção B**. O isolamento lógico por Record Rules preserva a coes
 
 Para evitar a redundância de tabelas e assegurar a compatibilidade com a suíte padrão, o ecossistema estendeu 11 modelos canônicos via herança do ORM (`_inherit`):
 
-```mermaid
+```{mermaid}
 classDiagram
     class op_student {
         +Char ra_number
@@ -168,7 +168,7 @@ Cada eixo é avaliado em uma escala de 0 a 100 pontos por pareceristas designado
 
 Em conformidade com as Portarias MEC 330/2018, 554/2019 e a novel Portaria 70/2025, o submódulo `l10n_br_openeducat_capes_diploma` foi concebido para atender a duas realidades jurídicas distintas:
 
-```mermaid
+```{mermaid}
 flowchart TD
     Inicio["Aprovação na Defesa e Integralização de Créditos"] --> Dossiê["Montagem do Dossiê Acadêmico"]
     Dossiê --> DecisaoTipoIES{"Tipo de Instituição (IES)?"}
@@ -191,6 +191,7 @@ Além disso, o modelo preserva compatibilidade com o formato de **emissão físi
 O submódulo `l10n_br_openeducat_capes_scholarship` respondeu a uma necessidade premente das secretarias de pós-graduação: a gestão de cotas concedidas por agências financiadoras (CAPES PROEX/PROAP, CNPq, FAPESP) sem assumir a execução bancária (que é realizada diretamente pela agência ao bolsista).
 
 O modelo assegura:
+
 * **Editais com Rubricas**: Definição de notas mínimas, pesos e critérios de desempate.
 * **Avaliação Cega Concorrente**: Distribuição de inscrições a múltiplos docentes avaliadores em paralelo, com segregação total das notas entre si até a homologação da comissão.
 * **Termo de Compromisso e Acúmulos**: Validação automática dos requisitos das Portarias CAPES 81/2016, 133/2023 e 158/2023, permitindo o acúmulo de bolsa com atividade remunerada ou vínculo empregatício somente quando houver anuência do orientador e compatibilidade de carga horária demonstrada em sistema.

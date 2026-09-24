@@ -7,7 +7,7 @@ A construção do ecossistema `l10n_br_openeducat_capes` não ocorreu em uma ún
 1. **A Era da Exploração Conceitual no Gemini (Web Chat)**: Caracterizada pelo pensamento divergente, levantamento exaustivo de portarias ministeriais, análise de viabilidade de software livre e redação dos primeiros memoriais arquiteturais teóricos.
 2. **A Era da Engenharia de Produção no Antigravity (Agentic IDE)**: Caracterizada pela materialização do código no ORM Odoo, manipulação direta de sistema de arquivos, orquestração de containers Docker, depuração fullstack (Python, PostgreSQL, OWL, QWeb, RevealJS), auditoria reversa (*back-audit*) e governança GitOps dual-remote.
 
-```mermaid
+```{mermaid}
 timeline
     title Cronologia Evolutiva do Projeto l10n_br_openeducat_capes
     section Fase 1: Exploração (Gemini)
@@ -38,6 +38,7 @@ O projeto iniciou-se no ambiente de chat conversacional do Google Gemini. Nessa 
 A primeira provocação feita à IA partiu de um cenário institucional concreto: o **Mestrado Profissional em Tecnologia das Radiações em Ciências da Saúde (MPTRCS)**, sediado no **IPEN-CNEN/SP**. O pesquisador questionou a viabilidade de adotar o *OpenEduCat* — um ERP educacional de código aberto baseado no framework empresarial *Odoo* — sobre a infraestrutura de servidores de alta performance do instituto (processadores AMD Epyc/Threadripper, ZFS e arranjos RAID).
 
 A análise inicial estabeleceu as premissas tecnológicas fundamentais:
+
 * Adoção de arquitetura conteinerizada em **Docker**.
 * Roteamento e certificação SSL automatizada via proxy reverso **Traefik**.
 * Banco de dados relacional **PostgreSQL** com suporte a consultas e relatórios estatísticos em R (Tidyverse) e Quarto.
@@ -46,6 +47,7 @@ A análise inicial estabeleceu as premissas tecnológicas fundamentais:
 ### 2. O Mapeamento dos Módulos Nativos
 
 Em seguida, a documentação oficial do OpenEduCat foi submetida a uma triagem funcional detalhada:
+
 * **Módulo Thesis**: Identificado como o componente mais promissor, cobrindo o ciclo de registro de projetos de dissertação, relatórios de progresso periódicos, pedidos de extensão de prazo e entrega de versão final.
 * **Módulos Student Mentor & Student Progression**: Estruturação formal da relação orientador-orientando e parametrização dos marcos regimentais obrigatórios (créditos, proficiência em línguas, qualificação e defesa).
 * **Módulos DMS & E-Sign**: Gestão eletrônica de documentos e fluxo de assinatura digital para atas de deliberação e reuniões de bancas examinadoras.
@@ -60,16 +62,19 @@ Dois estudos de pesquisa aprofundada (*Deep Research*) foram conduzidos:
 
 #### Deep Research 1: O Impacto de Múltiplos Regimentos Acadêmicos
 O estudo investigou a jurisprudência dos tribunais superiores e as normas de câmaras de pós-graduação sobre a transição de regulamentos. Consolidou-se a premissa de que **não existe direito adquirido a regime acadêmico**: a instituição detém autonomia (Art. 207 da CF/88) para alterar prazos e regras a qualquer momento. Contudo, essa autonomia encontra limite estrito no **Ato Jurídico Perfeito** (Art. 5º, XXXVI da CF/88), impedindo a anulação de créditos já homologados.
+
 * *Solução Conceitual Derivada*: Criação do versionamento curricular dinâmico (`op.curriculum.version`) e do livro-razão imutável de créditos (`op.student.credit.ledger`).
 
 #### Deep Research 2: A Modelagem da Produção Técnica e Tecnológica (PTT)
 Nos mestrados profissionais, a produção acadêmica convencional (artigos científicos) é complementada pela PTT (patentes, softwares, relatórios técnicos, normas e protocolos). Mapeou-se a metodologia oficial da Diretoria de Avaliação da CAPES (DAV):
+
 * Matriz de 4 eixos ponderados: Aderência (25%), Impacto (30%), Inovação (25%) e Complexidade (20%).
 * Escala de 0 a 100 pontos e estratificação nos níveis T1 a T5 e TNC.
 
 ### 4. Os Limites da Fase Conversacional
 
 Apesar da riqueza teórica, o Gemini apresentava a barreira clássica das interfaces puramente baseadas em chat:
+
 * **Falta de Persistência e Acesso a Arquivos**: Os snippets de código Python ficavam restritos a caixas de texto no navegador, sem validação em compiladores reais.
 * **Impossibilidade de Execução Transacional**: Não era possível testar se uma constraint do Odoo funcionava no PostgreSQL ou se uma view XML possuía erros de sintaxe.
 * **Risco de Ilusão de Conclusão**: Documentos conceituais extensos criavam a impressão de que o sistema estava pronto, quando na realidade nenhuma linha de código real havia sido executada em containers de produção.
@@ -84,7 +89,7 @@ A migração para o **Google Antigravity (AGY)** transformou radicalmente a din�
 
 No Antigravity, o Arquiteto Humano assumiu o papel de gestor e auditor sênior, enquanto o agente executava scripts, manipulava arquivos de código, disparava comandos do Git e compilava documentos técnicos em tempo real.
 
-```mermaid
+```{mermaid}
 flowchart LR
     subgraph Gemini["Era Gemini (Concepção Teórica)"]
         Chat["Web Chat Conversacional"]
@@ -117,23 +122,28 @@ flowchart LR
 A atuação no Antigravity desdobrou-se em nove marcos cronológicos fundamentais:
 
 ### Milestone 1: Dual-Remote Git e a Precisão do Diploma MPTRCS (11/09/2026)
+
 * **Desafio**: A documentação continha uma imprecisão jurídica sobre o programa piloto, afirmando que a titulação era em parceria com a USP. Na realidade, o MPTRCS é exclusivo do IPEN, mas o IPEN — por não ser universidade plena, e sim instituto de pesquisa — precisa tramitar seus diplomas para registro na Universidade de São Paulo (USP).
 * **Solução**: Refatoração do módulo `l10n_br_openeducat_capes_diploma` para suportar duas esteiras jurídicas: registro direto para universidades plenas e tramitação externa com protocolo para institutos de pesquisa. Introdução do campo `issuance_format` (suporte híbrido para pergaminho físico tradicional e XML digital MEC).
 * **GitOps**: Configuração do repositório local com dois remotes simultâneos: `origin` (GitLab corporativo interno) e `github` (repositório institucional aberto).
 
 ### Milestone 2: O Dilema da Universidade Multiprograma (17/09/2026)
+
 * **Desafio**: O modelo precisava atender não apenas a um instituto isolado, mas a universidades com dezenas de programas de pós-graduação compartilhando professores e disciplinas.
 * **Decisão Arquitetural (ADR)**: Confrontou-se a Opção A (Multicompany nativo do Odoo, tratando cada programa como uma empresa) com a Opção B (Multiprograma Lógico governado pela entidade `op.program.capes` e regras de registro *Record Rules*).
 * **Resultado**: Adoção unânime da Opção B, evitando o overhead de cadastros duplicados e preservando a integridade das Pró-Reitorias.
 
 ### Milestone 3: A Crise dos Dados Faltantes e os Dados Sintéticos (17/09/2026)
+
 * **Desafio**: Ao subir o container Docker com a carga de dados do MPTRCS, as telas do OpenEduCat pareciam desarticuladas e vazias. Faltavam anos acadêmicos, termos, turmas (`op.batch`), nomes do meio de pessoas e conexões de visão 360°.
 * **Solução**: Desenvolvimento do script `scripts/gerador_dados_sinteticos.py` (mais de 700 linhas, semente determinística `seed(42)` e geração de **33 entidades relacionais interconectadas**).
 * **Garantia Forense**: Criação de `scripts/validar_integridade_sintetica.py`, inspecionando chaves estrangeiras, CPFs (Módulo 11) e ORCiDs antes da importação, atingindo índice zero de falhas no banco PostgreSQL.
 
 ### Milestone 4: Expansão Regulatória — O Módulo de Bolsas e os 6 Passos de DDD (18/09/2026)
+
 * **Desafio**: O sistema cobria admissão discente, mas não a gestão de cotas de bolsas das agências de fomento (CAPES PROEX/PROAP, CNPq, FAPs).
 * **Aplicação Rigorosa do DDD**: O usuário impôs o protocolo em 6 etapas:
+
   1. *Arquitetura Técnica Primeiro*: Redação completa do documento do novo submódulo `scholarship`.
   2. *Análise de Impacto*: Mapeamento de dependências (`core`, `academic`, `admission`, `mail`) sem ciclos.
   3. *Implementação Estrita*: Classes Python no ORM (`scholarship.quota`, `scholarship.edital`, `scholarship.application`, `scholarship.evaluation`).
@@ -142,35 +152,44 @@ A atuação no Antigravity desdobrou-se em nove marcos cronológicos fundamentai
   6. *Auditoria Reversa*: Validação cruzada entre código e especificações.
 
 ### Milestone 5: Frontend Reativo OWL no Systray e Sessão HTTP (18/09/2026)
+
 * **Desafio**: Secretárias e coordenadores autorizados em múltiplos programas precisavam alternar de contexto sem sair do ERP.
 * **Solução Fullstack**:
+
   * Injeção do programa ativo no payload `session_info` em `ir.http`.
   * Criação do componente visual de barra superior (*Systray*) em OWL (`program_menu.js` e `program_menu.xml`).
   * Depuração do erro de segurança (*Access Error*) em Record Rules que impedia a leitura dos metadados antes da comutação.
   * Correção do relatório QWeb de histórico escolar (`student_transcript_report.xml`).
 
 ### Milestone 6: Governança Docente e a Trava da Portaria 81/2016 (18/09/2026)
+
 * **Desafio**: A Portaria CAPES nº 81/2016 estipula que um docente só pode atuar como membro Permanente em no máximo 3 programas *stricto sensu* no país.
 * **Solução**: Criação do campo computado `programs_summary` e da constraint `@api.constrains` no modelo `op.faculty`.
 * **Depuração OWL**: Resolução do bug de renderização no frontend reativo (*OwlError: "op.faculty"."programs_summary" field is undefined*), provocado pelo descasamento entre o cache de views e o banco de dados.
 
 ### Milestone 7: Design Editorial e os Três Registros de Comunicação (18/09/2026)
+
 * **Desafio**: A documentação executiva continha códigos Python inacessíveis para reitores, e os manuais do usuário apresentavam problemas tipográficos e listas truncadas.
 * **Ações**:
+
   * Unificação de quatro manuais legados em um compêndio estruturado com tipografia limpa (`custom_manual.css`) e correção de mais de 270 itens de lista.
   * Purga de código-fonte na documentação executiva.
   * Criação da apresentação executiva RevealJS no tema claro institucional com logo do CINAS.
   * Commit histórico `eeedd99` sincronizando mais de 130 arquivos em ambos os remotes.
 
 ### Milestone 8: Auditoria Pente-Fino Reversa e o Debug do RevealJS (24/09/2026)
+
 * **Desafio**: Garantir que todos os 23 documentos técnicos de arquitetura em `docs/` refletissem matematicamente o código em produção.
 * **Ações**:
+
   * Varredura reversa de todas as classes Python e detecção de um bug real de importação no controller de rotas REST do DAV (`controllers/__init__.py`).
   * Inserção padronizada da seção *Dependências e Impactos nos Módulos Nativos* em todos os documentos.
   * **Debug Forense dos Slides**: Descoberta da causa raiz que inflava a contagem de seções no RevealJS (títulos `####` dentro de cards HTML gerando tags `<section>` filhas aninhadas no Pandoc) e sua substituição por tags semânticas neutras `<div class="card-title">`, restabelecendo a numeração sequencial exata.
 
 ### Milestone 9: Compilação do Quarto Book e Publicação Contínua (24/09/2026)
+
 * **Ações**:
+
   * Execução da skill `chat-to-quarto-book` sintetizando todo o histórico no Quarto Book [`livro-ddd`](file:///home/mario/progs/workspace_educat/tmp/livro-ddd).
   * Criação do branch `gh-pages` e automação de CI/CD nativo no GitHub Actions ([`.github/workflows/publish.yml`](file:///home/mario/progs/workspace_educat/tmp/livro-ddd/.github/workflows/publish.yml)), publicando o livro online em `https://momenezes.github.io/livroddd/`.
   * Criação da edição *all-in-one* independente [`livro-completo.html`](file:///home/mario/progs/workspace_educat/tmp/livro-ddd/livro-completo.html) (`embed-resources: true`) para visualização segura em celulares sem bloqueios de CORS.

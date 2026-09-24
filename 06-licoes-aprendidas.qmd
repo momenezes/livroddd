@@ -9,6 +9,7 @@ Se um engenheiro solicitar a um LLM comercial *"programe um módulo de bolsas de
 
 ### Lição 2: Como Comandar Agentes de IA com Postura Sênior
 Em sistemas complexos, o desenvolvedor não pode se portar como um espectador passivo do chat. Quando ocorrem falhas, frases genéricas como *"não funcionou, tente de novo"* induzem a IA a alucinações repetitivas. O Arquiteto Humano deve:
+
 * Fornecer o traceback exato do erro (`AttributeError: 'op.student' object has no attribute 'code'`).
 * Delimitar o perímetro da intervenção (*"remova os trechos de código Python da documentação executiva mantendo o restante intacto"*).
 * Impor mandatos metodológicos estritos (*"primeiro atualize o documento de arquitetura; só então implemente o código"*).
@@ -24,6 +25,7 @@ Testar softwares com registros genéricos (*"Aluno 1"*, *"Aluno 2"*) é uma ilus
 
 ### Lição 6: Anatomia da Depuração Fullstack (Do ORM ao OWL e ao QWeb)
 Nenhum sistema corporativo falha em uma camada isolada. Durante a trajetória do projeto, a equipe superou defeitos em quatro níveis distintos:
+
 1. *Backend Python*: Ajustes no `controllers/__init__.py` para importação correta de rotas REST.
 2. *ORM e Cache*: Sincronização de campos computados (`programs_summary`) no banco antes da chamada pelas views.
 3. *Frontend OWL*: Resolução de exceções de ciclo de vida reativo e atualização de permissões de leitura no Systray.
@@ -31,6 +33,7 @@ Nenhum sistema corporativo falha em uma camada isolada. Durante a trajetória do
 
 ### Lição 7: Os Três Registros de Comunicação de um Projeto de TI
 Um projeto de engenharia sério precisa dialogar em três registros semânticos distintos:
+
 1. **Linguagem Arquitetural (Docs Técnicos)**: Precisa, formal, exaustiva, com modelos relacionais e contratos (voltada a desenvolvedores e auditores).
 2. **Linguagem Operacional (Manual do Usuário)**: Passo a passo, amigável, orientada a tarefas cotidianas (voltada a secretarias e coordenadores).
 3. **Linguagem Estratégica (Documentação Executiva e Pitch)**: Focada em conformidade normativa, mitigação de riscos institucionais e soberania tecnológica (voltada a reitores e diretores).
@@ -61,7 +64,7 @@ Um desenvolvedor ingênuo tentaria forçar o contador via JavaScript ou renomear
 3. O parser do Pandoc/Quarto interpretava títulos dentro de seções como possíveis divisores de sub-seções ou slides verticais, encapsulando cada card dentro de uma nova tag `<section class="card">` filha.
 4. O contador nativo do RevealJS contabilizava **todas as tags `<section>` existentes no DOM**. Um único slide contendo 3 cards consumia 4 índices (1 seção-mãe + 3 seções filhas).
 
-```mermaid
+```{mermaid}
 flowchart TD
     subgraph CodigoProblematico["Estrutura Incorreta (Inflação de Seções)"]
         H2A["## Título do Slide"] --> SecMaeA["&lt;section&gt; (Página)"]
@@ -93,7 +96,7 @@ Com essa refatoração, a contagem de tags `<section>` no HTML reduziu-se de 57 
 
 Para aplicar o método Design-Driven Development em projetos de graduação, iniciação científica, dissertações de mestrado ou projetos corporativos, siga este roteiro prático:
 
-```mermaid
+```{mermaid}
 flowchart TD
     E1["1. Mapeie o Domínio e a Regulação"] --> E2["2. Documente a Arquitetura em Markdown"]
     E2 --> E3["3. Defina a Matriz de Dependências"]

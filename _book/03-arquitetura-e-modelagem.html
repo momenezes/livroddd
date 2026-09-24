@@ -72,6 +72,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
   <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
   <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
@@ -240,7 +243,12 @@ window.Quarto = {
 <section id="a-topologia-do-monorepo-e-os-9-submódulos" class="level2" data-number="3.1">
 <h2 data-number="3.1" class="anchored" data-anchor-id="a-topologia-do-monorepo-e-os-9-submódulos"><span class="header-section-number">3.1</span> A Topologia do Monorepo e os 9 Submódulos</h2>
 <p>O ecossistema <code>l10n_br_openeducat_capes</code> foi estruturado sob o padrão arquitetural de <strong>monorepo modular</strong>. Em vez de concentrar centenas de tabelas em um único pacote monolítico ou pulverizar o código em repositórios desconexos, o sistema divide-se em <strong>nove submódulos especializados</strong>, garantindo alto desacoplamento e isolamento de responsabilidades.</p>
-<pre class="mermaid"><code>flowchart TD
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
     Core["l10n_br_openeducat_capes_core&lt;br/&gt;(PIDs, Censo IBGE, Governança Multiprograma)"]
     Academic["l10n_br_openeducat_capes_academic&lt;br/&gt;(Versões Regimentais, Livro-Razão)"]
     Admission["l10n_br_openeducat_capes_admission&lt;br/&gt;(Editais, Cotas, Heteroidentificação)"]
@@ -265,7 +273,13 @@ window.Quarto = {
     Core --&gt; Diploma
     Admission --&gt; Scholarship
     Academic --&gt; Scholarship
-    PTT --&gt; Integration</code></pre>
+    PTT --&gt; Integration
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <section id="matriz-de-responsabilidades-dos-submódulos" class="level3" data-number="3.1.1">
 <h3 data-number="3.1.1" class="anchored" data-anchor-id="matriz-de-responsabilidades-dos-submódulos"><span class="header-section-number">3.1.1</span> Matriz de Responsabilidades dos Submódulos</h3>
 <table class="caption-top table">
@@ -367,7 +381,12 @@ window.Quarto = {
 <section id="os-11-modelos-nativos-do-odoo-e-openeducat-estendidos" class="level2" data-number="3.3">
 <h2 data-number="3.3" class="anchored" data-anchor-id="os-11-modelos-nativos-do-odoo-e-openeducat-estendidos"><span class="header-section-number">3.3</span> Os 11 Modelos Nativos do Odoo e OpenEduCat Estendidos</h2>
 <p>Para evitar a redundância de tabelas e assegurar a compatibilidade com a suíte padrão, o ecossistema estendeu 11 modelos canônicos via herança do ORM (<code>_inherit</code>):</p>
-<pre class="mermaid"><code>classDiagram
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">classDiagram
     class op_student {
         +Char ra_number
         +Char cpf
@@ -428,7 +447,13 @@ window.Quarto = {
     class mail_thread {
         +message_post()
         +activity_schedule()
-    }</code></pre>
+    }
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <ol type="1">
 <li><strong><code>op.student</code></strong>: Enriquecido com RA institucional permanente, chave estrangeira para o programa ativo, orientador principal, status perante a CAPES e livro-razão de créditos com botões de visão 360°.</li>
 <li><strong><code>op.faculty</code></strong>: Adicionados PIDs, regime de trabalho (20h, 40h, Dedicação Exclusiva), titulação máxima, vínculos interinstitucionais (<code>op.faculty.program.link</code>) e o resumo computado <code>programs_summary</code> com trava da Portaria CAPES 81/2016.</li>
@@ -462,7 +487,12 @@ window.Quarto = {
 <section id="a-esteira-dual-de-diplomação-digital-mec" class="level3" data-number="3.4.2">
 <h3 data-number="3.4.2" class="anchored" data-anchor-id="a-esteira-dual-de-diplomação-digital-mec"><span class="header-section-number">3.4.2</span> 2. A Esteira Dual de Diplomação Digital MEC</h3>
 <p>Em conformidade com as Portarias MEC 330/2018, 554/2019 e a novel Portaria 70/2025, o submódulo <code>l10n_br_openeducat_capes_diploma</code> foi concebido para atender a duas realidades jurídicas distintas:</p>
-<pre class="mermaid"><code>flowchart TD
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
     Inicio["Aprovação na Defesa e Integralização de Créditos"] --&gt; Dossiê["Montagem do Dossiê Acadêmico"]
     Dossiê --&gt; DecisaoTipoIES{"Tipo de Instituição (IES)?"}
     
@@ -474,13 +504,24 @@ window.Quarto = {
     ProtocoloExterno --&gt; AssinaturaXAdES
     
     AssinaturaXAdES --&gt; PDFVisual["Geração da Representação Visual em PDF com QR-Code de Validação e Histórico Oficial"]
-    PDFVisual --&gt; Arquivamento["Arquivamento Permanente e Auditoria"]</code></pre>
+    PDFVisual --&gt; Arquivamento["Arquivamento Permanente e Auditoria"]
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 <p>Além disso, o modelo preserva compatibilidade com o formato de <strong>emissão física tradicional (pergaminho/papel)</strong> através do campo <code>issuance_format</code>, haja vista que o MEC ainda conclui a normatização total do diploma digital para todos os ramos da pós-graduação <em>stricto sensu</em>.</p>
 </section>
 <section id="governança-de-bolsas-de-fomento-e-acúmulos" class="level3" data-number="3.4.3">
 <h3 data-number="3.4.3" class="anchored" data-anchor-id="governança-de-bolsas-de-fomento-e-acúmulos"><span class="header-section-number">3.4.3</span> 3. Governança de Bolsas de Fomento e Acúmulos</h3>
 <p>O submódulo <code>l10n_br_openeducat_capes_scholarship</code> respondeu a uma necessidade premente das secretarias de pós-graduação: a gestão de cotas concedidas por agências financiadoras (CAPES PROEX/PROAP, CNPq, FAPESP) sem assumir a execução bancária (que é realizada diretamente pela agência ao bolsista).</p>
-<p>O modelo assegura: * <strong>Editais com Rubricas</strong>: Definição de notas mínimas, pesos e critérios de desempate. * <strong>Avaliação Cega Concorrente</strong>: Distribuição de inscrições a múltiplos docentes avaliadores em paralelo, com segregação total das notas entre si até a homologação da comissão. * <strong>Termo de Compromisso e Acúmulos</strong>: Validação automática dos requisitos das Portarias CAPES 81/2016, 133/2023 e 158/2023, permitindo o acúmulo de bolsa com atividade remunerada ou vínculo empregatício somente quando houver anuência do orientador e compatibilidade de carga horária demonstrada em sistema.</p>
+<p>O modelo assegura:</p>
+<ul>
+<li><strong>Editais com Rubricas</strong>: Definição de notas mínimas, pesos e critérios de desempate.</li>
+<li><strong>Avaliação Cega Concorrente</strong>: Distribuição de inscrições a múltiplos docentes avaliadores em paralelo, com segregação total das notas entre si até a homologação da comissão.</li>
+<li><strong>Termo de Compromisso e Acúmulos</strong>: Validação automática dos requisitos das Portarias CAPES 81/2016, 133/2023 e 158/2023, permitindo o acúmulo de bolsa com atividade remunerada ou vínculo empregatício somente quando houver anuência do orientador e compatibilidade de carga horária demonstrada em sistema.</li>
+</ul>
 
 
 </section>

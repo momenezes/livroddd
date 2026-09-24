@@ -33,6 +33,7 @@ jobs:
           quarto render presentation/workshop-15min.qmd
           cp presentation/workshop-15min.html _book/workshop-15min.html || true
           cp livro-completo.html _book/livro-completo.html || true
+          touch _book/.nojekyll
 
       - name: Upload Pages artifact
         uses: actions/upload-pages-artifact@v3

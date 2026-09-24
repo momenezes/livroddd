@@ -188,6 +188,7 @@ Recapitular as 7 lições mestras. Estas diretrizes são universais e se aplicam
 :::: {.columns}
 
 ::: {.column width="65%"}
+
 * **Soberania Tecnológica**: O ecossistema `l10n_br_openeducat_capes` viabiliza uma pós-graduação moderna, livre e aderente às leis brasileiras.
 * **O Livro Técnico Completo**:
   * Disponível no GitHub Pages: [momenezes.github.io/livroddd](https://momenezes.github.io/livroddd/){target="_blank"}.

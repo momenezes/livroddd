@@ -15,7 +15,7 @@ Historicamente, as Instituições de Ensino Superior (IES) brasileiras encontram
 
 A construção de um ecossistema de software livre e soberano, capaz de rodar na infraestrutura institucional e se amoldar às exigências do Estado brasileiro, tornou-se um imperativo estratégico para a soberania acadêmica.
 
-```mermaid
+```{mermaid}
 flowchart TD
     subgraph OrgaosReguladores["Órgãos Reguladores e Normas Federais"]
         CAPES["CAPES / MEC<br/>(Portarias 81/2016, 133/2023, 70/2025)"]
@@ -78,6 +78,7 @@ Para viabilizar uma solução viável e sustentável, evitou-se a tentação pue
 O desenvolvimento do ecossistema documentado neste livro utilizou como ambiente de validação inicial o **Mestrado Profissional em Tecnologia das Radiações em Ciências da Saúde (MPTRCS)**, sediado no **IPEN-CNEN/SP** (Instituto de Pesquisas Energéticas e Nucleares).
 
 O MPTRCS apresentava características ideais para teste de estresse do modelo conceitual:
+
 1. Programa de pós-graduação *stricto sensu* nota 4 na CAPES, com demanda intensa de registro de Produção Técnica e Tecnológica (PTT).
 2. IES de natureza não-universitária (Instituto de Pesquisa vinculado à Comissão Nacional de Energia Nuclear - CNEN), exigindo que a diplomação digital possuísse tramitação híbrida com registro externo em universidade registradora parceira (Universidade de São Paulo - USP).
 3. Convivência de docentes credenciados em múltiplos programas e discentes com diferentes versões de regimento interno.

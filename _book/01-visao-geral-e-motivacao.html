@@ -72,6 +72,9 @@ ul.task-list li input[type="checkbox"] {
     "search-label": "Search"
   }
 }</script>
+<script src="site_libs/quarto-diagram/mermaid.min.js"></script>
+<script src="site_libs/quarto-diagram/mermaid-init.js"></script>
+<link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
 
 </head>
@@ -213,7 +216,12 @@ ul.task-list li input[type="checkbox"] {
 </ul>
 <p>Historicamente, as Instituições de Ensino Superior (IES) brasileiras encontram-se presas em um dilema: ou contratam softwares proprietários de alto custo e código fechado — cujos fornecedores demoram meses para adaptar telas às portarias ministeriais —, ou mantêm sistemas legados obsoletos mantidos por equipes sobrecarregadas, culminando em planilhas paralelas desestruturadas e perda de pontuação nas avaliações quadrienais.</p>
 <p>A construção de um ecossistema de software livre e soberano, capaz de rodar na infraestrutura institucional e se amoldar às exigências do Estado brasileiro, tornou-se um imperativo estratégico para a soberania acadêmica.</p>
-<pre class="mermaid"><code>flowchart TD
+<div class="cell" data-layout-align="default">
+<div class="cell-output-display">
+<div>
+<p></p><figure class="figure"><p></p>
+<div>
+<pre class="mermaid mermaid-js">flowchart TD
     subgraph OrgaosReguladores["Órgãos Reguladores e Normas Federais"]
         CAPES["CAPES / MEC&lt;br/&gt;(Portarias 81/2016, 133/2023, 70/2025)"]
         Sucupira["Plataforma Sucupira / DAV&lt;br/&gt;(Coleta Quadrienal)"]
@@ -234,7 +242,13 @@ ul.task-list li input[type="checkbox"] {
 
     CAPES --&gt; ERPInstitucional
     ERPInstitucional --&gt; Sucupira
-    ERPInstitucional --&gt; ICP</code></pre>
+    ERPInstitucional --&gt; ICP
+</pre>
+</div>
+<p></p></figure><p></p>
+</div>
+</div>
+</div>
 </section>
 <section id="o-colapso-do-vibe-coding-em-sistemas-de-missão-crítica" class="level2" data-number="1.2">
 <h2 data-number="1.2" class="anchored" data-anchor-id="o-colapso-do-vibe-coding-em-sistemas-de-missão-crítica"><span class="header-section-number">1.2</span> O Colapso do “Vibe Coding” em Sistemas de Missão Crítica</h2>
@@ -308,7 +322,12 @@ ul.task-list li input[type="checkbox"] {
 <section id="o-estudo-de-caso-do-piloto-mptrcs-à-universidade-complexa" class="level2" data-number="1.4">
 <h2 data-number="1.4" class="anchored" data-anchor-id="o-estudo-de-caso-do-piloto-mptrcs-à-universidade-complexa"><span class="header-section-number">1.4</span> O Estudo de Caso: Do Piloto MPTRCS à Universidade Complexa</h2>
 <p>O desenvolvimento do ecossistema documentado neste livro utilizou como ambiente de validação inicial o <strong>Mestrado Profissional em Tecnologia das Radiações em Ciências da Saúde (MPTRCS)</strong>, sediado no <strong>IPEN-CNEN/SP</strong> (Instituto de Pesquisas Energéticas e Nucleares).</p>
-<p>O MPTRCS apresentava características ideais para teste de estresse do modelo conceitual: 1. Programa de pós-graduação <em>stricto sensu</em> nota 4 na CAPES, com demanda intensa de registro de Produção Técnica e Tecnológica (PTT). 2. IES de natureza não-universitária (Instituto de Pesquisa vinculado à Comissão Nacional de Energia Nuclear - CNEN), exigindo que a diplomação digital possuísse tramitação híbrida com registro externo em universidade registradora parceira (Universidade de São Paulo - USP). 3. Convivência de docentes credenciados em múltiplos programas e discentes com diferentes versões de regimento interno.</p>
+<p>O MPTRCS apresentava características ideais para teste de estresse do modelo conceitual:</p>
+<ol type="1">
+<li>Programa de pós-graduação <em>stricto sensu</em> nota 4 na CAPES, com demanda intensa de registro de Produção Técnica e Tecnológica (PTT).</li>
+<li>IES de natureza não-universitária (Instituto de Pesquisa vinculado à Comissão Nacional de Energia Nuclear - CNEN), exigindo que a diplomação digital possuísse tramitação híbrida com registro externo em universidade registradora parceira (Universidade de São Paulo - USP).</li>
+<li>Convivência de docentes credenciados em múltiplos programas e discentes com diferentes versões de regimento interno.</li>
+</ol>
 <p>Conforme o design do sistema amadureceu, o modelo foi submetido a um segundo desafio: a expansão para <strong>Universidades Multiprograma Complexas</strong> (como o cenário sintético da Universidade XYZQ), nas quais múltiplos programas de pós-graduação convivem na mesma instituição, compartilhando infraestrutura e professores, porém exigindo segregação total de visão acadêmica e dados confidenciais por parte das secretarias departamentais.</p>
 <div class="callout callout-style-default callout-note callout-titled">
 <div class="callout-header d-flex align-content-center">
