@@ -22,7 +22,7 @@ format:
 
 ## Sobre Este Livro
 
-Este livro documenta a transição metodológica entre a prototipagem experimental e a engenharia de software de missão crítica assistida por Inteligência Artificial. Utilizando como estudo de caso a concepção, modelagem e implementação do ecossistema **`l10n_br_openeducat_capes`** — uma suíte de 9 submódulos que adapta o ERP educacional *OpenEduCat* e o framework *Odoo 19.0* à complexa legislação da pós-graduação *stricto sensu* brasileira —, a obra formaliza o paradigma do **Design-Driven Development (DDD)** (*Desenvolvimento Orientado por Design e Arquitetura Prévia*).
+Este livro documenta a transição metodológica entre a prototipagem experimental e a engenharia de software de missão crítica assistida por Inteligência Artificial. Utilizando como estudo de caso a concepção, modelagem e implementação do ecossistema [**`l10n_br_openeducat_capes`**](https://github.com/cinas-ipen/l10n_br_openeducat_capes){target="_blank"} — uma suíte de 9 submódulos que adapta o ERP educacional *OpenEduCat* e o framework *Odoo 19.0* à complexa legislação da pós-graduação *stricto sensu* brasileira —, a obra formaliza o paradigma do **Design-Driven Development (DDD)** (*Desenvolvimento Orientado por Design e Arquitetura Prévia*).
 
 A motivação central desta obra reside no diagnóstico de uma armadilha contemporânea na computação: a difusão do chamado *"vibe coding"*. Em sistemas corporativos regulados por normas estritas de órgãos fiscalizadores (como CAPES, MEC, Plataforma Sucupira/DAV e segurança jurídica do ato acadêmico perfeito), delegar o raciocínio arquitetural a prompts genéricos de IA gera débito técnico explosivo, esquemas de dados inconsistentes e vulnerabilidades legais insanáveis.
 
@@ -33,6 +33,12 @@ Como contrapartida, apresentamos uma metodologia rigorosa em que:
 3. A **implementação no ORM, views e frontend reativo (OWL)** é estritamente derivada das especificações formais.
 4. Uma **auditoria reversa pente-fino (*back-audit*)** confronta o código executável com os documentos canônicos, eliminando discrepâncias.
 5. Os **relatórios executivos e apresentações de alto nível** mantêm simetria com a realidade do banco de dados relacional.
+
+::: {.callout-note}
+### Repositório de Código Aberto
+O código-fonte completo da suíte de 9 submódulos, contratos de dados e testes unitários desenvolvidos pelo CINAS estão disponíveis no GitHub:  
+👉 [**https://github.com/cinas-ipen/l10n_br_openeducat_capes**](https://github.com/cinas-ipen/l10n_br_openeducat_capes){target="_blank"}.
+:::
 
 ::: {.callout-tip}
 ### Apresentação do Workshop (15 Minutos)
