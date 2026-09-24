@@ -6,6 +6,9 @@ date: today
 format:
   html:
     theme: flatly
+    css: custom.css
+    mermaid:
+      theme: default
     toc: true
     toc-depth: 3
     toc-location: left
@@ -465,10 +468,10 @@ flowchart TD
     Inicio["Aprovação na Defesa e Integralização de Créditos"] --> Dossiê["Montagem do Dossiê Acadêmico"]
     Dossiê --> DecisaoTipoIES{"Tipo de Instituição (IES)?"}
     
-    DecisaoTipoIES -->|Universidade Plena| RegistroInterno["Emissão de Livro/Folha Internos"]
+    DecisaoTipoIES -->|"Universidade Plena"| RegistroInterno["Emissão de Livro/Folha Internos"]
     RegistroInterno --> AssinaturaXAdES["Assinatura Digital XML XAdES (ICP-Brasil)"]
     
-    DecisaoTipoIES -->|Instituto de Pesquisa / IES Não-Universitária<br/>(Ex: IPEN)| TramitacaoExterna["Tramitação Externa do Dossiê para a Universidade Registradora (Ex: USP)"]
+    DecisaoTipoIES -->|"Instituto de Pesquisa / IES Não-Universitária (Ex: IPEN)"| TramitacaoExterna["Tramitação Externa do Dossiê para a Universidade Registradora (Ex: USP)"]
     TramitacaoExterna --> ProtocoloExterno["Protocolo e Inserção do Número de Registro Homologado"]
     ProtocoloExterno --> AssinaturaXAdES
     
@@ -732,21 +735,14 @@ A construção do ecossistema `l10n_br_openeducat_capes` não ocorreu em uma ún
 ```{mermaid}
 timeline
     title Cronologia Evolutiva do Projeto l10n_br_openeducat_capes
-    section Fase 1: Exploração (Gemini)
-        Concepção e Viabilidade : Avaliação do OpenEduCat no MPTRCS / IPEN
-                               : Escolha da Stack (Odoo 19, Docker, Traefik, PostgreSQL)
-        Pesquisa Regulatória   : Dicionários DAV / CAPES / GoPG / Plataforma Sucupira
-                               : Deep Research sobre Múltiplos Regimentos e Ato Jurídico Perfeito
-        Modelagem Conceitual   : Motor PTT em 4 Eixos Ponderados (Estratos T1 a T5)
-                               : Macroprocessos e Subprocessos da Vida Acadêmica
-    section Fase 2: Engenharia (Antigravity)
-        Marcos Iniciais        : Dual-Remote Git (GitLab + GitHub) e Diplomação Híbrida MPTRCS/USP
-                               : ADR Multiprograma Lógico vs. Multicompany
-        Carga e Maturidade     : Revolução dos Dados Sintéticos Determinísticos (33 Entidades)
-                               : Criação do Módulo de Bolsas e Regra dos 6 Passos de DDD
-        Fullstack & Auditoria  : Seletor OWL no Systray e Trava da Portaria CAPES 81/2016
-                               : Auditoria Pente-Fino em 23 Documentos de Arquitetura
-        Publicação e Síntese   : Debug Forense Quarto/RevealJS e Quarto Book no GitHub Pages
+    section Fase 1 - Exploração no Gemini
+        Concepção e Viabilidade : Avaliação do OpenEduCat no MPTRCS : Escolha da Stack Docker e Odoo 19
+        Pesquisa Regulatória : Dicionários DAV e Sucupira : Ato Jurídico Perfeito
+        Modelagem Conceitual : Motor PTT em 4 Eixos : Macroprocessos da Vida Acadêmica
+    section Fase 2 - Engenharia no Antigravity
+        Marcos Iniciais : Dual-Remote Git : Diplomação Híbrida MPTRCS e USP : ADR Multiprograma
+        Carga e Maturidade : Dados Sintéticos com 33 Entidades : Módulo de Bolsas e Regra 6 Passos
+        Fullstack e Publicação : Seletor OWL no Systray : Trava CAPES 81/2016 : Quarto Book e GitHub Pages
 ```
 
 ---

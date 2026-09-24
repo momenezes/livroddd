@@ -173,10 +173,10 @@ flowchart TD
     Inicio["Aprovação na Defesa e Integralização de Créditos"] --> Dossiê["Montagem do Dossiê Acadêmico"]
     Dossiê --> DecisaoTipoIES{"Tipo de Instituição (IES)?"}
     
-    DecisaoTipoIES -->|Universidade Plena| RegistroInterno["Emissão de Livro/Folha Internos"]
+    DecisaoTipoIES -->|"Universidade Plena"| RegistroInterno["Emissão de Livro/Folha Internos"]
     RegistroInterno --> AssinaturaXAdES["Assinatura Digital XML XAdES (ICP-Brasil)"]
     
-    DecisaoTipoIES -->|Instituto de Pesquisa / IES Não-Universitária<br/>(Ex: IPEN)| TramitacaoExterna["Tramitação Externa do Dossiê para a Universidade Registradora (Ex: USP)"]
+    DecisaoTipoIES -->|"Instituto de Pesquisa / IES Não-Universitária (Ex: IPEN)"| TramitacaoExterna["Tramitação Externa do Dossiê para a Universidade Registradora (Ex: USP)"]
     TramitacaoExterna --> ProtocoloExterno["Protocolo e Inserção do Número de Registro Homologado"]
     ProtocoloExterno --> AssinaturaXAdES
     

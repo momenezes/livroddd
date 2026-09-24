@@ -21,6 +21,9 @@ book:
 format:
   html:
     theme: flatly
+    css: custom.css
+    mermaid:
+      theme: default
     code-copy: true
     code-fold: show
     toc: true

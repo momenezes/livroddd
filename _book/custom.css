@@ -1,0 +1,33 @@
+/* Quarto Mermaid Theme & Styling Enhancements */
+:root {
+  --mermaid-bg-color: #ffffff;
+  --mermaid-edge-color: #2c3e50;
+  --mermaid-node-fg-color: #2c3e50;
+  --mermaid-fg-color: #2c3e50;
+  --mermaid-fg-color--lighter: #7f8c8d;
+  --mermaid-fg-color--lightest: #ecf0f1;
+  --mermaid-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --mermaid-label-bg-color: #ffffff;
+  --mermaid-label-fg-color: #2c3e50;
+  --mermaid-node-bg-color: rgba(44, 62, 80, 0.08);
+}
+
+.cell-output-display {
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+svg.mermaid-js {
+  max-width: 100% !important;
+  height: auto !important;
+  display: block;
+  margin: 0 auto;
+}
+
+/* Ensure clean contrast for timeline and node labels */
+.mermaid .label text,
+.mermaid .nodeLabel,
+.mermaid .edgeLabel {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
+  font-size: 14px;
+}
