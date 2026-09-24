@@ -251,15 +251,15 @@ window.Quarto = {
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart TD
-    Core["l10n_br_openeducat_capes_core&lt;br/&gt;(PIDs, Censo IBGE, Governança Multiprograma)"]
+    Core["l10n_br_openeducat_capes_core&lt;br/&gt;(PIDs, Censo IBGE, Governança)"]
     Academic["l10n_br_openeducat_capes_academic&lt;br/&gt;(Versões Regimentais, Livro-Razão)"]
     Admission["l10n_br_openeducat_capes_admission&lt;br/&gt;(Editais, Cotas, Heteroidentificação)"]
     Research["l10n_br_openeducat_capes_research&lt;br/&gt;(Áreas CAPES, Linhas CNPq, Projetos)"]
     Thesis["l10n_br_openeducat_capes_thesis&lt;br/&gt;(Bancas, Qualificação, Defesa)"]
     PTT["l10n_br_openeducat_capes_ptt&lt;br/&gt;(Motor 4 Eixos, Estratos T1-T5)"]
-    Diploma["l10n_br_openeducat_capes_diploma&lt;br/&gt;(XML MEC, Assinatura ICP, Histórico)"]
-    Integration["l10n_br_openeducat_capes_integration&lt;br/&gt;(APIs REST /api/capes/v1/dav/*)"]
-    Scholarship["l10n_br_openeducat_capes_scholarship&lt;br/&gt;(Cotas de Bolsas, Avaliação Cega)"]
+    Diploma["l10n_br_openeducat_capes_diploma&lt;br/&gt;(XML MEC &amp; Assinatura ICP)"]
+    Integration["l10n_br_openeducat_capes_integration&lt;br/&gt;(APIs REST DAV/CAPES)"]
+    Scholarship["l10n_br_openeducat_capes_scholarship&lt;br/&gt;(Cotas &amp; Avaliação Cega)"]
 
     Core --&gt; Academic
     Core --&gt; Admission
@@ -495,18 +495,18 @@ window.Quarto = {
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart TD
-    Inicio["Aprovação na Defesa e Integralização de Créditos"] --&gt; Dossiê["Montagem do Dossiê Acadêmico"]
-    Dossiê --&gt; DecisaoTipoIES{"Tipo de Instituição (IES)?"}
+    Inicio["Aprovação na Defesa e&lt;br/&gt;Integralização de Créditos"] --&gt; Dossiê["Montagem do&lt;br/&gt;Dossiê Acadêmico"]
+    Dossiê --&gt; DecisaoTipoIES{"Tipo de IES?"}
     
-    DecisaoTipoIES --&gt;|"Universidade Plena"| RegistroInterno["Emissão de Livro/Folha Internos"]
-    RegistroInterno --&gt; AssinaturaXAdES["Assinatura Digital XML XAdES (ICP-Brasil)"]
+    DecisaoTipoIES --&gt;|"Universidade Plena"| RegistroInterno["Emissão de Livro/Folha Internos&lt;br/&gt;e Registro Próprio"]
+    RegistroInterno --&gt; AssinaturaXAdES["Assinatura Digital XML XAdES&lt;br/&gt;(Certificado ICP-Brasil)"]
     
-    DecisaoTipoIES --&gt;|"Instituto de Pesquisa / IES Não-Universitária (Ex: IPEN)"| TramitacaoExterna["Tramitação Externa do Dossiê para a Universidade Registradora (Ex: USP)"]
-    TramitacaoExterna --&gt; ProtocoloExterno["Protocolo e Inserção do Número de Registro Homologado"]
+    DecisaoTipoIES --&gt;|"IES Não-Universitária&lt;br/&gt;(Ex: IPEN)"| TramitacaoExterna["Tramitação Externa do Dossiê&lt;br/&gt;para Universidade Registradora&lt;br/&gt;(Ex: USP)"]
+    TramitacaoExterna --&gt; ProtocoloExterno["Protocolo e Inserção do&lt;br/&gt;Registro Homologado"]
     ProtocoloExterno --&gt; AssinaturaXAdES
     
-    AssinaturaXAdES --&gt; PDFVisual["Geração da Representação Visual em PDF com QR-Code de Validação e Histórico Oficial"]
-    PDFVisual --&gt; Arquivamento["Arquivamento Permanente e Auditoria"]
+    AssinaturaXAdES --&gt; PDFVisual["Representação Visual em PDF&lt;br/&gt;com QR-Code de Validação&lt;br/&gt;e Histórico Oficial"]
+    PDFVisual --&gt; Arquivamento["Arquivamento Permanente&lt;br/&gt;e Auditoria MEC"]
 </pre>
 </div>
 <p></p></figure><p></p>

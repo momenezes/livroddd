@@ -6,15 +6,15 @@ O ecossistema `l10n_br_openeducat_capes` foi estruturado sob o padrão arquitetu
 
 ```{mermaid}
 flowchart TD
-    Core["l10n_br_openeducat_capes_core<br/>(PIDs, Censo IBGE, Governança Multiprograma)"]
+    Core["l10n_br_openeducat_capes_core<br/>(PIDs, Censo IBGE, Governança)"]
     Academic["l10n_br_openeducat_capes_academic<br/>(Versões Regimentais, Livro-Razão)"]
     Admission["l10n_br_openeducat_capes_admission<br/>(Editais, Cotas, Heteroidentificação)"]
     Research["l10n_br_openeducat_capes_research<br/>(Áreas CAPES, Linhas CNPq, Projetos)"]
     Thesis["l10n_br_openeducat_capes_thesis<br/>(Bancas, Qualificação, Defesa)"]
     PTT["l10n_br_openeducat_capes_ptt<br/>(Motor 4 Eixos, Estratos T1-T5)"]
-    Diploma["l10n_br_openeducat_capes_diploma<br/>(XML MEC, Assinatura ICP, Histórico)"]
-    Integration["l10n_br_openeducat_capes_integration<br/>(APIs REST /api/capes/v1/dav/*)"]
-    Scholarship["l10n_br_openeducat_capes_scholarship<br/>(Cotas de Bolsas, Avaliação Cega)"]
+    Diploma["l10n_br_openeducat_capes_diploma<br/>(XML MEC & Assinatura ICP)"]
+    Integration["l10n_br_openeducat_capes_integration<br/>(APIs REST DAV/CAPES)"]
+    Scholarship["l10n_br_openeducat_capes_scholarship<br/>(Cotas & Avaliação Cega)"]
 
     Core --> Academic
     Core --> Admission
@@ -170,18 +170,18 @@ Em conformidade com as Portarias MEC 330/2018, 554/2019 e a novel Portaria 70/20
 
 ```{mermaid}
 flowchart TD
-    Inicio["Aprovação na Defesa e Integralização de Créditos"] --> Dossiê["Montagem do Dossiê Acadêmico"]
-    Dossiê --> DecisaoTipoIES{"Tipo de Instituição (IES)?"}
+    Inicio["Aprovação na Defesa e<br/>Integralização de Créditos"] --> Dossiê["Montagem do<br/>Dossiê Acadêmico"]
+    Dossiê --> DecisaoTipoIES{"Tipo de IES?"}
     
-    DecisaoTipoIES -->|"Universidade Plena"| RegistroInterno["Emissão de Livro/Folha Internos"]
-    RegistroInterno --> AssinaturaXAdES["Assinatura Digital XML XAdES (ICP-Brasil)"]
+    DecisaoTipoIES -->|"Universidade Plena"| RegistroInterno["Emissão de Livro/Folha Internos<br/>e Registro Próprio"]
+    RegistroInterno --> AssinaturaXAdES["Assinatura Digital XML XAdES<br/>(Certificado ICP-Brasil)"]
     
-    DecisaoTipoIES -->|"Instituto de Pesquisa / IES Não-Universitária (Ex: IPEN)"| TramitacaoExterna["Tramitação Externa do Dossiê para a Universidade Registradora (Ex: USP)"]
-    TramitacaoExterna --> ProtocoloExterno["Protocolo e Inserção do Número de Registro Homologado"]
+    DecisaoTipoIES -->|"IES Não-Universitária<br/>(Ex: IPEN)"| TramitacaoExterna["Tramitação Externa do Dossiê<br/>para Universidade Registradora<br/>(Ex: USP)"]
+    TramitacaoExterna --> ProtocoloExterno["Protocolo e Inserção do<br/>Registro Homologado"]
     ProtocoloExterno --> AssinaturaXAdES
     
-    AssinaturaXAdES --> PDFVisual["Geração da Representação Visual em PDF com QR-Code de Validação e Histórico Oficial"]
-    PDFVisual --> Arquivamento["Arquivamento Permanente e Auditoria"]
+    AssinaturaXAdES --> PDFVisual["Representação Visual em PDF<br/>com QR-Code de Validação<br/>e Histórico Oficial"]
+    PDFVisual --> Arquivamento["Arquivamento Permanente<br/>e Auditoria MEC"]
 ```
 
 Além disso, o modelo preserva compatibilidade com o formato de **emissão física tradicional (pergaminho/papel)** através do campo `issuance_format`, haja vista que o MEC ainda conclui a normatização total do diploma digital para todos os ramos da pós-graduação *stricto sensu*.

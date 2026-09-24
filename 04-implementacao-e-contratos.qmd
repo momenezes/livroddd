@@ -187,11 +187,11 @@ Para validar o ecossistema, foi desenvolvido o script `scripts/gerador_dados_sin
 
 ```{mermaid}
 flowchart LR
-    Seed["Seed Determinístico<br/>(random.seed(42))"] --> Infra["Infraestrutura Acadêmica<br/>(Anos, Termos, Departamentos, Cursos)"]
-    Infra --> Pessoas["Corpo Social<br/>(86 Discentes, 24 Docentes, CPG)"]
-    Pessoas --> Eventos["Eventos Acadêmicos<br/>(Disciplinas, Créditos, Bancas, PTT)"]
-    Eventos --> Validador["Script de Auditoria Forense<br/>(validar_integridade_sintetica.py)"]
-    Validador -->|0 Erros| Carga["Carga via CSV no Odoo"]
+    Seed["Seed Determinístico<br/>(random.seed(42))"] --> Infra["Infraestrutura Acadêmica<br/>(Anos, Termos, Cursos)"]
+    Infra --> Pessoas["Corpo Social<br/>(86 Discentes, 24 Docentes)"]
+    Pessoas --> Eventos["Eventos Acadêmicos<br/>(Disciplinas, Créditos, Bancas)"]
+    Eventos --> Validador["Auditoria Forense<br/>(validar_integridade.py)"]
+    Validador -->|0 Erros| Carga["Carga via CSV<br/>no Odoo 19"]
 ```
 
 * **Determinismo Absoluto**: Uso de semente fixa (`random.seed(42)`), garantindo que os mesmos cenários de teste sejam reproduzíveis em qualquer máquina ou pipeline de Integração Contínua.

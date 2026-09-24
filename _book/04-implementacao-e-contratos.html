@@ -429,11 +429,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart LR
-    Seed["Seed Determinístico&lt;br/&gt;(random.seed(42))"] --&gt; Infra["Infraestrutura Acadêmica&lt;br/&gt;(Anos, Termos, Departamentos, Cursos)"]
-    Infra --&gt; Pessoas["Corpo Social&lt;br/&gt;(86 Discentes, 24 Docentes, CPG)"]
-    Pessoas --&gt; Eventos["Eventos Acadêmicos&lt;br/&gt;(Disciplinas, Créditos, Bancas, PTT)"]
-    Eventos --&gt; Validador["Script de Auditoria Forense&lt;br/&gt;(validar_integridade_sintetica.py)"]
-    Validador --&gt;|0 Erros| Carga["Carga via CSV no Odoo"]
+    Seed["Seed Determinístico&lt;br/&gt;(random.seed(42))"] --&gt; Infra["Infraestrutura Acadêmica&lt;br/&gt;(Anos, Termos, Cursos)"]
+    Infra --&gt; Pessoas["Corpo Social&lt;br/&gt;(86 Discentes, 24 Docentes)"]
+    Pessoas --&gt; Eventos["Eventos Acadêmicos&lt;br/&gt;(Disciplinas, Créditos, Bancas)"]
+    Eventos --&gt; Validador["Auditoria Forense&lt;br/&gt;(validar_integridade.py)"]
+    Validador --&gt;|0 Erros| Carga["Carga via CSV&lt;br/&gt;no Odoo 19"]
 </pre>
 </div>
 <p></p></figure><p></p>

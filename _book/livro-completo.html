@@ -5344,32 +5344,101 @@ window.Quarto = {
 <style type="text/css">
 :root {
 --mermaid-bg-color: #ffffff;
---mermaid-edge-color: #2c3e50;
---mermaid-node-fg-color: #2c3e50;
---mermaid-fg-color: #2c3e50;
---mermaid-fg-color--lighter: #7f8c8d;
---mermaid-fg-color--lightest: #ecf0f1;
+--mermaid-edge-color: #334155;
+--mermaid-node-fg-color: #1e293b;
+--mermaid-fg-color: #1e293b;
+--mermaid-fg-color--lighter: #94a3b8;
+--mermaid-fg-color--lightest: #f1f5f9;
 --mermaid-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 --mermaid-label-bg-color: #ffffff;
---mermaid-label-fg-color: #2c3e50;
---mermaid-node-bg-color: rgba(44, 62, 80, 0.08);
+--mermaid-label-fg-color: #1e293b;
+--mermaid-node-bg-color: #f8fafc;
 }
 .cell-output-display {
 overflow-x: auto;
 margin: 1.5rem 0;
+-webkit-overflow-scrolling: touch;
 }
 svg.mermaid-js {
-max-width: 100% !important;
-height: auto !important;
+max-width: 100%;
+height: auto;
 display: block;
 margin: 0 auto;
 }
 
-.mermaid .label text,
+.mermaid foreignObject {
+overflow: visible !important;
+}
+.mermaid foreignObject div {
+overflow: visible !important;
+line-height: 1.25 !important;
+text-align: center;
+}
+
+.mermaid text,
+.mermaid .label,
 .mermaid .nodeLabel,
-.mermaid .edgeLabel {
+.mermaid .edgeLabel,
+.mermaid .cluster-label,
+.mermaid .classTitle,
+.mermaid .classGroup text,
+.mermaid .timeline-node text,
+.mermaid .event-title,
+.mermaid .timeline-event-card text {
 font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
-font-size: 14px;
+fill: #0f172a !important;
+color: #0f172a !important;
+font-weight: 500;
+}
+
+.mermaid .cluster rect {
+fill: #f8fafc !important;
+stroke: #94a3b8 !important;
+stroke-width: 1.5px !important;
+}
+.mermaid .cluster text,
+.mermaid .cluster span,
+.mermaid .cluster-label span,
+.mermaid .cluster-label text {
+fill: #0f172a !important;
+color: #0f172a !important;
+font-weight: 700 !important;
+font-size: 13px !important;
+}
+
+.mermaid .edgeLabel,
+.mermaid .edgeLabel span {
+background-color: #ffffff !important;
+color: #1e293b !important;
+fill: #1e293b !important;
+font-size: 11.5px !important;
+font-weight: 500 !important;
+padding: 2px 6px !important;
+border-radius: 4px;
+}
+
+.mermaid g.classGroup rect {
+fill: #f8fafc !important;
+stroke: #2563eb !important;
+stroke-width: 1.5px !important;
+}
+.mermaid g.classGroup text {
+fill: #0f172a !important;
+font-size: 12px !important;
+}
+.mermaid g.classGroup .classTitle {
+font-weight: 700 !important;
+fill: #1d4ed8 !important;
+}
+
+.mermaid .timeline-node text {
+fill: #0f172a !important;
+font-size: 12px !important;
+}
+.mermaid .section-root text,
+.mermaid .section-title text {
+fill: #0f172a !important;
+font-weight: 700 !important;
 }
 </style>
 </head>
@@ -5641,15 +5710,24 @@ font-size: 14px;
     end
 
     subgraph ERPInstitucional[&quot;Ecossistema Livre de Gestão (Odoo 19 + OpenEduCat 19)&quot;]
-        Core[&quot;l10n_br_openeducat_capes_core&lt;br/&gt;(PIDs, Censo IBGE, Governança)&quot;]
-        Academic[&quot;l10n_br_openeducat_capes_academic&lt;br/&gt;(Versões Regimentais &amp; Livro-Razão)&quot;]
-        Admission[&quot;l10n_br_openeducat_capes_admission&lt;br/&gt;(Editais &amp; Heteroidentificação)&quot;]
-        Research[&quot;l10n_br_openeducat_capes_research&lt;br/&gt;(Linhas &amp; Projetos CNPq)&quot;]
-        Thesis[&quot;l10n_br_openeducat_capes_thesis&lt;br/&gt;(Qualificações &amp; Bancas)&quot;]
-        PTT[&quot;l10n_br_openeducat_capes_ptt&lt;br/&gt;(4 Eixos &amp; Estratos T1-T5)&quot;]
-        Diploma[&quot;l10n_br_openeducat_capes_diploma&lt;br/&gt;(XML MEC &amp; Histórico)&quot;]
-        Scholarship[&quot;l10n_br_openeducat_capes_scholarship&lt;br/&gt;(Cotas &amp; Avaliação Cega)&quot;]
-        Integration[&quot;l10n_br_openeducat_capes_integration&lt;br/&gt;(APIs REST /api/capes/v1/dav/*)&quot;]
+        direction TB
+        subgraph CamadaBase[&quot;Camada Base &amp; Governança&quot;]
+            Core[&quot;l10n_br_openeducat_capes_core&lt;br/&gt;(PIDs, Censo IBGE, Governança)&quot;]
+            Academic[&quot;l10n_br_openeducat_capes_academic&lt;br/&gt;(Versões Regimentais &amp; Livro-Razão)&quot;]
+        end
+        subgraph CamadaCiclo[&quot;Ciclo Discente &amp; Pesquisa&quot;]
+            Admission[&quot;l10n_br_openeducat_capes_admission&lt;br/&gt;(Editais &amp; Heteroidentificação)&quot;]
+            Research[&quot;l10n_br_openeducat_capes_research&lt;br/&gt;(Linhas &amp; Projetos CNPq)&quot;]
+            Scholarship[&quot;l10n_br_openeducat_capes_scholarship&lt;br/&gt;(Cotas &amp; Avaliação Cega)&quot;]
+        end
+        subgraph CamadaTitulos[&quot;Titulação, PTT &amp; Interoperabilidade&quot;]
+            Thesis[&quot;l10n_br_openeducat_capes_thesis&lt;br/&gt;(Qualificações &amp; Bancas)&quot;]
+            PTT[&quot;l10n_br_openeducat_capes_ptt&lt;br/&gt;(4 Eixos &amp; Estratos T1-T5)&quot;]
+            Diploma[&quot;l10n_br_openeducat_capes_diploma&lt;br/&gt;(XML MEC &amp; Histórico)&quot;]
+            Integration[&quot;l10n_br_openeducat_capes_integration&lt;br/&gt;(APIs REST DAV/CAPES)&quot;]
+        end
+        CamadaBase --&gt; CamadaCiclo
+        CamadaCiclo --&gt; CamadaTitulos
     end
 
     CAPES --&gt; ERPInstitucional
@@ -5948,15 +6026,15 @@ font-size: 14px;
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart TD
-    Core[&quot;l10n_br_openeducat_capes_core&lt;br/&gt;(PIDs, Censo IBGE, Governança Multiprograma)&quot;]
+    Core[&quot;l10n_br_openeducat_capes_core&lt;br/&gt;(PIDs, Censo IBGE, Governança)&quot;]
     Academic[&quot;l10n_br_openeducat_capes_academic&lt;br/&gt;(Versões Regimentais, Livro-Razão)&quot;]
     Admission[&quot;l10n_br_openeducat_capes_admission&lt;br/&gt;(Editais, Cotas, Heteroidentificação)&quot;]
     Research[&quot;l10n_br_openeducat_capes_research&lt;br/&gt;(Áreas CAPES, Linhas CNPq, Projetos)&quot;]
     Thesis[&quot;l10n_br_openeducat_capes_thesis&lt;br/&gt;(Bancas, Qualificação, Defesa)&quot;]
     PTT[&quot;l10n_br_openeducat_capes_ptt&lt;br/&gt;(Motor 4 Eixos, Estratos T1-T5)&quot;]
-    Diploma[&quot;l10n_br_openeducat_capes_diploma&lt;br/&gt;(XML MEC, Assinatura ICP, Histórico)&quot;]
-    Integration[&quot;l10n_br_openeducat_capes_integration&lt;br/&gt;(APIs REST /api/capes/v1/dav/*)&quot;]
-    Scholarship[&quot;l10n_br_openeducat_capes_scholarship&lt;br/&gt;(Cotas de Bolsas, Avaliação Cega)&quot;]
+    Diploma[&quot;l10n_br_openeducat_capes_diploma&lt;br/&gt;(XML MEC &amp; Assinatura ICP)&quot;]
+    Integration[&quot;l10n_br_openeducat_capes_integration&lt;br/&gt;(APIs REST DAV/CAPES)&quot;]
+    Scholarship[&quot;l10n_br_openeducat_capes_scholarship&lt;br/&gt;(Cotas &amp; Avaliação Cega)&quot;]
 
     Core --&gt; Academic
     Core --&gt; Admission
@@ -6192,18 +6270,18 @@ font-size: 14px;
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart TD
-    Inicio[&quot;Aprovação na Defesa e Integralização de Créditos&quot;] --&gt; Dossiê[&quot;Montagem do Dossiê Acadêmico&quot;]
-    Dossiê --&gt; DecisaoTipoIES{&quot;Tipo de Instituição (IES)?&quot;}
+    Inicio[&quot;Aprovação na Defesa e&lt;br/&gt;Integralização de Créditos&quot;] --&gt; Dossiê[&quot;Montagem do&lt;br/&gt;Dossiê Acadêmico&quot;]
+    Dossiê --&gt; DecisaoTipoIES{&quot;Tipo de IES?&quot;}
     
-    DecisaoTipoIES --&gt;|&quot;Universidade Plena&quot;| RegistroInterno[&quot;Emissão de Livro/Folha Internos&quot;]
-    RegistroInterno --&gt; AssinaturaXAdES[&quot;Assinatura Digital XML XAdES (ICP-Brasil)&quot;]
+    DecisaoTipoIES --&gt;|&quot;Universidade Plena&quot;| RegistroInterno[&quot;Emissão de Livro/Folha Internos&lt;br/&gt;e Registro Próprio&quot;]
+    RegistroInterno --&gt; AssinaturaXAdES[&quot;Assinatura Digital XML XAdES&lt;br/&gt;(Certificado ICP-Brasil)&quot;]
     
-    DecisaoTipoIES --&gt;|&quot;Instituto de Pesquisa / IES Não-Universitária (Ex: IPEN)&quot;| TramitacaoExterna[&quot;Tramitação Externa do Dossiê para a Universidade Registradora (Ex: USP)&quot;]
-    TramitacaoExterna --&gt; ProtocoloExterno[&quot;Protocolo e Inserção do Número de Registro Homologado&quot;]
+    DecisaoTipoIES --&gt;|&quot;IES Não-Universitária&lt;br/&gt;(Ex: IPEN)&quot;| TramitacaoExterna[&quot;Tramitação Externa do Dossiê&lt;br/&gt;para Universidade Registradora&lt;br/&gt;(Ex: USP)&quot;]
+    TramitacaoExterna --&gt; ProtocoloExterno[&quot;Protocolo e Inserção do&lt;br/&gt;Registro Homologado&quot;]
     ProtocoloExterno --&gt; AssinaturaXAdES
     
-    AssinaturaXAdES --&gt; PDFVisual[&quot;Geração da Representação Visual em PDF com QR-Code de Validação e Histórico Oficial&quot;]
-    PDFVisual --&gt; Arquivamento[&quot;Arquivamento Permanente e Auditoria&quot;]
+    AssinaturaXAdES --&gt; PDFVisual[&quot;Representação Visual em PDF&lt;br/&gt;com QR-Code de Validação&lt;br/&gt;e Histórico Oficial&quot;]
+    PDFVisual --&gt; Arquivamento[&quot;Arquivamento Permanente&lt;br/&gt;e Auditoria MEC&quot;]
 </pre>
 </div>
 <p></p></figure><p></p>
@@ -6409,11 +6487,11 @@ font-size: 14px;
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart LR
-    Seed[&quot;Seed Determinístico&lt;br/&gt;(random.seed(42))&quot;] --&gt; Infra[&quot;Infraestrutura Acadêmica&lt;br/&gt;(Anos, Termos, Departamentos, Cursos)&quot;]
-    Infra --&gt; Pessoas[&quot;Corpo Social&lt;br/&gt;(86 Discentes, 24 Docentes, CPG)&quot;]
-    Pessoas --&gt; Eventos[&quot;Eventos Acadêmicos&lt;br/&gt;(Disciplinas, Créditos, Bancas, PTT)&quot;]
-    Eventos --&gt; Validador[&quot;Script de Auditoria Forense&lt;br/&gt;(validar_integridade_sintetica.py)&quot;]
-    Validador --&gt;|0 Erros| Carga[&quot;Carga via CSV no Odoo&quot;]
+    Seed[&quot;Seed Determinístico&lt;br/&gt;(random.seed(42))&quot;] --&gt; Infra[&quot;Infraestrutura Acadêmica&lt;br/&gt;(Anos, Termos, Cursos)&quot;]
+    Infra --&gt; Pessoas[&quot;Corpo Social&lt;br/&gt;(86 Discentes, 24 Docentes)&quot;]
+    Pessoas --&gt; Eventos[&quot;Eventos Acadêmicos&lt;br/&gt;(Disciplinas, Créditos, Bancas)&quot;]
+    Eventos --&gt; Validador[&quot;Auditoria Forense&lt;br/&gt;(validar_integridade.py)&quot;]
+    Validador --&gt;|0 Erros| Carga[&quot;Carga via CSV&lt;br/&gt;no Odoo 19&quot;]
 </pre>
 </div>
 <p></p></figure><p></p>
@@ -6471,13 +6549,13 @@ font-size: 14px;
 <pre class="mermaid mermaid-js">timeline
     title Cronologia Evolutiva do Projeto l10n_br_openeducat_capes
     section Fase 1 - Exploração no Gemini
-        Concepção e Viabilidade : Avaliação do OpenEduCat no MPTRCS : Escolha da Stack Docker e Odoo 19
-        Pesquisa Regulatória : Dicionários DAV e Sucupira : Ato Jurídico Perfeito
-        Modelagem Conceitual : Motor PTT em 4 Eixos : Macroprocessos da Vida Acadêmica
+        Concepção e Viabilidade : Avaliação OpenEduCat : Stack Docker &amp; Odoo 19
+        Pesquisa Regulatória : Dicionários DAV / Sucupira : Ato Jurídico Perfeito
+        Modelagem Conceitual : Motor PTT 4 Eixos : Macroprocessos Acadêmicos
     section Fase 2 - Engenharia no Antigravity
-        Marcos Iniciais : Dual-Remote Git : Diplomação Híbrida MPTRCS e USP : ADR Multiprograma
-        Carga e Maturidade : Dados Sintéticos com 33 Entidades : Módulo de Bolsas e Regra 6 Passos
-        Fullstack e Publicação : Seletor OWL no Systray : Trava CAPES 81/2016 : Quarto Book e GitHub Pages
+        Marcos Iniciais : GitOps Dual-Remote : Diplomação Híbrida : ADR Multiprograma
+        Carga e Maturidade : Dados Sintéticos (33 Entidades) : Governança de Bolsas
+        Fullstack e Publicação : Seletor OWL Systray : Trava CAPES 81/2016 : Livro Quarto no GitHub Pages
 </pre>
 </div>
 <p></p></figure><p></p>
@@ -6932,6 +7010,7 @@ font-size: 14px;
 <li><strong>MARTIN, Robert C.</strong> <em>Clean Architecture: A Craftsman’s Guide to Software Structure and Design</em>. Boston: Prentice Hall, 2017.</li>
 <li><strong>NEWMAN, Sam</strong>. <em>Building Microservices: Designing Fine-Grained Systems</em>. 2nd ed. Sebastopol: O’Reilly Media, 2021.</li>
 </ul>
+<hr>
 </section>
 </section>
 

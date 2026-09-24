@@ -24,15 +24,24 @@ flowchart TD
     end
 
     subgraph ERPInstitucional["Ecossistema Livre de Gestão (Odoo 19 + OpenEduCat 19)"]
-        Core["l10n_br_openeducat_capes_core<br/>(PIDs, Censo IBGE, Governança)"]
-        Academic["l10n_br_openeducat_capes_academic<br/>(Versões Regimentais & Livro-Razão)"]
-        Admission["l10n_br_openeducat_capes_admission<br/>(Editais & Heteroidentificação)"]
-        Research["l10n_br_openeducat_capes_research<br/>(Linhas & Projetos CNPq)"]
-        Thesis["l10n_br_openeducat_capes_thesis<br/>(Qualificações & Bancas)"]
-        PTT["l10n_br_openeducat_capes_ptt<br/>(4 Eixos & Estratos T1-T5)"]
-        Diploma["l10n_br_openeducat_capes_diploma<br/>(XML MEC & Histórico)"]
-        Scholarship["l10n_br_openeducat_capes_scholarship<br/>(Cotas & Avaliação Cega)"]
-        Integration["l10n_br_openeducat_capes_integration<br/>(APIs REST /api/capes/v1/dav/*)"]
+        direction TB
+        subgraph CamadaBase["Camada Base & Governança"]
+            Core["l10n_br_openeducat_capes_core<br/>(PIDs, Censo IBGE, Governança)"]
+            Academic["l10n_br_openeducat_capes_academic<br/>(Versões Regimentais & Livro-Razão)"]
+        end
+        subgraph CamadaCiclo["Ciclo Discente & Pesquisa"]
+            Admission["l10n_br_openeducat_capes_admission<br/>(Editais & Heteroidentificação)"]
+            Research["l10n_br_openeducat_capes_research<br/>(Linhas & Projetos CNPq)"]
+            Scholarship["l10n_br_openeducat_capes_scholarship<br/>(Cotas & Avaliação Cega)"]
+        end
+        subgraph CamadaTitulos["Titulação, PTT & Interoperabilidade"]
+            Thesis["l10n_br_openeducat_capes_thesis<br/>(Qualificações & Bancas)"]
+            PTT["l10n_br_openeducat_capes_ptt<br/>(4 Eixos & Estratos T1-T5)"]
+            Diploma["l10n_br_openeducat_capes_diploma<br/>(XML MEC & Histórico)"]
+            Integration["l10n_br_openeducat_capes_integration<br/>(APIs REST DAV/CAPES)"]
+        end
+        CamadaBase --> CamadaCiclo
+        CamadaCiclo --> CamadaTitulos
     end
 
     CAPES --> ERPInstitucional

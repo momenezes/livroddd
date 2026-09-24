@@ -1,33 +1,112 @@
 /* Quarto Mermaid Theme & Styling Enhancements */
 :root {
   --mermaid-bg-color: #ffffff;
-  --mermaid-edge-color: #2c3e50;
-  --mermaid-node-fg-color: #2c3e50;
-  --mermaid-fg-color: #2c3e50;
-  --mermaid-fg-color--lighter: #7f8c8d;
-  --mermaid-fg-color--lightest: #ecf0f1;
+  --mermaid-edge-color: #334155;
+  --mermaid-node-fg-color: #1e293b;
+  --mermaid-fg-color: #1e293b;
+  --mermaid-fg-color--lighter: #94a3b8;
+  --mermaid-fg-color--lightest: #f1f5f9;
   --mermaid-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
   --mermaid-label-bg-color: #ffffff;
-  --mermaid-label-fg-color: #2c3e50;
-  --mermaid-node-bg-color: rgba(44, 62, 80, 0.08);
+  --mermaid-label-fg-color: #1e293b;
+  --mermaid-node-bg-color: #f8fafc;
 }
 
 .cell-output-display {
   overflow-x: auto;
   margin: 1.5rem 0;
+  -webkit-overflow-scrolling: touch;
 }
 
 svg.mermaid-js {
-  max-width: 100% !important;
-  height: auto !important;
+  max-width: 100%;
+  height: auto;
   display: block;
   margin: 0 auto;
 }
 
-/* Ensure clean contrast for timeline and node labels */
-.mermaid .label text,
+/* 1. Prevent foreignObject and div clipping in SVG */
+.mermaid foreignObject {
+  overflow: visible !important;
+}
+
+.mermaid foreignObject div {
+  overflow: visible !important;
+  line-height: 1.25 !important;
+  text-align: center;
+}
+
+/* 2. Guarantee strong text contrast & readability across all diagram types */
+.mermaid text,
+.mermaid .label,
 .mermaid .nodeLabel,
-.mermaid .edgeLabel {
+.mermaid .edgeLabel,
+.mermaid .cluster-label,
+.mermaid .classTitle,
+.mermaid .classGroup text,
+.mermaid .timeline-node text,
+.mermaid .event-title,
+.mermaid .timeline-event-card text {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif !important;
-  font-size: 14px;
+  fill: #0f172a !important;
+  color: #0f172a !important;
+  font-weight: 500;
+}
+
+/* 3. Subgraph / Cluster Labels & Backgrounds */
+.mermaid .cluster rect {
+  fill: #f8fafc !important;
+  stroke: #94a3b8 !important;
+  stroke-width: 1.5px !important;
+}
+
+.mermaid .cluster text,
+.mermaid .cluster span,
+.mermaid .cluster-label span,
+.mermaid .cluster-label text {
+  fill: #0f172a !important;
+  color: #0f172a !important;
+  font-weight: 700 !important;
+  font-size: 13px !important;
+}
+
+/* 4. Edge Labels with solid background to prevent crossing-line clipping */
+.mermaid .edgeLabel,
+.mermaid .edgeLabel span {
+  background-color: #ffffff !important;
+  color: #1e293b !important;
+  fill: #1e293b !important;
+  font-size: 11.5px !important;
+  font-weight: 500 !important;
+  padding: 2px 6px !important;
+  border-radius: 4px;
+}
+
+/* 5. Class Diagram Styling */
+.mermaid g.classGroup rect {
+  fill: #f8fafc !important;
+  stroke: #2563eb !important;
+  stroke-width: 1.5px !important;
+}
+
+.mermaid g.classGroup text {
+  fill: #0f172a !important;
+  font-size: 12px !important;
+}
+
+.mermaid g.classGroup .classTitle {
+  font-weight: 700 !important;
+  fill: #1d4ed8 !important;
+}
+
+/* 6. Timeline Diagram Styling */
+.mermaid .timeline-node text {
+  fill: #0f172a !important;
+  font-size: 12px !important;
+}
+
+.mermaid .section-root text,
+.mermaid .section-title text {
+  fill: #0f172a !important;
+  font-weight: 700 !important;
 }
