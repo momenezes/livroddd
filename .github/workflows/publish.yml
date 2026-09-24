@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
@@ -16,6 +16,9 @@ concurrency:
 
 jobs:
   build-deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
@@ -24,9 +27,18 @@ jobs:
       - name: Set up Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Render and Publish to gh-pages
-        uses: quarto-dev/quarto-actions/publish@v2
+      - name: Render Book and Slides
+        run: |
+          quarto render
+          quarto render presentation/workshop-15min.qmd
+          cp presentation/workshop-15min.html _book/workshop-15min.html || true
+          cp livro-completo.html _book/livro-completo.html || true
+
+      - name: Upload Pages artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          target: gh-pages
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          path: _book
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
