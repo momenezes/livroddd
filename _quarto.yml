@@ -14,7 +14,8 @@ book:
     - 02-principios-design-driven.qmd
     - 03-arquitetura-e-modelagem.qmd
     - 04-implementacao-e-contratos.qmd
-    - 05-licoes-aprendidas.qmd
+    - 05-cronica-do-desenvolvimento-e-milestones.qmd
+    - 06-licoes-aprendidas.qmd
     - referencias.qmd
 
 format:
