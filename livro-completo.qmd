@@ -1,0 +1,854 @@
+---
+title: "Design Driven Development na Prática"
+subtitle: "Da Arquitetura Regulatória ao Código em Sistemas de Missão Crítica"
+author: "Mario Olímpio de Menezes"
+date: today
+format:
+  html:
+    theme: flatly
+    toc: true
+    toc-depth: 3
+    toc-location: left
+    toc-title: "Sumário do Livro"
+    number-sections: true
+    embed-resources: true
+    smooth-scroll: true
+    code-copy: true
+    code-fold: show
+    highlight-style: github
+---
+
+# Prefácio {.unnumbered}
+
+## Sobre Este Livro
+
+Este livro documenta a transição metodológica entre a prototipagem experimental e a engenharia de software de missão crítica assistida por Inteligência Artificial. Utilizando como estudo de caso a concepção, modelagem e implementação do ecossistema **`l10n_br_openeducat_capes`** — uma suíte de 9 submódulos que adapta o ERP educacional *OpenEduCat* e o framework *Odoo 19.0* à complexa legislação da pós-graduação *stricto sensu* brasileira —, a obra formaliza o paradigma do **Design-Driven Development (DDD)** (*Desenvolvimento Orientado por Design e Arquitetura Prévia*).
+
+A motivação central desta obra reside no diagnóstico de uma armadilha contemporânea na computação: a difusão do chamado *"vibe coding"*. Em sistemas corporativos regulados por normas estritas de órgãos fiscalizadores (como CAPES, MEC, Plataforma Sucupira/DAV e segurança jurídica do ato acadêmico perfeito), delegar o raciocínio arquitetural a prompts genéricos de IA gera débito técnico explosivo, esquemas de dados inconsistentes e vulnerabilidades legais insanáveis.
+
+Como contrapartida, apresentamos uma metodologia rigorosa em que:
+
+1. A **legislação e o domínio de negócio** são mapeados exaustivamente antes de qualquer linha de código.
+2. A **documentação arquitetural técnica** atua como a *fonte única da verdade* (Single Source of Truth - SSOT).
+3. A **implementação no ORM, views e frontend reativo (OWL)** é estritamente derivada das especificações formais.
+4. Uma **auditoria reversa pente-fino (*back-audit*)** confronta o código executável com os documentos canônicos, eliminando discrepâncias.
+5. Os **relatórios executivos e apresentações de alto nível** mantêm simetria com a realidade do banco de dados relacional.
+
+## Estrutura da Obra
+
+O livro está organizado em cinco capítulos progressivos e um compêndio de referências normativas:
+
+* [**Capítulo 1 — Visão Geral e Motivação**](01-visao-geral-e-motivacao.qmd): Examina o cenário da pós-graduação brasileira, a necessidade de soberania tecnológica via software livre e a insuficiência das abordagens informais (*vibe coding*) diante da conformidade legal estrita.
+* [**Capítulo 2 — Princípios do Design-Driven Development**](02-principios-design-driven.qmd): Apresenta os axiomas fundamentais do método, o ciclo de vida dos 6 passos de ouro e o papel do desenvolvedor sênior na governança e orquestração de agentes autônomos de IA.
+* [**Capítulo 3 — Arquitetura e Modelagem do Domínio**](03-arquitetura-e-modelagem.qmd): Detalha a topologia do monorepo em 9 submódulos, a extensão não destrutiva de 11 modelos nativos do Odoo e do OpenEduCat, e a modelagem formal de motores complexos (Produção Técnica e Tecnológica - PTT, Diploma Digital MEC, Governança Regimental e Gestão de Bolsas).
+* [**Capítulo 4 — Implementação, Contratos e Integridade**](04-implementacao-e-contratos.qmd): Demonstra a tradução dos modelos para o ORM Python, contratos de interfaces, livros-razão *append-only*, comutador multiprograma reativo em OWL, estratégias de dados sintéticos densos com 33 entidades relacionais e segurança via *Record Rules*.
+* [**Capítulo 5 — Lições Aprendidas e Guia Prático**](05-licoes-aprendidas.qmd): Sistematiza sete lições de engenharia de software para estudantes e pesquisadores, a anatomia de um caso real de depuração forense no Quarto/RevealJS e um checklist aplicável a projetos de graduação, pós-graduação e sistemas empresariais.
+* [**Referências e Fontes Normativas**](referencias.qmd): Consolida portarias federais (CAPES/MEC), preceitos constitucionais, documentações oficiais de frameworks e literaturas seminais de engenharia de software.
+
+::: {.callout-note}
+### Público-Alvo
+Esta obra destina-se a estudantes de Ciência da Computação e Engenharia de Software, pesquisadores acadêmicos, líderes técnicos, arquitetos de sistemas e gestores institucionais que buscam projetar e implementar sistemas empresariais robustos, auditáveis e resilientes com auxílio de Inteligência Artificial.
+:::
+
+
+
+
+---
+
+# Visão Geral e Motivação
+
+## O Cenário da Pós-Graduação Brasileira e a Necessidade de Soberania
+
+A pós-graduação *stricto sensu* no Brasil, compreendendo os programas de mestrado e doutorado acadêmicos e profissionais, constitui a espinha dorsal da produção científica e tecnológica nacional. Esse ecossistema é submetido a uma regulação rigorosa exercida pela **Coordenação de Aperfeiçoamento de Pessoal de Nível Superior (CAPES)** e pelo **Ministério da Educação (MEC)**.
+
+Diferentemente dos cursos de graduação ou de extensão — nos quais a gestão acadêmica limita-se majoritariamente ao registro de frequência e notas —, um Programa de Pós-Graduação (PPG) exige conformidade operacional com uma vasta teia de obrigações normativas:
+
+* **Avaliação Quadrienal e Coleta CAPES**: Envio contínuo e estruturado de dados para a **Plataforma Sucupira** e o sistema **DAV (Diretoria de Avaliação)**, compreendendo corpo docente, discentes matriculados e titulados, projetos de pesquisa financiados, produções intelectuais e técnicas.
+* **Governança Regimental Específica**: Cada PPG opera sob regimento próprio e versões curriculares dinâmicas, com regras heterogêneas de créditos mínimos, proficiência em línguas estrangeiras, prazos peremptórios para exames de qualificação e defesas de dissertação ou tese.
+* **Produção Técnica e Tecnológica (PTT)**: Exigência crescente, sobretudo nos mestrados e doutorados profissionais, de catalogação e avaliação de artefatos de impacto social e tecnológico (softwares, patentes, relatórios técnicos, protocolos e normas), submetidos a matrizes de ponderação complexas.
+* **Diplomação Digital e Segurança Jurídica**: Cumprimento das Portarias MEC nº 330/2018, 554/2019 e 70/2025, exigindo emissão de diplomas e históricos em formatos digitais assinados digitalmente no padrão XAdES com certificados ICP-Brasil, preservando a inviolabilidade do ato acadêmico.
+
+Historicamente, as Instituições de Ensino Superior (IES) brasileiras encontram-se presas em um dilema: ou contratam softwares proprietários de alto custo e código fechado — cujos fornecedores demoram meses para adaptar telas às portarias ministeriais —, ou mantêm sistemas legados obsoletos mantidos por equipes sobrecarregadas, culminando em planilhas paralelas desestruturadas e perda de pontuação nas avaliações quadrienais.
+
+A construção de um ecossistema de software livre e soberano, capaz de rodar na infraestrutura institucional e se amoldar às exigências do Estado brasileiro, tornou-se um imperativo estratégico para a soberania acadêmica.
+
+```mermaid
+flowchart TD
+    subgraph OrgaosReguladores["Órgãos Reguladores e Normas Federais"]
+        CAPES["CAPES / MEC<br/>(Portarias 81/2016, 133/2023, 70/2025)"]
+        Sucupira["Plataforma Sucupira / DAV<br/>(Coleta Quadrienal)"]
+        ICP["Infraestrutura de Chaves Públicas<br/>(ICP-Brasil / XAdES)"]
+    end
+
+    subgraph ERPInstitucional["Ecossistema Livre de Gestão (Odoo 19 + OpenEduCat 19)"]
+        Core["l10n_br_openeducat_capes_core<br/>(PIDs, Censo IBGE, Governança)"]
+        Academic["l10n_br_openeducat_capes_academic<br/>(Versões Regimentais & Livro-Razão)"]
+        Admission["l10n_br_openeducat_capes_admission<br/>(Editais & Heteroidentificação)"]
+        Research["l10n_br_openeducat_capes_research<br/>(Linhas & Projetos CNPq)"]
+        Thesis["l10n_br_openeducat_capes_thesis<br/>(Qualificações & Bancas)"]
+        PTT["l10n_br_openeducat_capes_ptt<br/>(4 Eixos & Estratos T1-T5)"]
+        Diploma["l10n_br_openeducat_capes_diploma<br/>(XML MEC & Histórico)"]
+        Scholarship["l10n_br_openeducat_capes_scholarship<br/>(Cotas & Avaliação Cega)"]
+        Integration["l10n_br_openeducat_capes_integration<br/>(APIs REST /api/capes/v1/dav/*)"]
+    end
+
+    CAPES --> ERPInstitucional
+    ERPInstitucional --> Sucupira
+    ERPInstitucional --> ICP
+```
+
+## O Colapso do "Vibe Coding" em Sistemas de Missão Crítica
+
+Com o surgimento de Modelos de Linguagem de Grande Escala (LLMs) integrados a Ambientes de Desenvolvimento Integrado (IDEs), consolidou-se uma prática que a indústria apelidou de *"vibe coding"*. Nessa abordagem, o desenvolvedor renuncia à modelagem formal, lança comandos genéricos no chat de IA (*"crie uma classe de discente para pós-graduação"*) e adota por tentativa e erro qualquer trecho gerado que pareça plausível à primeira vista.
+
+Em scripts de automação cotidiana ou protótipos descartáveis, o *vibe coding* entrega resultados rápidos. Entretanto, em **sistemas corporativos de missão crítica e regulação estrita**, essa prática conduz invariavelmente ao desastre técnico:
+
+1. **Débito Técnico Exponencial**: A IA cria modelos desconexos, inventa nomes de colunas com variações ortográficas sutis (`student_id` versus `discente_id`), duplica tabelas que já existem nativamente no ERP e quebra convenções essenciais de performance relacional (como decoradores `@api.depends` versus `@api.onchange` no ORM Odoo).
+2. **Alucinação Regulatória**: A IA projeta regras de negócio fictícias que violam normas legais explícitas. Exemplos observados na prática incluem permitir mais de três vínculos docentes permanentes em programas *stricto sensu* (violando a Portaria CAPES 81/2016), omitir campos obrigatórios de raça/cor exigidos pelo censo do IBGE, ou calcular prazos com fórmulas estáticas arbitrárias.
+3. **Fragmentação de Estado e Violação Legal**: Em sistemas jurídicos e contábeis, a deleção destrutiva (`unlink` / `DELETE`) de registros de aproveitamento de disciplinas ou vínculos viola o princípio do **ato jurídico perfeito** (Art. 5º, XXXVI da Constituição Federal). O *vibe coding* rotineiramente introduz operações destrutivas, destruindo a trilha de auditoria exigida pelo Ministério Público e pelos tribunais de contas.
+
+::: {.callout-warning}
+### Risco do Código sem Design
+A pressa em gerar código executável nos estágios embrionários transfere a resolução de inconsistências arquiteturais para a fase de produção. O custo de corrigir uma chave estrangeira mal modelada com o banco em produção é ordens de grandeza superior ao custo de ajustar uma linha de especificação técnica em um documento preliminar de design.
+:::
+
+## Por que OpenEduCat e Odoo 19?
+
+Para viabilizar uma solução viável e sustentável, evitou-se a tentação pueril de construir um sistema ERP educacional a partir do zero. A estratégia adotada fundamentou-se em **estender e tropicalizar** uma plataforma consagrada de software livre: o **OpenEduCat**, executado sobre o motor empresarial do **Odoo 19.0**.
+
+### Vantagens Estruturais da Pilha
+
+* **Motor Relacional Maduro**: O Odoo provê nativamente um ORM avançado em Python, persistência em PostgreSQL, controle transacional rigoroso, mensageria integrada de auditoria (`mail.thread`) e segurança baseada em permissões por modelo (`ir.model.access`) e linhas de banco de dados (*Record Rules* - `ir.rule`).
+* **Ecossistema Educacional Aberto**: O OpenEduCat disponibiliza abstrações fundamentadas no domínio acadêmico universal: alunos (`op.student`), professores (`op.faculty`), disciplinas (`op.subject`), turmas (`op.batch`), departamentos e calendários escolares.
+* **Componentes Especializados Disponíveis**: O catálogo do OpenEduCat já contemplava módulos como *Thesis* (gestão de teses), *Student Mentor* (orientação acadêmica), *E-Sign* (assinatura eletrônica de termos) e *Alumni* (acompanhamento de egressos).
+
+### Trade-offs Identificados
+
+| Dimensão Técnica | Benefício da Pilha | Limitação e Mitigação via Design |
+| :--- | :--- | :--- |
+| **Arquitetura de Herança** | Não há duplicação de dados básicos (endereços, cadastros de pessoas). | A herança desordenada pode introduzir dependências cíclicas entre submódulos. Mitigado pela topologia estrita de monorepo. |
+| **Curva de Aprendizado** | Framework completo de frontend reativo (OWL) e backend (ORM Python). | Exige conhecimento especializado de decorators e ciclo de vida do framework. Mitigado por contratos de interface explícitos. |
+| **Conformidade Regulatória** | O Odoo é agnóstico à legislação de países específicos. | Módulos internacionais não conhecem o vocabulário CAPES/MEC. Mitigado pela criação da suíte `l10n_br_openeducat_capes`. |
+
+## O Estudo de Caso: Do Piloto MPTRCS à Universidade Complexa
+
+O desenvolvimento do ecossistema documentado neste livro utilizou como ambiente de validação inicial o **Mestrado Profissional em Tecnologia das Radiações em Ciências da Saúde (MPTRCS)**, sediado no **IPEN-CNEN/SP** (Instituto de Pesquisas Energéticas e Nucleares).
+
+O MPTRCS apresentava características ideais para teste de estresse do modelo conceitual:
+1. Programa de pós-graduação *stricto sensu* nota 4 na CAPES, com demanda intensa de registro de Produção Técnica e Tecnológica (PTT).
+2. IES de natureza não-universitária (Instituto de Pesquisa vinculado à Comissão Nacional de Energia Nuclear - CNEN), exigindo que a diplomação digital possuísse tramitação híbrida com registro externo em universidade registradora parceira (Universidade de São Paulo - USP).
+3. Convivência de docentes credenciados em múltiplos programas e discentes com diferentes versões de regimento interno.
+
+Conforme o design do sistema amadureceu, o modelo foi submetido a um segundo desafio: a expansão para **Universidades Multiprograma Complexas** (como o cenário sintético da Universidade XYZQ), nas quais múltiplos programas de pós-graduação convivem na mesma instituição, compartilhando infraestrutura e professores, porém exigindo segregação total de visão acadêmica e dados confidenciais por parte das secretarias departamentais.
+
+::: {.callout-note}
+### Racional do Design Driven Development
+O sucesso do projeto residiu na recusa terminante em codificar funcionalidades antes que o ecossistema estivesse matematicamente modelado em documentos textuais e diagramas canônicos. O design foi a fonte única da verdade que guiou tanto o backend quanto o frontend e a governança executiva.
+:::
+
+
+---
+
+# Princípios do Design-Driven Development
+
+## O Manifesto do Design-Driven Development (DDD)
+
+O **Design-Driven Development (DDD)** — no escopo desta obra compreendido como a confluência entre a modelagem rica de domínio (*Domain-Driven Design*) e a arquitetura formal prévia (*Documentation-First Architecture*) assistida por Inteligência Artificial — estabelece que **nenhum código de produção deve ser redigido antes que o modelo conceitual, os contratos de interface e as regras regulatórias estejam formalmente documentados e validados**.
+
+Em contraposição à cultura da experimentação indiscriminada (*vibe coding*), o DDD define o documento arquitetural não como um memorial descritivo passivo pós-fato, mas como o **código-fonte primário da inteligência do sistema**. Quando se trabalha com agentes autônomos de IA (LLMs), a qualidade da especificação formal determina de maneira determinística a qualidade do código gerado.
+
+```mermaid
+flowchart TD
+    subgraph FaseConceitual["1. Domínio & Especificação"]
+        Regulacao["Mapeamento Normativo<br/>(CAPES, MEC, Regimento)"]
+        DocOuro["Documentação Arquitetural Ouro<br/>(Modelos, Diagramas, Contratos)"]
+        Impacto["Análise de Impacto<br/>(Dependências & Herança)"]
+    end
+
+    subgraph FaseExecutiva["2. Materialização & Teste"]
+        Implementacao["Implementação Estrita<br/>(ORM Python, Views, OWL)"]
+        CargaSintetica["Validação com Dados Sintéticos<br/>(Escala Real & Integridade)"]
+        BackAudit["Auditoria Reversa Pente-Fino<br/>(Código vs. Arquitetura)"]
+    end
+
+    subgraph FaseGovernanca["3. Entrega & Sincronização"]
+        Commit["GitOps Atômico Dual-Remote<br/>(GitLab Institucional + GitHub)"]
+        SincExecutiva["Sincronização Executiva & Pitch<br/>(Simetria Semântica com o Banco)"]
+    end
+
+    Regulacao --> DocOuro
+    DocOuro --> Impacto
+    Impacto --> Implementacao
+    Implementacao --> CargaSintetica
+    CargaSintetica --> BackAudit
+    BackAudit -->|Inconsistência| DocOuro
+    BackAudit -->|Aprovado| Commit
+    Commit --> SincExecutiva
+```
+
+## Os Seis Passos de Ouro do Ciclo DDD
+
+Durante o desenvolvimento do ecossistema educacional, o Arquiteto Humano e o Agente de IA operaram sob um protocolo rigoroso de seis fases sequenciais:
+
+### 1. Mapeamento da Base Regulatória Formal
+Antes de estruturar qualquer entidade no banco de dados, o engenheiro realiza a engenharia reversa das leis, portarias e manuais dos órgãos fiscalizadores. No caso brasileiro:
+* Portaria CAPES nº 81/2016 (normas de credenciamento docente e teto de vínculos permanentes).
+* Portarias CAPES nº 133/2023 e 158/2023 (acumulação de bolsas e atividade remunerada).
+* Portarias MEC nº 330/2018, 554/2019 e 70/2025 (infraestrutura do Diploma Digital).
+* Dicionários de Dados da Plataforma Sucupira e Coleta DAV.
+
+### 2. Redação da Documentação Arquitetural Ouro
+Criação dos memoriais técnicos em arquivos textuais versionados (`.md` / `.qmd`). O documento deve conter diagramas de entidade-relacionamento, especificações de campos com restrições (`required`, `readonly`, `tracking`), máquinas de estado e diagramas de sequência das operações críticas.
+
+### 3. Análise de Impacto no Ecossistema
+Identificação explícita dos modelos já existentes no framework base (Odoo) ou nos pacotes de terceiros (OpenEduCat). Para cada modelo a ser estendido, o engenheiro responde:
+* Quais campos estão sendo injetados?
+* Há risco de sobrescrita de métodos nativos sem chamar `super()`?
+* Quais regras de acesso (`ir.rule`) são necessárias para garantir a segregação de dados?
+
+### 4. Implementação Estrita no ORM e Views
+O agente de IA é acionado com instruções restritas: *"Codifique os modelos estritamente conforme a seção X do documento de arquitetura. É terminantemente proibido criar tabelas ou campos não documentados."* O código gerado deve conter tipagem forte, constraints de integridade (`@api.constrains`) e rastreamento de auditoria (`tracking=True`).
+
+### 5. Teste de Estresse com Dados Sintéticos Densos
+Rejeição imediata de testes com dados triviais (*"Aluno Teste 1"*). Criação de geradores de dados sintéticos determinísticos e complexos, contendo turmas inteiras, anos letivos passados, docentes em múltiplos programas e discentes com diferentes níveis de integralização curricular.
+
+### 6. Auditoria Reversa Pente-Fino (*Back-Audit*)
+Confronto exaustivo entre o código-fonte executável e o documento de arquitetura. Se o código implementou uma validação que não estava documentada, a arquitetura é atualizada; se o código omitiu uma regra descrita no memorial técnico, o código é retificado. Somente após a perfeita convergência entre ambos é realizado o commit Git atômico.
+
+## Os Três Axiomas Inegociáveis da Arquitetura
+
+Para preservar a integridade matemática e jurídica do sistema, três princípios fundamentais foram instituídos como inegociáveis:
+
+### Axioma 1: Proibição Absoluta de Hardcode Regimental
+
+Em sistemas convencionais, é frequente encontrar lógicas condicionais estáticas em Python, tais como:
+
+```python
+# MÁ PRÁTICA: HARDCODE REGIMENTAL
+if student.course_type == 'master' and student.months_enrolled > 24:
+    raise ValidationError("Prazo de mestrado estourado!")
+```
+
+Esse padrão é catastrófico no ambiente acadêmico. Um programa pode alterar seu prazo de mestrado de 24 para 30 meses em uma reunião de Congregação; discentes de turmas distintas ingressam sob regimentos diferentes; prazos de trancamento variam por área de conhecimento.
+
+**Solução DDD**: O sistema introduziu a entidade `op.curriculum.version` (Versão Curricular Regimental). Toda e qualquer regra temporal, fator de crédito ou quórum de banca é consultado dinamicamente no objeto regimental associado à matrícula específica do discente.
+
+```mermaid
+flowchart LR
+    Discente["Discente<br/>(op.student)"] --> Matricula["Matrícula no Curso<br/>(op.student.course)"]
+    Matricula --> VersaoCurricular["Versão Curricular Regimental<br/>(op.curriculum.version)"]
+    VersaoCurricular --> RegrasPrazos["Prazos Regulares e Prorrogações"]
+    VersaoCurricular --> RegrasCreditos["Pesos e Mínimos de Disciplinas/PTT"]
+    VersaoCurricular --> RegrasBancas["Quórum Mínimo e Titulação Exigida"]
+```
+
+### Axioma 2: Imutabilidade e Append-Only em Livros-Razão
+
+A operação destrutiva `DELETE` (`unlink` no Odoo) é estritamente proibida em entidades que conferem direitos jurídicos ou titulação acadêmica. 
+
+Se um discente cursa uma disciplina e posteriormente solicita equivalência de créditos externos, a nota original jamais é apagada do banco. O sistema utiliza uma arquitetura de livro-razão (*ledger*) puramente *append-only* (`op.student.credit.ledger`). 
+
+Eventuais anulações, transferências ou revalidações são registradas como **novas linhas de movimentação com valor negativo ou corretivo**, vinculadas à portaria deliberativa da comissão de pós-graduação. Isso garante auditabilidade forense integral perante a CAPES, o MEC e o Ministério Público.
+
+::: {.callout-note}
+### Decisão de Design: Livros-Razão Append-Only
+A mesma filosofia de livro-razão foi aplicada à governança do corpo docente em `op.faculty.category.ledger`. Quando um professor transita da categoria de *Colaborador* para *Permanente*, não se altera o registro existente: registra-se um evento de transição com a ata da Congregação e a data de eficácia jurídica.
+:::
+
+### Axioma 3: Respeito ao Ato Jurídico Perfeito e Não-Retroatividade
+
+Conforme a jurisprudência consolidada dos tribunais superiores brasileiros, não existe direito adquirido a regime jurídico institucional: a universidade detém autonomia para atualizar seus regimentos pedagógicos e elevar critérios de excelência a qualquer momento.
+
+Entretanto, essa faculdade encontra barreira intransponível na proteção ao **ato jurídico perfeito** (Art. 5º, XXXVI da CF/88): etapas formativas já integralizadas e registradas sob o império da norma anterior não podem ser invalidadas.
+
+| Situação Acadêmica | Natureza Jurídica | Comportamento do Sistema |
+| :--- | :--- | :--- |
+| **Disciplinas já cursadas e aprovadas** | Ato Jurídico Perfeito | Créditos permanecem intocados no livro-razão, mesmo se a disciplina for extinta na nova grade. |
+| **Exame de qualificação já homologado** | Ato Jurídico Perfeito | Não se exige reavaliação sob novos critérios introduzidos posteriormente. |
+| **Prazo de defesa ainda não atingido** | Expectativa de Direito | Aplica-se a regra da nova versão curricular, salvo se houver cláusula de transição regimental expressa. |
+
+## O Papel do Arquiteto Humano na Governança da IA
+
+O paradigma Design-Driven Development redefine a atuação do desenvolvedor em tempos de Inteligência Artificial: o profissional deixa de ser um mero digitador de sintaxe para assumir a postura de **Arquiteto de Sistemas e Auditor Crítico**.
+
+A governança do agente de IA requer:
+1. **Comandos Imperativos e Delimitados**: O engenheiro formula instruções de alta especificidade, delimitando arquivos alvo, modelos a inspecionar e padrões de saída esperados.
+2. **Exigência de Rastreabilidade**: Cada alteração de código deve ser justificada à luz do documento arquitetural. Snippets que não apresentem correspondência na documentação são prontamente rejeitados.
+3. **Análise Forense de Falhas**: Diante de erros em tempo de execução (como violações de chave ou exceções no frontend OWL), o engenheiro não pede *"conserte esse erro"*; ele fornece o traceback completo, diagnostica a camada subjacente e instrui a retificação da causa raiz.
+
+
+---
+
+# Arquitetura e Modelagem do Domínio
+
+## A Topologia do Monorepo e os 9 Submódulos
+
+O ecossistema `l10n_br_openeducat_capes` foi estruturado sob o padrão arquitetural de **monorepo modular**. Em vez de concentrar centenas de tabelas em um único pacote monolítico ou pulverizar o código em repositórios desconexos, o sistema divide-se em **nove submódulos especializados**, garantindo alto desacoplamento e isolamento de responsabilidades.
+
+```mermaid
+flowchart TD
+    Core["l10n_br_openeducat_capes_core<br/>(PIDs, Censo IBGE, Governança Multiprograma)"]
+    Academic["l10n_br_openeducat_capes_academic<br/>(Versões Regimentais, Livro-Razão)"]
+    Admission["l10n_br_openeducat_capes_admission<br/>(Editais, Cotas, Heteroidentificação)"]
+    Research["l10n_br_openeducat_capes_research<br/>(Áreas CAPES, Linhas CNPq, Projetos)"]
+    Thesis["l10n_br_openeducat_capes_thesis<br/>(Bancas, Qualificação, Defesa)"]
+    PTT["l10n_br_openeducat_capes_ptt<br/>(Motor 4 Eixos, Estratos T1-T5)"]
+    Diploma["l10n_br_openeducat_capes_diploma<br/>(XML MEC, Assinatura ICP, Histórico)"]
+    Integration["l10n_br_openeducat_capes_integration<br/>(APIs REST /api/capes/v1/dav/*)"]
+    Scholarship["l10n_br_openeducat_capes_scholarship<br/>(Cotas de Bolsas, Avaliação Cega)"]
+
+    Core --> Academic
+    Core --> Admission
+    Core --> Scholarship
+    Core --> Integration
+    Academic --> Research
+    Academic --> Thesis
+    Admission --> Thesis
+    Research --> Thesis
+    Thesis --> PTT
+    Thesis --> Diploma
+    Core --> PTT
+    Core --> Diploma
+    Admission --> Scholarship
+    Academic --> Scholarship
+    PTT --> Integration
+```
+
+### Matriz de Responsabilidades dos Submódulos
+
+| Submódulo | Dependências | Responsabilidade Primária de Negócio |
+| :--- | :--- | :--- |
+| **`core`** | `openeducat_core` | Identificadores persistentes (CNPJ, e-MEC, ROR, ISNI), censo demográfico (CPF com Módulo 11, ORCiD ISO 7064, raça/cor IBGE, PCD), governança multiprograma (`res.users`, `ir.http`) e trava da Portaria CAPES 81/2016. |
+| **`academic`** | `core`, `mail` | Gestão da vida discente e docente, versionamento regimental de currículos (`op.curriculum.version`), livro-razão de créditos *append-only* (`op.student.credit.ledger`), PHEA e governança de colegiados (CPG). |
+| **`admission`** | `core`, `academic` | Editais de processos seletivos *stricto sensu*, reserva de vagas (cotas étnico-raciais e PCD), bancas de heteroidentificação, pontuação de currículo lattes e plano de trabalho discente (`op.student.work_plan`). |
+| **`research`** | `academic`, `project` | Pesquisa institucional: áreas de concentração e avaliação CAPES, linhas de pesquisa institucionais, grupos certificados no CNPq e integração com projetos de fomento no Odoo Project (`project.project`). |
+| **`thesis`** | `academic`, `admission`, `research` | Ritos de passagem: exames de qualificação, comissões examinadoras de defesa, verificação algorítmica de quórum regimental e repositório de teses e dissertações. |
+| **`ptt`** | `core`, `academic`, `thesis` | Produção Técnica e Tecnológica: catalogação conforme taxonomia CAPES e cálculo matricial de pontuação em 4 eixos (Aderência, Impacto, Inovação, Complexidade) com estratificação T1 a T5/TNC. |
+| **`diploma`** | `core`, `academic`, `thesis` | Emissão e registro de diplomas conforme Portarias MEC 330/2018, 554/2019 e 70/2025: geração do XML assinado em XAdES com certificado ICP-Brasil, representação visual em PDF com QR-Code de validação e controle de tramitação externa para IES não-universitárias. |
+| **`integration`** | `core`, `ptt` | Barramento de interoperabilidade e exportação: rotas REST `/api/capes/v1/dav/*` autenticadas via Bearer Token e relatórios padronizados para alimentação da Coleta CAPES / Sucupira. |
+| **`scholarship`** | `core`, `academic`, `admission`, `mail` | Governança de bolsas de fomento: cotas por agência (CAPES, CNPq, FAPs), editais de seleção, avaliação cega concorrente por múltiplos pareceristas, termos de compromisso e regras de acúmulo (Portarias 81/2016, 133/2023 e 158/2023). |
+
+## Decisão Arquitetural (ADR): Multiprograma Lógico vs. Multicompany Odoo
+
+Um dos momentos mais decisivos do projeto ocorreu diante do seguinte dilema arquitetural: *como representar uma universidade complexa que abriga dezenas de Programas de Pós-Graduação (PPGs), cada um com regras próprias, mas compartilhando docentes e disciplinas?*
+
+### Opções Avaliadas
+
+* **Opção A: Abordagem Multicompany Nativa do Odoo**
+  * *Mecanismo*: Modelar cada programa de pós-graduação como uma `res.company` independente no banco de dados.
+  * *Vantagens aparentes*: Isolamento imediato de telas através do filtro nativo de empresas do Odoo.
+  * *Desvantagens fatais*: Criação de barreiras severas ao compartilhamento de docentes e discentes; duplicação burocrática de tabelas de disciplinas e departamentos; overhead computacional extremo; e complexidade insustentável para professores credenciados em múltiplos programas.
+* **Opção B: Hierarquia com Multiprograma Lógico e Record Rules (Selecionada)**
+  * *Mecanismo*: A Universidade como um todo é mantida como a única entidade `res.company`. Cria-se a entidade de domínio `op.program.capes` vinculada ao catálogo acadêmico. A segregação de acesso é realizada por **regras de registro (*Record Rules* - `ir.rule`)** associadas ao contexto ativo do usuário (`current_program_id`).
+  * *Vantagens*: Docentes e discentes existem como registros unificados no banco de dados; disciplinas e turmas podem ser transversais; e os usuários alternam de programa instantaneamente através de um comutador reativo na barra superior (*Systray*) construído em OWL.
+
+::: {.callout-note}
+### Decisão Arquitetural Registrada (ADR)
+Adotou-se a **Opção B**. O isolamento lógico por Record Rules preserva a coesão do banco de dados relacional e reflete fielmente a estrutura das Pró-Reitorias de Pós-Graduação, onde a reitoria é a IES e os programas são unidades operacionais com autonomia pedagógica.
+:::
+
+## Os 11 Modelos Nativos do Odoo e OpenEduCat Estendidos
+
+Para evitar a redundância de tabelas e assegurar a compatibilidade com a suíte padrão, o ecossistema estendeu 11 modelos canônicos via herança do ORM (`_inherit`):
+
+```mermaid
+classDiagram
+    class op_student {
+        +Char ra_number
+        +Char cpf
+        +Char orcid
+        +Many2one current_program_id
+        +Many2one advisor_id
+        +Selection capes_status
+        +One2many credit_ledger_ids
+        +action_view_360()
+    }
+    class op_faculty {
+        +Selection work_regime
+        +Selection degree_level
+        +Char lattes_url
+        +One2many program_link_ids
+        +Char programs_summary
+        +check_max_permanent_programs()
+    }
+    class op_subject {
+        +Float credit_hours
+        +Text syllabus
+        +Text basic_bibliography
+        +Boolean is_phea_remote
+    }
+    class res_partner {
+        +Char cpf_validated
+        +Char orcid_iso7064
+        +Selection ibge_race_color
+        +Boolean is_pcd
+        +Char mother_name
+    }
+    class res_users {
+        +Many2many allowed_program_ids
+        +Many2one current_program_id
+        +Boolean is_central_admin
+        +action_switch_program()
+    }
+    class op_batch {
+        +Many2one program_id
+    }
+    class op_student_course {
+        +Selection course_type
+        +Many2one curriculum_version_id
+        +Date max_defense_date
+    }
+    class res_company {
+        +Char cnpj
+        +Char emec_code
+        +Char capes_ies_code
+        +Char ror_id
+    }
+    class ir_http {
+        +session_info()
+    }
+    class project_project {
+        +Many2one capes_research_project_id
+    }
+    class mail_thread {
+        +message_post()
+        +activity_schedule()
+    }
+```
+
+1. **`op.student`**: Enriquecido com RA institucional permanente, chave estrangeira para o programa ativo, orientador principal, status perante a CAPES e livro-razão de créditos com botões de visão 360°.
+2. **`op.faculty`**: Adicionados PIDs, regime de trabalho (20h, 40h, Dedicação Exclusiva), titulação máxima, vínculos interinstitucionais (`op.faculty.program.link`) e o resumo computado `programs_summary` com trava da Portaria CAPES 81/2016.
+3. **`op.subject`**: Sincronização de créditos com pesos avaliativos, ementa curricular, bibliografia básica e complementar e indicador de oferta remota emergencial (PHEA).
+4. **`op.batch`**: Associação explícita da turma com o programa de pós-graduação correspondente (`program_id`).
+5. **`op.student.course`**: Multi-vínculo com o tipo de curso (`master_prof`, `master_acad`, `phd_prof`, `phd_acad`), versão regimental de currículo e balizas de prazo de defesa.
+6. **`res.company`**: Metadados de identificação institucional nacional e internacional (CNPJ, código e-MEC, código da IES na CAPES, ROR e ISNI).
+7. **`res.partner`**: Censo biográfico e demográfico exigido pelo DAV/Coleta CAPES (CPF com algoritmo Módulo 11, ORCiD com validação ISO 7064, raça/cor IBGE, deficiência/PCD e filiação).
+8. **`res.users`**: Governança de permissões multiprograma (`allowed_program_ids`, `current_program_id`, indicador de administrador da Pró-Reitoria e método de comutação).
+9. **`ir.http`**: Interceptação do método `session_info()` do Odoo Web para disponibilizar o contexto do programa ativo no frontend reativo OWL.
+10. **`project.project`**: Integração de projetos de pesquisa *stricto sensu* aos projetos de financiamento gerenciados no módulo nativo Project.
+11. **`mail.thread` / `mail.activity.mixin`**: Rastreabilidade cronológica e agendamento de tarefas em todos os modelos transacionais.
+
+## Modelagem de Domínio dos Pilares Críticos
+
+### 1. O Motor da Produção Técnica e Tecnológica (PTT)
+
+Nos programas profissionais, a avaliação da CAPES não se restringe à produção bibliográfica convencional. O submódulo `l10n_br_openeducat_capes_ptt` implementou a taxonomia oficial da CAPES (subdividida em 4 eixos ponderados):
+
+$$\text{Pontuação PTT} = 0.25 \times \text{Aderência} + 0.30 \times \text{Impacto} + 0.25 \times \text{Inovação} + 0.20 \times \text{Complexidade}$$
+
+Cada eixo é avaliado em uma escala de 0 a 100 pontos por pareceristas designados. O sistema consolida a nota final e realiza o enquadramento automático nos estratos:
+
+* **T1**: Pontuação $\ge 85$ (Impacto de referência nacional/internacional)
+* **T2**: Pontuação $\ge 70$ e $< 85$
+* **T3**: Pontuação $\ge 55$ e $< 70$
+* **T4**: Pontuação $\ge 40$ e $< 55$
+* **T5**: Pontuação $\ge 25$ e $< 40$
+* **TNC (Não Classificado)**: Pontuação $< 25$
+
+### 2. A Esteira Dual de Diplomação Digital MEC
+
+Em conformidade com as Portarias MEC 330/2018, 554/2019 e a novel Portaria 70/2025, o submódulo `l10n_br_openeducat_capes_diploma` foi concebido para atender a duas realidades jurídicas distintas:
+
+```mermaid
+flowchart TD
+    Inicio["Aprovação na Defesa e Integralização de Créditos"] --> Dossiê["Montagem do Dossiê Acadêmico"]
+    Dossiê --> DecisaoTipoIES{"Tipo de Instituição (IES)?"}
+    
+    DecisaoTipoIES -->|Universidade Plena| RegistroInterno["Emissão de Livro/Folha Internos"]
+    RegistroInterno --> AssinaturaXAdES["Assinatura Digital XML XAdES (ICP-Brasil)"]
+    
+    DecisaoTipoIES -->|Instituto de Pesquisa / IES Não-Universitária<br/>(Ex: IPEN)| TramitacaoExterna["Tramitação Externa do Dossiê para a Universidade Registradora (Ex: USP)"]
+    TramitacaoExterna --> ProtocoloExterno["Protocolo e Inserção do Número de Registro Homologado"]
+    ProtocoloExterno --> AssinaturaXAdES
+    
+    AssinaturaXAdES --> PDFVisual["Geração da Representação Visual em PDF com QR-Code de Validação e Histórico Oficial"]
+    PDFVisual --> Arquivamento["Arquivamento Permanente e Auditoria"]
+```
+
+Além disso, o modelo preserva compatibilidade com o formato de **emissão física tradicional (pergaminho/papel)** através do campo `issuance_format`, haja vista que o MEC ainda conclui a normatização total do diploma digital para todos os ramos da pós-graduação *stricto sensu*.
+
+### 3. Governança de Bolsas de Fomento e Acúmulos
+
+O submódulo `l10n_br_openeducat_capes_scholarship` respondeu a uma necessidade premente das secretarias de pós-graduação: a gestão de cotas concedidas por agências financiadoras (CAPES PROEX/PROAP, CNPq, FAPESP) sem assumir a execução bancária (que é realizada diretamente pela agência ao bolsista).
+
+O modelo assegura:
+* **Editais com Rubricas**: Definição de notas mínimas, pesos e critérios de desempate.
+* **Avaliação Cega Concorrente**: Distribuição de inscrições a múltiplos docentes avaliadores em paralelo, com segregação total das notas entre si até a homologação da comissão.
+* **Termo de Compromisso e Acúmulos**: Validação automática dos requisitos das Portarias CAPES 81/2016, 133/2023 e 158/2023, permitindo o acúmulo de bolsa com atividade remunerada ou vínculo empregatício somente quando houver anuência do orientador e compatibilidade de carga horária demonstrada em sistema.
+
+
+---
+
+# Implementação, Contratos e Integridade
+
+## Do Modelo Conceitual ao ORM Odoo
+
+A implementação no paradigma Design-Driven Development não admite improvisações de sintaxe. Uma vez consolidada a especificação arquitetural, o código em Python (ORM Odoo), XML (Views e Segurança) e JavaScript (OWL) opera como uma materialização direta dos contratos pré-estabelecidos.
+
+Nesta seção, examinamos a anatomia dos principais contratos e mecanismos de integridade desenvolvidos na suíte `l10n_br_openeducat_capes`.
+
+## Contratos de Dados e Integridade Relacional
+
+### 1. O Livro-Razão Append-Only de Créditos Acadêmicos
+
+Para garantir a imutabilidade do histórico escolar e a conformidade com o princípio do ato jurídico perfeito, o modelo `op.student.credit.ledger` proíbe o descarte de linhas via método `unlink()` e exige justificativa formal para qualquer movimentação de ajuste:
+
+```python
+from odoo import models, fields, api
+from odoo.exceptions import UserError, ValidationError
+
+class OpStudentCreditLedger(models.Model):
+    _name = 'op.student.credit.ledger'
+    _description = 'Livro-Razão de Movimentação de Créditos Acadêmicos (Append-Only)'
+    _order = 'transaction_date desc, id desc'
+
+    student_id = fields.Many2one(
+        'op.student', string='Discente', required=True, index=True, ondelete='restrict'
+    )
+    transaction_date = fields.Date(
+        string='Data da Movimentação', default=fields.Date.context_today, required=True
+    )
+    movement_type = fields.Selection([
+        ('coursework', 'Disciplina Regular Concluída'),
+        ('transfer', 'Aproveitamento de Créditos Externos'),
+        ('ptt', 'Integralização via Produção Técnica (PTT)'),
+        ('adjustment', 'Ajuste Deliberado pela CPG/Congregação'),
+        ('cancellation', 'Estorno de Créditos Indevidos')
+    ], string='Tipo de Lançamento', required=True)
+
+    credits_delta = fields.Float(
+        string='Variação de Créditos', required=True,
+        help='Valor positivo para concessão; valor negativo para estorno/ajuste.'
+    )
+    regulatory_justification = fields.Char(
+        string='Ato Legal / Ata Deliberativa', required=True,
+        help='Número da portaria ou ata da CPG que autorizou o lançamento.'
+    )
+
+    def unlink(self):
+        for record in self:
+            raise UserError(
+                "Violação de Integridade: É estritamente vedada a exclusão física "
+                "de lançamentos no Livro-Razão de Créditos. Registre um lançamento "
+                "de estorno (cancellation) devidamente motivado."
+            )
+```
+
+::: {.callout-note}
+### Garantia de Auditoria
+A interceptação do método `unlink()` assegura que nem mesmo um usuário com privilégios de administrador possa apagar registros de créditos, forçando uma trilha de auditoria contábil completa.
+:::
+
+### 2. A Trava Regulatória da Portaria CAPES 81/2016
+
+A Portaria CAPES nº 81/2016 estabelece que um docente só pode atuar como membro permanente em no máximo 3 programas de pós-graduação *stricto sensu*. O modelo `op.faculty` aplica essa restrição através de uma constraint relacional do ORM:
+
+```python
+class OpFaculty(models.Model):
+    _inherit = 'op.faculty'
+
+    program_link_ids = fields.One2many(
+        'op.faculty.program.link', 'faculty_id', string='Vínculos com Programas de Pós'
+    )
+    programs_summary = fields.Char(
+        string='Resumo de Programas', compute='_compute_programs_summary', store=True
+    )
+
+    @api.constrains('program_link_ids')
+    def _check_max_permanent_programs(self):
+        for faculty in self:
+            # Considera vínculos internos ativos e declarações de vínculos externos
+            permanent_links = faculty.program_link_ids.filtered(
+                lambda l: l.category == 'permanent' and l.is_active
+            )
+            if len(permanent_links) > 3:
+                raise ValidationError(
+                    f"Violação da Portaria CAPES 81/2016: O docente {faculty.name} "
+                    f"está associado como Permanente a {len(permanent_links)} programas. "
+                    "O teto legal permitido em território nacional é de no máximo 3 programas."
+                )
+```
+
+## O Comutador Multiprograma: Sessão HTTP e Frontend OWL
+
+A implementação da arquitetura multiprograma exigiu a sincronização entre a camada de persistência em Python e o frontend reativo do Odoo 19 em OWL (*Odoo Web Library*).
+
+### Injeção no Contexto de Sessão (`ir.http`)
+
+O método `session_info()` foi interceptado para alimentar o payload JSON entregue ao navegador:
+
+```python
+class IrHttp(models.AbstractModel):
+    _inherit = 'ir.http'
+
+    def session_info(self):
+        result = super(IrHttp, self).session_info()
+        user = self.env.user
+        if user.has_group('base.group_user'):
+            result['capes_multiprogram'] = {
+                'allowed_programs': [{
+                    'id': p.id,
+                    'name': p.name,
+                    'code': p.capes_code
+                } for p in user.allowed_program_ids],
+                'current_program_id': user.current_program_id.id or False,
+                'is_central_admin': user.is_central_admin,
+            }
+        return result
+```
+
+### Componente Reativo Systray em OWL
+
+No frontend, um componente JavaScript foi inserido na barra de utilitários superior (`Systray`), renderizando a lista suspensa de programas autorizados e disparando a ação de comutação sem recarregar o sistema inteiro:
+
+```javascript
+/** @odoo-module **/
+import { Component, useState } from "@odoo/owl";
+import { registry } from "@web/core/registry";
+import { useService } from "@web/core/utils/hooks";
+
+export class ProgramMenu extends Component {
+    static template = "l10n_br_openeducat_capes.ProgramMenu";
+    
+    setup() {
+        this.orm = useService("orm");
+        this.action = useService("action");
+        const session = odoo.session_info.capes_multiprogram || {};
+        this.state = useState({
+            programs: session.allowed_programs || [],
+            currentProgramId: session.current_program_id || null,
+        });
+    }
+
+    async onSelectProgram(programId) {
+        if (programId === this.state.currentProgramId) return;
+        await this.orm.call("res.users", "action_switch_program", [[], programId]);
+        this.action.doAction({ type: "ir.actions.client", tag: "reload" });
+    }
+}
+
+registry.category("systray").add("capes_program_menu", {
+    Component: ProgramMenu,
+    sequence: 50,
+});
+```
+
+## Barramento de Interoperabilidade e APIs REST DAV
+
+O submódulo `l10n_br_openeducat_capes_integration` expõe endpoints REST protegidos por autenticação Bearer Token para permitir que a Pró-Reitoria e robôs da CAPES realizem a extração de dados brutos:
+
+```python
+from odoo import http
+from odoo.http import request
+
+class DavExportController(http.Controller):
+
+    @http.route('/api/capes/v1/dav/programs/<int:program_id>/summary', 
+                type='http', auth='none', methods=['GET'], csrf=False)
+    def export_program_summary(self, program_id, **kwargs):
+        auth_header = request.httprequest.headers.get('Authorization')
+        if not self._validate_token(auth_header):
+            return request.make_response('{"error": "Unauthorized"}', status=401)
+        
+        program = request.env['op.program.capes'].sudo().browse(program_id)
+        if not program.exists():
+            return request.make_response('{"error": "Not Found"}', status=404)
+
+        data = program._export_dav_json_payload()
+        return request.make_response(
+            json.dumps(data), headers=[('Content-Type', 'application/json')]
+        )
+```
+
+## A Estratégia de Dados Sintéticos Determinísticos
+
+Um dos erros mais comuns em projetos universitários é a validação de software com conjuntos de dados triviais. Quando um desenvolvedor testa um ERP com três alunos fictícios, 95% das falhas de concorrência, junções relacionais e limites regimentais permanecem ocultas.
+
+Para validar o ecossistema, foi desenvolvido o script `scripts/gerador_dados_sinteticos.py`, que adota os seguintes princípios:
+
+```mermaid
+flowchart LR
+    Seed["Seed Determinístico<br/>(random.seed(42))"] --> Infra["Infraestrutura Acadêmica<br/>(Anos, Termos, Departamentos, Cursos)"]
+    Infra --> Pessoas["Corpo Social<br/>(86 Discentes, 24 Docentes, CPG)"]
+    Pessoas --> Eventos["Eventos Acadêmicos<br/>(Disciplinas, Créditos, Bancas, PTT)"]
+    Eventos --> Validador["Script de Auditoria Forense<br/>(validar_integridade_sintetica.py)"]
+    Validador -->|0 Erros| Carga["Carga via CSV no Odoo"]
+```
+
+* **Determinismo Absoluto**: Uso de semente fixa (`random.seed(42)`), garantindo que os mesmos cenários de teste sejam reproduzíveis em qualquer máquina ou pipeline de Integração Contínua.
+* **Cobertura Relacional Completa**: Geração de **33 entidades relacionais interconectadas**, abrangendo desde o cadastro demográfico com CPFs e ORCiDs algorítmicamente válidos até atas de reuniões mensais da Comissão de Pós-Graduação (CPG) com quórum formal.
+* **Validação Forense Prévia**: Criação do script `scripts/validar_integridade_sintetica.py`, que executa a verificação prévia de todas as chaves estrangeiras e campos obrigatórios antes que qualquer arquivo CSV seja submetido ao container Odoo, garantindo índice zero de falhas na inicialização do banco.
+
+## Matriz de Permissões e Segurança de Linha (*Record Rules*)
+
+Para viabilizar que secretarias de departamentos distintos operem no mesmo sistema sem vazamento de informações confidenciais, foram combinados dois mecanismos:
+
+1. **Permissões por Modelo (`ir.model.access.csv`)**: Estabelece privilégios CRUD (Create, Read, Update, Delete) com base em grupos de acesso formais:
+   * *Grupo Discente*: Leitura estrita da sua própria vida acadêmica e editais públicos.
+   * *Grupo Docente / Avaliador*: Acesso aos seus orientandos e às inscrições a ele distribuídas para avaliação cega.
+   * *Grupo Secretaria de Programa*: Operação acadêmica no âmbito do seu programa ativo.
+   * *Grupo Coordenação de PPG*: Homologação de bancas, matrículas e deliberações de CPG.
+   * *Grupo Pró-Reitoria (Admin Central)*: Visão macroscópica transversal de todos os programas da IES.
+2. **Segurança de Linha (*Record Rules* - `ir.rule`)**: Aplica cláusulas `WHERE` automáticas em nível de banco de dados PostgreSQL. Por exemplo, a visualização de discentes é restrita ao programa selecionado:
+
+```xml
+<record id="capes_student_program_rule" model="ir.rule">
+    <field name="name">Discentes Restritos ao Programa Ativo</field>
+    <field name="model_id" ref="openeducat_core.model_op_student"/>
+    <field name="domain_force">
+        ['|', 
+            ('user_id', '=', user.id),
+            ('current_program_id', '=', user.current_program_id.id)
+        ]
+    </field>
+    <field name="groups" eval="[(4, ref('openeducat_core.group_op_back_office'))]"/>
+</record>
+```
+
+
+---
+
+# Lições Aprendidas e Guia Prático
+
+## As Sete Lições Mestras de Engenharia de Software com IA
+
+A jornada de concepção, especificação, desenvolvimento e auditoria do ecossistema `l10n_br_openeducat_capes` consolidou um conjunto de lições fundamentais para estudantes, pesquisadores e engenheiros de software que atuam com Inteligência Artificial:
+
+### Lição 1: Documentar Primeiro é a Única Proteção Contra a Entropia da IA
+Se um engenheiro solicitar a um LLM comercial *"programe um módulo de bolsas de pós-graduação"*, o modelo gerará classes sintaticamente válidas em poucos segundos. Contudo, essas classes ignorarão solenemente as regras de acúmulo da Portaria CAPES 133/2023, esquecerão as restrições de chave estrangeira com os editais e criarão nomes de campos conflitantes. Ao estabelecer o **documento arquitetural ouro antes de qualquer linha de código**, o desenvolvedor opera no nível mais barato de abstração: corrigir uma relação errada em uma especificação textual consome dois minutos; refatorar vinte classes no ORM com tabelas já populadas no PostgreSQL consome dias de migração traumática.
+
+### Lição 2: Como Comandar Agentes de IA com Postura Sênior
+Em sistemas complexos, o desenvolvedor não pode se portar como um espectador passivo do chat. Quando ocorrem falhas, frases genéricas como *"não funcionou, tente de novo"* induzem a IA a alucinações repetitivas. O Arquiteto Humano deve:
+* Fornecer o traceback exato do erro (`AttributeError: 'op.student' object has no attribute 'code'`).
+* Delimitar o perímetro da intervenção (*"remova os trechos de código Python da documentação executiva mantendo o restante intacto"*).
+* Impor mandatos metodológicos estritos (*"primeiro atualize o documento de arquitetura; só então implemente o código"*).
+
+### Lição 3: Imutabilidade Jurídica e Livros-Razão (*Append-Only*)
+Em softwares acadêmicos e contábeis, **operações destrutivas (`DELETE` / `unlink`) são proibidas** para dados consolidados. Se um discente cancela uma matrícula ou obtém equivalência de créditos, o sistema deve registrar um lançamento corretivo ou estorno no livro-razão (`op.student.credit.ledger`). Essa disciplina preserva o histórico para auditorias da CAPES e do Ministério Público, honrando o princípio constitucional do ato jurídico perfeito.
+
+### Lição 4: Isolamento Multiprograma sem Degeneração Multitenant
+Evite a tentação de resolver separação de departamentos criando instâncias inteiras de empresas (`res.company`) no ERP. A solução sustentável foi o **isolamento lógico governado por Record Rules (`ir.rule`) vinculadas ao contexto ativo na sessão web (`session_info`)**, proporcionando comutação suave no frontend via componente Systray em OWL sem sobrecarregar a estrutura relacional do banco de dados.
+
+### Lição 5: A Importância dos Dados Sintéticos Densos e Realistas
+Testar softwares com registros genéricos (*"Aluno 1"*, *"Aluno 2"*) é uma ilusão que esconde bugs graves de integridade. Apenas quando o gerador sintético determinístico produziu 86 discentes, turmas reais, anos acadêmicos passados, docentes vinculados a múltiplos programas e atas mensais de CPG é que os limites de visualização 360°, relatórios de histórico escolar e filtros de segurança foram realmente estressados e depurados.
+
+### Lição 6: Anatomia da Depuração Fullstack (Do ORM ao OWL e ao QWeb)
+Nenhum sistema corporativo falha em uma camada isolada. Durante a trajetória do projeto, a equipe superou defeitos em quatro níveis distintos:
+1. *Backend Python*: Ajustes no `controllers/__init__.py` para importação correta de rotas REST.
+2. *ORM e Cache*: Sincronização de campos computados (`programs_summary`) no banco antes da chamada pelas views.
+3. *Frontend OWL*: Resolução de exceções de ciclo de vida reativo e atualização de permissões de leitura no Systray.
+4. *Renderizadores de Relatório QWeb*: Tratamento de campos correlacionados na geração do Histórico Escolar em PDF.
+
+### Lição 7: Os Três Registros de Comunicação de um Projeto de TI
+Um projeto de engenharia sério precisa dialogar em três registros semânticos distintos:
+1. **Linguagem Arquitetural (Docs Técnicos)**: Precisa, formal, exaustiva, com modelos relacionais e contratos (voltada a desenvolvedores e auditores).
+2. **Linguagem Operacional (Manual do Usuário)**: Passo a passo, amigável, orientada a tarefas cotidianas (voltada a secretarias e coordenadores).
+3. **Linguagem Estratégica (Documentação Executiva e Pitch)**: Focada em conformidade normativa, mitigação de riscos institucionais e soberania tecnológica (voltada a reitores e diretores).
+
+::: {.callout-important}
+### Regra de Ouro da Comunicação
+Misturar registros — como exibir código Python em apresentações para a Reitoria — destrói a eficácia da mensagem. A documentação executiva deve ser a projeção semântica de alto nível da arquitetura técnica.
+:::
+
+## Anatomia de um Debug Forense: O Caso dos Slides no RevealJS
+
+Um dos episódios mais emblemáticos do projeto ocorreu durante a compilação dos slides executivos da apresentação (`apresentacao_pitch_gopg_cinas.qmd`) no Quarto RevealJS.
+
+### O Problema Observado
+Ao navegar pela apresentação compilada, o usuário detectou saltos abruptos no contador de páginas no canto inferior da tela: do slide 4 o número pulava para 7; do 9 pulava para 13; do 13 para 18; do 24 pulava de dois em dois até 36. Embora houvesse apenas cerca de 20 telas visíveis, o contador total indicava **57 seções**.
+
+### A Investigação Forense na Árvore DOM
+Um desenvolvedor ingênuo tentaria forçar o contador via JavaScript ou renomear índices manualmente. O Arquiteto Humano e o Agente de IA, no entanto, inspecionaram o código HTML gerado pelo compilador:
+
+1. No Quarto Markdown, o cabeçalho `##` gera uma seção horizontal (`<section>`).
+2. Dentro dos cards visuais estilizados em CSS, o texto utilizava títulos de nível 4 (`####`) para identificar os blocos:
+   ```markdown
+   ::: {.card}
+   #### Núcleo Institucional e Base
+   Conteúdo do bloco...
+   :::
+   ```
+3. O parser do Pandoc/Quarto interpretava títulos dentro de seções como possíveis divisores de sub-seções ou slides verticais, encapsulando cada card dentro de uma nova tag `<section class="card">` filha.
+4. O contador nativo do RevealJS contabilizava **todas as tags `<section>` existentes no DOM**. Um único slide contendo 3 cards consumia 4 índices (1 seção-mãe + 3 seções filhas).
+
+```mermaid
+flowchart TD
+    subgraph CodigoProblematico["Estrutura Incorreta (Inflação de Seções)"]
+        H2A["## Título do Slide"] --> SecMaeA["&lt;section&gt; (Página)"]
+        CardA["#### Card 1"] --> SecFilha1["&lt;section class='card'&gt; (+1 no contador)"]
+        CardB["#### Card 2"] --> SecFilha2["&lt;section class='card'&gt; (+1 no contador)"]
+        SecMaeA -.-> SecFilha1
+        SecMaeA -.-> SecFilha2
+    end
+
+    subgraph SolucaoElegante["Estrutura Canônica (Contagem Exata)"]
+        H2B["## Título do Slide"] --> SecMaeB["&lt;section&gt; (Página Única)"]
+        DivA["&lt;div class='card-title'&gt; Card 1 &lt;/div&gt;"]
+        DivB["&lt;div class='card-title'&gt; Card 2 &lt;/div&gt;"]
+        SecMaeB --> DivA
+        SecMaeB --> DivB
+    end
+```
+
+### A Solução Canônica
+Substituíram-se todos os cabeçalhos de título interno `####` por tags semânticas neutras:
+
+```html
+<div class="card-title">Núcleo Institucional e Base</div>
+```
+
+Com essa refatoração, a contagem de tags `<section>` no HTML reduziu-se de 57 para **exatamente 22**, restabelecendo a numeração sequencial perfeita (1/22, 2/22... 22/22). Compreender o funcionamento interno do compilador e do DOM é a fronteira que separa a tentativa e erro da engenharia sólida.
+
+## O Checklist de 7 Etapas para o Aluno-Desenvolvedor
+
+Para aplicar o método Design-Driven Development em projetos de graduação, iniciação científica, dissertações de mestrado ou projetos corporativos, siga este roteiro prático:
+
+```mermaid
+flowchart TD
+    E1["1. Mapeie o Domínio e a Regulação"] --> E2["2. Documente a Arquitetura em Markdown"]
+    E2 --> E3["3. Defina a Matriz de Dependências"]
+    E3 --> E4["4. Implemente Guiado pela Arquitetura"]
+    E4 --> E5["5. Crie Dados Sintéticos Realistas"]
+    E5 --> E6["6. Conduza a Auditoria Reversa (Back-Audit)"]
+    E6 --> E7["7. Isole a Documentação por Público"]
+```
+
+1. **Etapa 1: Mapeie o Domínio e a Regulação**: Não abra o editor de código. Liste todas as regras de negócio, normas legais, prazos e exceções do mundo real que o software deve satisfazer.
+2. **Etapa 2: Documente a Arquitetura em Markdown**: Desenhe o modelo de entidade-relacionamento, liste campos, restrições e máquinas de estado em documentos textuais versionados no Git.
+3. **Etapa 3: Defina a Matriz de Dependências**: Se estiver estendendo um framework (Odoo, Django, NestJS), liste os modelos nativos que serão herdados e evite criar estruturas paralelas concorrentes.
+4. **Etapa 4: Implemente Guiado pela Arquitetura**: Instrua seu assistente de IA a programar as classes estritamente como especificadas, proibindo desvios ou adições arbitrárias.
+5. **Etapa 5: Crie Dados Sintéticos Realistas**: Desenvolva scripts determinísticos que povoem o sistema com volume e diversidade de dados para estressar restrições relacionais.
+6. **Etapa 6: Conduza a Auditoria Reversa (*Back-Audit*)**: Compare linha a linha do código gerado com o documento de arquitetura. Corrija imediatamente qualquer divergência.
+7. **Etapa 7: Isole a Documentação por Público**: Gere os manuais operacionais e relatórios executivos como projeções semânticas da arquitetura validada.
+
+
+---
+
+# Referências e Fontes Normativas {.unnumbered}
+
+## Legislação Federal e Atos Normativos
+
+* **BRASIL**. Constituição da República Federativa do Brasil de 1988. Artigo 5º, inciso XXXVI (Salvaguarda do Direito Adquirido, do Ato Jurídico Perfeito e da Coisa Julgada); Artigo 207 (Princípio da Autonomia Didático-Científica, Administrativa e de Gestão Financeira e Patrimonial das Universidades). Brasília, DF: Presidência da República, 1988.
+* **BRASIL. CAPES**. *Portaria nº 81, de 03 de junho de 2016*. Define as categorias de docentes que compõem os programas de pós-graduação stricto sensu, estabelece as diretrizes para credenciamento e descredenciamento e fixa o teto máximo de vínculos permanentes. Brasília, DF: Coordenação de Aperfeiçoamento de Pessoal de Nível Superior, 2016.
+* **BRASIL. CAPES**. *Portaria nº 133, de 10 de julho de 2023*. Regulamenta a possibilidade de acúmulo de bolsas de mestrado, doutorado e pós-doutorado concedidas pela CAPES com atividade remunerada ou outros rendimentos. Brasília, DF: CAPES, 2023.
+* **BRASIL. CAPES**. *Portaria nº 158, de 25 de agosto de 2023*. Altera dispositivos relativos à governança institucional e autorização de acúmulos de bolsas de pós-graduação. Brasília, DF: CAPES, 2023.
+* **BRASIL. CAPES**. *Relatório Técnico da Comissão de Produção Técnica e Tecnológica (PTT)*. Metodologia de Análise e Critérios de Avaliação Quadrienal nos 4 Eixos Ponderados. Brasília, DF: Diretoria de Avaliação (DAV/CAPES), 2019.
+* **BRASIL. MEC**. *Portaria nº 330, de 05 de abril de 2018*. Dispõe sobre a emissão e o registro de diplomas de cursos superiores por meio digital pelas Instituições de Ensino Superior. Brasília, DF: Ministério da Educação, 2018.
+* **BRASIL. MEC**. *Portaria nº 554, de 11 de março de 2019*. Regulamenta o padrão técnico de emissão e registro do Diploma Digital com assinatura eletrônica ICP-Brasil no padrão XAdES e representação visual com QR-Code. Brasília, DF: Ministério da Educação, 2019.
+* **BRASIL. MEC**. *Portaria nº 70, de 04 de fevereiro de 2025*. Atualiza as normas e especificações operacionais de segurança do ecossistema de diplomas digitais e sua interoperabilidade com o cadastro nacional de concluintes. Brasília, DF: Ministério da Educação, 2025.
+
+## Tecnologias, Frameworks e Especificações Técnicas
+
+* **ODOO COMMUNITY ASSOCIATION (OCA)**. *Odoo Technical Documentation - Version 19.0*. ORM API, Record Rules Security Architecture, QWeb Engine and Controllers. Disponível em: <https://www.odoo.com/documentation/19.0/>.
+* **OPENEDUCAT INC.** *OpenEduCat ERP Official Technical & User Documentation*. Módulos Core, SIS, Thesis, Mentor, Gradebook e E-Sign. Disponível em: <https://doc.openeducat.org/>.
+* **ODOO WEB LIBRARY (OWL)**. *OWL Framework Reference Manual*. Component-based UI framework for Odoo 19 web clients. Disponível em: <https://github.com/odoo/owl>.
+* **QUARTO**. *Quarto Technical Publishing System*. Open-source scientific and technical publishing system built on Pandoc. Posit PBC. Disponível em: <https://quarto.org/>.
+* **W3C**. *XML Advanced Electronic Signatures (XAdES)*. ETSI TS 101 903 / W3C Note. World Wide Web Consortium.
+
+## Literatura Seminal em Engenharia de Software
+
+* **BASS, Len; CLEMENTS, Paul; KAZMAN, Rick**. *Software Architecture in Practice*. 4th ed. Boston: Addison-Wesley, 2021.
+* **EVANS, Eric**. *Domain-Driven Design: Tackling Complexity in the Heart of Software*. Boston: Addison-Wesley Professional, 2003.
+* **FOWLER, Martin**. *Patterns of Enterprise Application Architecture*. Boston: Addison-Wesley, 2002.
+* **MARTIN, Robert C.** *Clean Architecture: A Craftsman's Guide to Software Structure and Design*. Boston: Prentice Hall, 2017.
+* **NEWMAN, Sam**. *Building Microservices: Designing Fine-Grained Systems*. 2nd ed. Sebastopol: O'Reilly Media, 2021.

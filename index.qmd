@@ -18,12 +18,12 @@ Como contrapartida, apresentamos uma metodologia rigorosa em que:
 
 O livro está organizado em cinco capítulos progressivos e um compêndio de referências normativas:
 
-* **Capítulo 1 — Visão Geral e Motivação**: Examina o cenário da pós-graduação brasileira, a necessidade de soberania tecnológica via software livre e a insuficiência das abordagens informais (*vibe coding*) diante da conformidade legal estrita.
-* **Capítulo 2 — Princípios do Design-Driven Development**: Apresenta os axiomas fundamentais do método, o ciclo de vida dos 6 passos de ouro e o papel do desenvolvedor sênior na governança e orquestração de agentes autônomos de IA.
-* **Capítulo 3 — Arquitetura e Modelagem do Domínio**: Detalha a topologia do monorepo em 9 submódulos, a extensão não destrutiva de 11 modelos nativos do Odoo e do OpenEduCat, e a modelagem formal de motores complexos (Produção Técnica e Tecnológica - PTT, Diploma Digital MEC, Governança Regimental e Gestão de Bolsas).
-* **Capítulo 4 — Implementação, Contratos e Integridade**: Demonstra a tradução dos modelos para o ORM Python, contratos de interfaces, livros-razão *append-only*, comutador multiprograma reativo em OWL, estratégias de dados sintéticos densos com 33 entidades relacionais e segurança via *Record Rules*.
-* **Capítulo 5 — Lições Aprendidas e Guia Prático**: Sistematiza sete lições de engenharia de software para estudantes e pesquisadores, a anatomia de um caso real de depuração forense no Quarto/RevealJS e um checklist aplicável a projetos de graduação, pós-graduação e sistemas empresariais.
-* **Referências e Fontes Normativas**: Consolida portarias federais (CAPES/MEC), preceitos constitucionais, documentações oficiais de frameworks e literaturas seminais de engenharia de software.
+* [**Capítulo 1 — Visão Geral e Motivação**](01-visao-geral-e-motivacao.qmd): Examina o cenário da pós-graduação brasileira, a necessidade de soberania tecnológica via software livre e a insuficiência das abordagens informais (*vibe coding*) diante da conformidade legal estrita.
+* [**Capítulo 2 — Princípios do Design-Driven Development**](02-principios-design-driven.qmd): Apresenta os axiomas fundamentais do método, o ciclo de vida dos 6 passos de ouro e o papel do desenvolvedor sênior na governança e orquestração de agentes autônomos de IA.
+* [**Capítulo 3 — Arquitetura e Modelagem do Domínio**](03-arquitetura-e-modelagem.qmd): Detalha a topologia do monorepo em 9 submódulos, a extensão não destrutiva de 11 modelos nativos do Odoo e do OpenEduCat, e a modelagem formal de motores complexos (Produção Técnica e Tecnológica - PTT, Diploma Digital MEC, Governança Regimental e Gestão de Bolsas).
+* [**Capítulo 4 — Implementação, Contratos e Integridade**](04-implementacao-e-contratos.qmd): Demonstra a tradução dos modelos para o ORM Python, contratos de interfaces, livros-razão *append-only*, comutador multiprograma reativo em OWL, estratégias de dados sintéticos densos com 33 entidades relacionais e segurança via *Record Rules*.
+* [**Capítulo 5 — Lições Aprendidas e Guia Prático**](05-licoes-aprendidas.qmd): Sistematiza sete lições de engenharia de software para estudantes e pesquisadores, a anatomia de um caso real de depuração forense no Quarto/RevealJS e um checklist aplicável a projetos de graduação, pós-graduação e sistemas empresariais.
+* [**Referências e Fontes Normativas**](referencias.qmd): Consolida portarias federais (CAPES/MEC), preceitos constitucionais, documentações oficiais de frameworks e literaturas seminais de engenharia de software.
 
 ::: {.callout-note}
 ### Público-Alvo
