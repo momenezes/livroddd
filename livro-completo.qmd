@@ -34,6 +34,11 @@ Como contrapartida, apresentamos uma metodologia rigorosa em que:
 4. Uma **auditoria reversa pente-fino (*back-audit*)** confronta o código executável com os documentos canônicos, eliminando discrepâncias.
 5. Os **relatórios executivos e apresentações de alto nível** mantêm simetria com a realidade do banco de dados relacional.
 
+::: {.callout-tip}
+### Apresentação do Workshop (15 Minutos)
+Para uma introdução executiva e visual à metodologia abordada neste livro, acesse os [**Slides do Workshop: Design Driven Development na Prática**](workshop-15min.html){target="_blank"}. A apresentação em RevealJS conta com recursos 100% incorporados, modo responsivo para projeção e notas de apresentação cronometradas.
+:::
+
 ## Estrutura da Obra
 
 O livro está organizado em cinco capítulos progressivos e um compêndio de referências normativas:
