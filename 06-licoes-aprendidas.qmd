@@ -52,23 +52,30 @@ Durante o desenvolvimento do ecossistema `l10n_br_openeducat_capes`, o assistent
 ### Caso 1: O Colapso da Carga Inicial e a Armadilha das Tabelas Isoladas
 
 #### O Problema Observado
+
 Na primeira tentativa de inicializar o container Odoo com a carga CSV de dados sintéticos do Mestrado Profissional (cenário MPTRCS), o sistema subiu aparentemente estável, mas a interface revelou um estado caótico:
+
 * Fichas de alunos e professores estavam praticamente vazias, sem histórico escolar ou disciplinas vinculadas.
 * O menu de configuração do OpenEduCat não listava anos acadêmicos, termos, turmas (`op.batch`) ou cursos.
 * Os botões inteligentes (*smart buttons*) da visão 360° falhavam ao calcular totais de créditos ou produções.
 
 #### O Diagnóstico Forense
+
 A IA havia caído na clássica **armadilha do isolamento**: os scripts preliminares de dados sintéticos geraram apenas registros nas tabelas customizadas criadas pelo projeto (`capes_*`), **negligenciando a infraestrutura canônica do OpenEduCat**. 
 
 Em um ERP empresarial complexo como o Odoo, um discente (`op.student`) não pode existir no vácuo: ele depende de uma turma (`op.batch`), que depende de um curso (`op.course`), que por sua vez referencia um nível acadêmico (`op.program.level`), um departamento (`op.department`) e anos/termos letivos ativos (`op.academic.year`, `op.academic.term`). A omissão dessa teia de entidades tornava o banco estruturalmente manco.
 
 #### A Refatoração de Engenharia e o Validador Forense
+
 O Agente precisou reconstruir a esteira de dados em duas frentes:
 
 1. **Reescrita do Gerador Sintético (`scripts/gerador_dados_sinteticos.py`)**:
+
    * O script foi expandido de um gerador superficial para um orquestrador determinístico de mais de 700 linhas, gerando **33 entidades relacionais encadeadas na ordem exata de dependência** de chaves estrangeiras.
    * Criação de dados de infraestrutura completos, governança colegiada da CPG (comitê, membros e atas de reuniões mensais com quórum formal) e segregação do credenciamento docente entre vínculo institucional e livro-razão de categorias.
+
 2. **Criação do Script Validador Forense (`scripts/validar_integridade_sintetica.py`)**:
+
    * Antes que qualquer arquivo CSV fosse injetado no container Odoo, um script autônomo inspecionava em memória todas as chaves estrangeiras cruzadas, integridade de CPFs (algoritmo Módulo 11) e ORCiDs (padrão ISO 7064). Somente quando o validador atestou **0 erros de integridade** os arquivos foram submetidos à carga via banco.
 
 ```{mermaid}
@@ -101,16 +108,20 @@ flowchart TD
 ### Caso 2: O Paradoxo do Ovo e da Galinha no Seletor Multiprograma (*Access Error*)
 
 #### O Problema Observado
+
 Após a implementação do seletor reativo de programas no Systray em OWL (para permitir que secretarias compartilhadas alternassem dinamicamente entre programas da mesma instituição), tanto o administrador quanto os secretários recebiam o erro impeditivo:
 `Access Error - Você não possui permissão para acessar o programa selecionado.`
 
 #### A Causa Raiz nas Regras de Segurança (*Record Rules*)
+
 No Odoo, as *Record Rules* (`ir.rule`) injetam cláusulas `WHERE` automáticas no PostgreSQL em cada consulta. A regra inicial de isolamento estipulava que o usuário só poderia enxergar registros cujo programa correspondesse exatamente ao `current_program_id` ativo em sua sessão.
 
 Criou-se um paradoxo lógico: para que o usuário pudesse selecionar um novo programa no menu dropdown, o ORM precisava consultar a tabela `op.program.capes` para exibir as opções; contudo, a *Record Rule* bloqueava a leitura de qualquer programa que *ainda não estivesse selecionado*!
 
 #### A Solução Arquitetural
+
 A regra de segurança foi refatorada em dois níveis em `capes_rules.xml`:
+
 * **Nível de Leitura (Metadata)**: Permissão irrestrita de leitura sobre todos os programas declarados na relação `allowed_program_ids` daquele usuário.
 * **Nível Transacional (Operação)**: Trava de escrita e visualização detalhada de dados restrita estritamente ao `current_program_id` da sessão ativa.
 
@@ -126,6 +137,7 @@ Ao homologar o cenário da Universidade XYZQ, a tentativa de imprimir o Históri
 Na modelagem preliminar, a IA assumiu convenções simplistas de código legado (`object.code` e `o.program_id.name`). Na arquitetura DDD definitiva, contudo, a identificação soberana do aluno reside em `ra_number` (Registro Acadêmico perene imutável) e seu vínculo curricular reside em `student_course_ids` (haja vista que um discente pode cursar mestrado e posteriormente doutorado na mesma instituição mantendo o mesmo cadastro).
 
 #### A Refatoração Fullstack
+
 1. **No Modelo Python (`op_student.py`)**: Criação de campos relacionados computados e seguros (`code = fields.Char(related='ra_number')` e `current_program_id`), mantendo compatibilidade com templates legados sem violar o novo domínio.
 2. **Nas Views QWeb (`student_transcript_report.xml`)**: Ajuste das expressões XPath para navegar na esteira de livros-razão (`credit_ledger_ids`), filtrando disciplinas incorporadas e omitindo reprovações do período de aluno especial (`omit_on_regular`).
 3. **Validação em Shell**: Execução de bateria de testes automatizados via terminal (`odoo shell`), resultando na emissão em lote de múltiplos históricos em PDF com 100% de sucesso.

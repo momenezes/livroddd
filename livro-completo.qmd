@@ -936,6 +936,142 @@ A atuação no Antigravity desdobrou-se em nove marcos cronológicos fundamentai
 
 ---
 
+## A Virada Multiprograma: Das Universidades Complexas ao Isolamento Lógico
+
+Dentre todas as decisões arquiteturais tomadas ao longo do projeto, nenhuma provocou um impacto estrutural tão profundo quanto a transição de um sistema inicialmente concebido para um programa isolado para um ecossistema plenamente capaz de governar **Instituições de Ensino Superior (IES) com múltiplos programas de pós-graduação**.
+
+Esta seção documenta a história completa dessa virada: desde os primeiros lampejos e pesquisas aprofundadas no Gemini até a formulação do Registro de Decisão Arquitetural (ADR), o confronto técnico entre as alternativas de engenharia e os desafios de depuração fullstack no Antigravity.
+
+### 1. A Gênese: Da Concepção Local (MPTRCS/IPEN) à Ambição Nacional
+
+O marco zero do projeto nasceu ancorado em uma necessidade estritamente institucional: o **Mestrado Profissional em Tecnologia das Radiações em Ciências da Saúde (MPTRCS)** do **IPEN-CNEN/SP**. O IPEN é um instituto de pesquisa de excelência que opera programas específicos em associação ou com tramitação externa com universidades registradoras (notadamente a USP).
+
+Contudo, ainda nos estágios preliminares de diálogo no Google Gemini, o Arquiteto Humano percebeu que limitar a engenharia às particularidades do IPEN geraria uma solução paroquial e de curto alcance. No Turno 8 do histórico conversacional, ocorreu o primeiro grande ponto de inflexão estratégico:
+
+> **Trecho Real do Prompt do Usuário (Gemini — Concepção Inicial):**
+>
+> *"vamos melhorar nossa estratégia. o OpenEduCat poderia ser útil para muitos outros programas de pós-graduação do país. assim, seria interessante criarmos uma infraestrutura de módulos que pudesse ser adaptada por configuração na interface do usuário para acomodar programas de mestrado e doutorado acadêmicos além de doutorado profissional. da mesma forma, os fluxos de uma tese/dissertação poderiam ser pensados de forma a conter o máximo de possibilidades do cenário brasileiro, desde o que ocorre em instituições públicas até as privadas, e pudesse ser customizado na interface do administrador do OpenEduCat. um módulo importante que precisaremos adicionar é o diploma digital, uma obrigatoriedade do MEC a partir de 2027."*
+
+A resposta da IA saudou a virada como o nascimento de uma verdadeira **Localização Brasileira Soberana (l10n_br)**, mas o verdadeiro desafio de modelagem ainda estava por vir: como uma única universidade (como a USP, a UNICAMP ou uma Universidade Federal) poderia gerenciar 50 ou 100 programas de pós-graduação simultâneos em um mesmo banco de dados sem que as secretarias misturassem notas, turmas e históricos de alunos de áreas completamente distintas?
+
+### 2. A Pesquisa Profunda no Gemini: O *Deep Research* de Múltiplos Regimentos
+
+Para fundamentar essa ambição, foi acionado o mecanismo de pesquisa exaustiva do Gemini (*Deep Research*), gerando o relatório técnico intitulado *Impactos Multidimensionais da Transição de Regimentos na Pós-Graduação*.
+
+O relatório investigou a convivência simultânea de múltiplos regulamentos e a dinâmica de universidades complexas, destacando:
+
+* **Inexistência de Direito Adquirido a Regime Acadêmico**: Respaldado pela jurisprudência pacífica do STF e STJ, consolidou-se a premissa de que a universidade detém autonomia (Art. 207 da CF/88) para reformular regras e prazos a qualquer tempo, devendo apenas respeitar o **Ato Jurídico Perfeito** (Art. 5º, XXXVI da CF/88) em relação a créditos e exames já concluídos.
+* **Estudos de Caso Reais (Fusão de Programas na USP)**: Analisou-se a fusão de três programas históricos do Instituto de Geociências da USP (Geoquímica e Geotectônica, Recursos Minerais e Hidrogeologia, e Mineralogia e Petrologia), que se unificaram no programa de excelência *Ciências do Sistema Terra e Sociedade (CSTS)*. O caso demonstrou a necessidade premente de o sistema suportar a coexistência de discentes sob regimentos antigos em extinção e discentes sob o novo regimento, proibindo categoricamente o *hibridismo normativo* (a combinação utilitarista de regras de diferentes épocas).
+* **Mapeamento Granular do Catálogo GoPG/DAV**: O usuário submeteu os quatro arquivos JSON extraídos diretamente da Diretoria de Avaliação da CAPES, exigindo o mapeamento exaustivo de atributos.
+
+Foi nesse momento que o Arquiteto Humano impôs uma das diretrizes mais marcantes de todo o projeto, impedindo o modelo de partir para código precoce:
+
+> **Trecho Real do Prompt do Usuário (Gemini — Arquitetura em Primeiro Lugar):**
+>
+> *"ainda não vamos gerar códigos. temos que finalizar os dicionários de dados da CAPES. O risco de gerarmos códigos incompletos sem a arquitetura definida é gigante. Retome a arquitetura que haviamos criado agora com essa estrutura física dos diretórios."*
+
+### 3. O Ponto de Inflexão no Antigravity: O Dilema da Universidade Multiprograma
+
+Com a migração para o ambiente de engenharia ativa do **Google Antigravity**, a teoria precisou ser confrontada com o código executável. Em 17 de setembro de 2026, durante o Turno 13, o usuário trouxe o problema real para a mesa de projeto:
+
+> **Trecho Real do Prompt 13 (Antigravity — 17/09/2026):**
+>
+> *"precisamos fazer uma alteração grande na arquitetura do sistema, por conta de um cenário que eu identifiquei e acredito que seja muito comum em universidades: uma mesma universidade possui vários programas de pós-graduação, cada um com suas regras e áreas. Como tratar isso no OpenEduCat?"*
+
+Diante dessa provocação, o Agente de IA elaborou uma **Análise de Decisão Arquitetural (ADR)** estruturada, colocando frente a frente as duas únicas rotas possíveis dentro do ecossistema Odoo:
+
+#### Opção A: Multicompany Nativo do Odoo (Cada Programa como uma Empresa)
+* *Conceito*: Utilizar a infraestrutura de multi-empresa padrão do Odoo (`res.company`), criando uma "empresa" para cada programa de pós-graduação (ex: Empresa 1 = PPG Física; Empresa 2 = PPG Química).
+* *Vantagens Aparentes*: Isolamento total de dados e menus nativos do framework.
+* *Desvantagens Fatais*:
+
+  1. *Overhead Relacional*: Criação desnecessária de planos de contas, parceiros duplicados e tabelas redundantes.
+  2. *Destruição da Governança Compartilhada*: Docentes atuam frequentemente em mais de um programa na mesma universidade. No modelo multi-empresa, o professor precisaria ter cadastros duplicados ou o usuário precisaria alternar de empresa para computar a carga horária.
+  3. *Inviabilidade para Pró-Reitorias*: Uma Pró-Reitoria de Pós-Graduação (PRPG) precisa de visibilidade consolidada de todos os programas para a coleta Sucupira e auditoria do MEC. O modelo multicompany fragmenta essa visão.
+
+#### Opção B: Hierarquia GoPG com Multiprograma Lógico e Segregação por Record Rules
+* *Conceito*: A Instituição de Ensino Superior (IES) é modelada como uma única `res.company`. Cada programa de pós-graduação é uma instância soberana do modelo de governança `op.program.capes`, contendo seu código SNPG (12 dígitos), área de avaliação, modalidade e versões regimentais (`op.curriculum.version`).
+* *Mecanismo de Segurança*: O isolamento entre secretarias é realizado em tempo de execução via **Record Rules (`ir.rule`) no PostgreSQL**, filtrando dinamicamente os registros visíveis com base no programa ativo associado à sessão do usuário (`current_program_id`).
+* *Vantagens*: Preserva a integridade relacional de pessoas (`res.partner`, `op.faculty`, `op.student`), centraliza a governança nas Pró-Reitorias e permite o trânsito controlado de alunos especiais e disciplinas interprogramas.
+
+A reação do Arquiteto Humano foi imediata e categórica:
+
+> **Trecho Real da Decisão do Usuário (17/09/2026):**
+>
+> *"Na Decisão 1, opto pelo B. vamos executar tudo então. Vou almoçar enquanto vc trabalha."*
+
+### 4. A Prova de Fogo: O Cenário da Universidade XYZQ e os Desafios Fullstack
+
+Para comprovar que a Opção B funcionava na prática e não apenas no papel, foi construído o cenário de testes da **Universidade XYZQ**, contemplando 5 programas de pós-graduação simultâneos espalhados por institutos e faculdades distintas.
+
+A execução dessa arquitetura enfrentou quatro desafios de engenharia críticos, relatados em tempo real nos diálogos:
+
+#### 1. O Mandato de Documentar Antes de Codificar
+Ao discutir o seletor de programas para coordenadores e secretarias, o usuário reiterou o mandamento fundamental de DDD:
+
+> **Trecho Real do Prompt do Usuário (18/09/2026):**
+>
+> *"identifiquei um ponto que precisamos discutir: nesse cenário da Universidade, é comum que os programas pertençam a unidades diferentes... quando uma unidade tiver dois programas, precisamos criar uma maneira de selecionar o programa para que todas as demais ações da secretaria sejam dentro daquele programa... vamos na Opção B; adicione uma etapa no seu plano: alterar primeiro toda a documentação da arquitetura técnica, validar a consistência... garantindo que a documentação seja sempre o padrão ouro do sistema."*
+
+#### 2. O Paradoxo do Ovo e da Galinha no Seletor de Programas (*Access Error*)
+Ao implementar o componente visual no topo do ERP e testar a alternância entre programas, o sistema colapsou com o erro:
+`Access Error - Você não possui permissão para acessar o programa selecionado.`
+
+*Diagnóstico*: A regra de segurança injetava a cláusula `WHERE program_id = current_program_id`. Contudo, para abrir o menu dropdown e listar as opções para as quais o usuário tinha autorização, o ORM precisava ler a tabela `op.program.capes`. Como o novo programa ainda não estava selecionado na sessão, a própria *Record Rule* bloqueava a leitura da lista!
+
+*Solução*: Refatoração da segurança em dois níveis em `capes_rules.xml`:
+
+1. *Nível de Metadados (Leitura)*: Permissão irrestrita de leitura sobre os programas listados em `user.allowed_program_ids`.
+2. *Nível Transacional (Operação)*: Restrição estrita de gravação e consulta profunda apenas aos registros vinculados a `user.current_program_id`.
+
+#### 3. O Componente Reativo OWL no Systray
+No backend, o método `session_info()` em `ir.http` foi interceptado para fornecer o array de programas autorizados e o programa ativo no handshake JSON inicial. No frontend, construiu-se o componente reativo em **OWL (Odoo Web Library)** (`program_menu.js` e `program_menu.xml`), inserindo um seletor dinâmico no canto superior direito da tela (*Systray*), permitindo a comutação instantânea de contexto com recarregamento transparente dos dados.
+
+#### 4. Governança Docente Cruzada e a Trava da Portaria CAPES nº 81/2016
+Com múltiplos programas operando na mesma instituição, surgiu um risco regulatório grave: a sobreposição de vínculos de professores. A **Portaria CAPES nº 81/2016** estabelece que um docente só pode atuar como membro Permanente em no máximo 3 programas *stricto sensu* em todo o território nacional.
+
+O usuário demandou a trava:
+
+> **Trecho Real do Prompt do Usuário (18/09/2026):**
+>
+> *"precisamos adicionar também na tela de visualização das informações dos professores a qual programa ele pertence. mesmo que a informação esteja no "seletor" de programas, penso que seria importante adicionar os nomes dos programas a que ele está filiado, tanto os locais como externos (de acordo com as regras da CAPES)..."*
+
+O Agente implementou o campo computado `programs_summary` e a constraint `@api.constrains` no modelo `op.faculty`. Durante a homologação, enfrentou-se e superou-se o bug reativo do OWL (*OwlError: field is undefined*), restabelecendo a harmonia entre as views XML e o ORM Python.
+
+### 5. Timeline Detalhada do Processo Multiprograma
+
+A linha do tempo a seguir sintetiza a evolução completa da decisão multiprograma, evidenciando as fases de concepção no Gemini, a tomada de decisão no Antigravity e os marcos de depuração fullstack:
+
+```{mermaid}
+flowchart TD
+    subgraph FaseGemini["1. Concepção e Pesquisa Profunda (Gemini)"]
+        G1["Prompt Inicial: Foco no MPTRCS/IPEN (Monoprograma)"] --> G2["Inflexão Estratégica: Decisão de Apoiar Todo o Brasil"]
+        G2 --> G3["Deep Research: Coexistência de Regimentos & Caso IGc/USP"]
+        G3 --> G4["Mandato Design First: Bloqueio de Código antes dos Dicionários"]
+    end
+
+    subgraph FaseADR["2. Decisão Arquitetural no Antigravity (17/09/2026)"]
+        A1["Prompt 13: O Desafio das Universidades Multiprograma"] --> A2{"Análise de Decisão Arquitetural (ADR)"}
+        A2 -- "Rejeitada" --> A3["Opção A: Multicompany Nativo Odoo<br/>(Overhead e Duplicidade de Docentes)"]
+        A2 -- "Aprovada pelo Usuário" --> A4["Opção B: Multiprograma Lógico<br/>(IES = res.company + op.program.capes + Record Rules)"]
+    end
+
+    subgraph FaseExecucao["3. Refinamento de Processos e Auditoria (18/09/2026)"]
+        E1["Carga Sintética da Universidade XYZQ (5 Programas)"] --> E2["Detecção do 'Access Error' no Seletor"]
+        E2 --> E3["Refatoração de Segurança em 2 Níveis (capes_rules.xml)"]
+        E3 --> E4["Frontend Reativo OWL no Systray (program_menu.js)"]
+        E4 --> E5["Trava Regulatória: Portaria CAPES 81/2016 (Máx. 3 PPGs)"]
+        E5 --> E6["Correção de Queries e Relatórios QWeb (Histórico em PDF)"]
+    end
+
+    FaseGemini --> FaseADR
+    FaseADR --> FaseExecucao
+```
+
+Esta crônica demonstra que a sustentabilidade de um software de missão crítica não reside na velocidade de digitação de prompts isolados, mas na **capacidade de revisar premissas, investigar a regulação em profundidade e manter a arquitetura conceitual sempre à frente da implementação física**.
+
+---
+
 ## Tabela Comparativa de Evolução: Gemini vs. Antigravity
 
 | Dimensão Técnica | Fase 1: Exploração no Gemini | Fase 2: Engenharia no Antigravity |
@@ -1014,23 +1150,30 @@ Durante o desenvolvimento do ecossistema `l10n_br_openeducat_capes`, o assistent
 ### Caso 1: O Colapso da Carga Inicial e a Armadilha das Tabelas Isoladas
 
 #### O Problema Observado
+
 Na primeira tentativa de inicializar o container Odoo com a carga CSV de dados sintéticos do Mestrado Profissional (cenário MPTRCS), o sistema subiu aparentemente estável, mas a interface revelou um estado caótico:
+
 * Fichas de alunos e professores estavam praticamente vazias, sem histórico escolar ou disciplinas vinculadas.
 * O menu de configuração do OpenEduCat não listava anos acadêmicos, termos, turmas (`op.batch`) ou cursos.
 * Os botões inteligentes (*smart buttons*) da visão 360° falhavam ao calcular totais de créditos ou produções.
 
 #### O Diagnóstico Forense
+
 A IA havia caído na clássica **armadilha do isolamento**: os scripts preliminares de dados sintéticos geraram apenas registros nas tabelas customizadas criadas pelo projeto (`capes_*`), **negligenciando a infraestrutura canônica do OpenEduCat**. 
 
 Em um ERP empresarial complexo como o Odoo, um discente (`op.student`) não pode existir no vácuo: ele depende de uma turma (`op.batch`), que depende de um curso (`op.course`), que por sua vez referencia um nível acadêmico (`op.program.level`), um departamento (`op.department`) e anos/termos letivos ativos (`op.academic.year`, `op.academic.term`). A omissão dessa teia de entidades tornava o banco estruturalmente manco.
 
 #### A Refatoração de Engenharia e o Validador Forense
+
 O Agente precisou reconstruir a esteira de dados em duas frentes:
 
 1. **Reescrita do Gerador Sintético (`scripts/gerador_dados_sinteticos.py`)**:
+
    * O script foi expandido de um gerador superficial para um orquestrador determinístico de mais de 700 linhas, gerando **33 entidades relacionais encadeadas na ordem exata de dependência** de chaves estrangeiras.
    * Criação de dados de infraestrutura completos, governança colegiada da CPG (comitê, membros e atas de reuniões mensais com quórum formal) e segregação do credenciamento docente entre vínculo institucional e livro-razão de categorias.
+
 2. **Criação do Script Validador Forense (`scripts/validar_integridade_sintetica.py`)**:
+
    * Antes que qualquer arquivo CSV fosse injetado no container Odoo, um script autônomo inspecionava em memória todas as chaves estrangeiras cruzadas, integridade de CPFs (algoritmo Módulo 11) e ORCiDs (padrão ISO 7064). Somente quando o validador atestou **0 erros de integridade** os arquivos foram submetidos à carga via banco.
 
 ```{mermaid}
@@ -1063,16 +1206,20 @@ flowchart TD
 ### Caso 2: O Paradoxo do Ovo e da Galinha no Seletor Multiprograma (*Access Error*)
 
 #### O Problema Observado
+
 Após a implementação do seletor reativo de programas no Systray em OWL (para permitir que secretarias compartilhadas alternassem dinamicamente entre programas da mesma instituição), tanto o administrador quanto os secretários recebiam o erro impeditivo:
 `Access Error - Você não possui permissão para acessar o programa selecionado.`
 
 #### A Causa Raiz nas Regras de Segurança (*Record Rules*)
+
 No Odoo, as *Record Rules* (`ir.rule`) injetam cláusulas `WHERE` automáticas no PostgreSQL em cada consulta. A regra inicial de isolamento estipulava que o usuário só poderia enxergar registros cujo programa correspondesse exatamente ao `current_program_id` ativo em sua sessão.
 
 Criou-se um paradoxo lógico: para que o usuário pudesse selecionar um novo programa no menu dropdown, o ORM precisava consultar a tabela `op.program.capes` para exibir as opções; contudo, a *Record Rule* bloqueava a leitura de qualquer programa que *ainda não estivesse selecionado*!
 
 #### A Solução Arquitetural
+
 A regra de segurança foi refatorada em dois níveis em `capes_rules.xml`:
+
 * **Nível de Leitura (Metadata)**: Permissão irrestrita de leitura sobre todos os programas declarados na relação `allowed_program_ids` daquele usuário.
 * **Nível Transacional (Operação)**: Trava de escrita e visualização detalhada de dados restrita estritamente ao `current_program_id` da sessão ativa.
 
@@ -1081,13 +1228,16 @@ A regra de segurança foi refatorada em dois níveis em `capes_rules.xml`:
 ### Caso 3: A Falha na Emissão do Histórico Escolar e o Descompasso de Modelos
 
 #### O Problema Observado
+
 Ao homologar o cenário da Universidade XYZQ, a tentativa de imprimir o Histórico Escolar Oficial em PDF quebrou com a exceção:
 `AttributeError: 'op.student' object has no attribute 'code'` e `'program_id'`.
 
 #### A Causa Raiz
+
 Na modelagem preliminar, a IA assumiu convenções simplistas de código legado (`object.code` e `o.program_id.name`). Na arquitetura DDD definitiva, contudo, a identificação soberana do aluno reside em `ra_number` (Registro Acadêmico perene imutável) e seu vínculo curricular reside em `student_course_ids` (haja vista que um discente pode cursar mestrado e posteriormente doutorado na mesma instituição mantendo o mesmo cadastro).
 
 #### A Refatoração Fullstack
+
 1. **No Modelo Python (`op_student.py`)**: Criação de campos relacionados computados e seguros (`code = fields.Char(related='ra_number')` e `current_program_id`), mantendo compatibilidade com templates legados sem violar o novo domínio.
 2. **Nas Views QWeb (`student_transcript_report.xml`)**: Ajuste das expressões XPath para navegar na esteira de livros-razão (`credit_ledger_ids`), filtrando disciplinas incorporadas e omitindo reprovações do período de aluno especial (`omit_on_regular`).
 3. **Validação em Shell**: Execução de bateria de testes automatizados via terminal (`odoo shell`), resultando na emissão em lote de múltiplos históricos em PDF com 100% de sucesso.
