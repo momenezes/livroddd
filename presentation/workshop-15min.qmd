@@ -130,10 +130,11 @@ Explicar a decisão arquitetural chave: a segregação por regras de registro pr
 ::: {.column width="50%"}
 **Motor PTT (Produção Técnica)**:
 
-$$\begin{aligned}
-\text{Nota} = & \; 0.25 \times \text{Aderência} + 0.30 \times \text{Impacto} \\
-& + 0.25 \times \text{Inovação} + 0.20 \times \text{Complexidade}
-\end{aligned}$$
+$$\text{Nota} = 0{,}25\,\text{AD} + 0{,}30\,\text{IM} + 0{,}25\,\text{IN} + 0{,}20\,\text{CP}$$
+
+<div style="font-size: 0.68em; color: #ccc; margin-top: -6px; margin-bottom: 12px; text-align: center;">
+<strong>AD</strong>: Aderência &nbsp;|&nbsp; <strong>IM</strong>: Impacto &nbsp;|&nbsp; <strong>IN</strong>: Inovação &nbsp;|&nbsp; <strong>CP</strong>: Complexidade
+</div>
 
 * Ponderação matricial em 4 eixos (0 a 100).
 * Enquadramento automático:
@@ -210,15 +211,6 @@ Recapitular as 7 lições mestras. Estas diretrizes são universais e se aplicam
 
 :::: {.columns}
 
-::: {.column width="40%"}
-<div style="text-align: center; margin-top: 15px;">
-  <a href="https://github.com/cinas-ipen/l10n_br_openeducat_capes" target="_blank">
-    <img src="qrcode_repo.png" width="280" style="border-radius: 12px; background: white; padding: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.4);"/>
-  </a>
-  <div style="font-size: 0.6em; margin-top: 12px; color: #aaa;">Acesse o repositório no GitHub</div>
-</div>
-:::
-
 ::: {.column width="60%"}
 * **Soberania Tecnológica**:
   * Ecossistema livre e aderente às exigências da CAPES e MEC.
@@ -231,6 +223,15 @@ Recapitular as 7 lições mestras. Estas diretrizes são universais e se aplicam
 <br/>
 
 **Muito obrigado! Aberto para perguntas.**
+:::
+
+::: {.column width="40%"}
+<div style="text-align: center; margin-top: 15px;">
+  <a href="https://github.com/cinas-ipen/l10n_br_openeducat_capes" target="_blank">
+    <img src="qrcode_repo.png" width="280" style="border-radius: 12px; background: white; padding: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.4);"/>
+  </a>
+  <div style="font-size: 0.6em; margin-top: 12px; color: #aaa;">Acesse o repositório no GitHub</div>
+</div>
 :::
 
 ::::
