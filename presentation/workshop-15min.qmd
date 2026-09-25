@@ -33,7 +33,7 @@ Boas-vindas a todos. Neste workshop de 15 minutos, vamos explorar como transform
 * **O Paradigma**: Fundamentos e o Ciclo dos 6 Passos de DDD (3 min)
 * **Axiomas e Modelagem**: Regimento dinâmico e monorepo modular (3 min)
 * **Estudo de Caso**: Da arquitetura ao código no ecossistema CAPES (4 min)
-* **Lições e Depuração Forense**: Do banco ao frontend RevealJS (3 min)
+* **Lições e Depuração Forense**: Da carga de dados à integridade do ERP (3 min)
 
 ::: {.notes}
 Tempo acumulado: 1:00 - 2:00 (1 min).
@@ -125,12 +125,35 @@ Explicar a decisão arquitetural chave: a segregação por regras de registro pr
 
 ## Motores Regulatórios: PTT e Diploma Digital
 
-* **Motor PTT (Produção Técnica e Tecnológica)**:
-  * Ponderação matricial: $\text{Nota} = 0.25 \times \text{Aderência} + 0.30 \times \text{Impacto} + 0.25 \times \text{Inovação} + 0.20 \times \text{Complexidade}$.
-  * Enquadramento automático nos estratos oficiais da CAPES (T1 a T5 e TNC).
-* **Diplomação Digital MEC Dual**:
-  * *Universidades Plenas*: Emissão, assinatura XAdES (ICP-Brasil) e registro direto.
-  * *Institutos de Pesquisa (Ex: IPEN)*: Tramitação externa do dossiê com universidade registradora (USP) e suporte híbrido físico/digital.
+:::: {.columns}
+
+::: {.column width="50%"}
+**Motor PTT (Produção Técnica)**:
+
+$$\begin{aligned}
+\text{Nota} = & \; 0.25 \times \text{Aderência} + 0.30 \times \text{Impacto} \\
+& + 0.25 \times \text{Inovação} + 0.20 \times \text{Complexidade}
+\end{aligned}$$
+
+* Ponderação matricial em 4 eixos (0 a 100).
+* Enquadramento automático:
+  * **T1** ($\ge 85$), **T2** ($\ge 70$), **T3** ($\ge 55$)
+  * **T4** ($\ge 40$), **T5** ($\ge 25$) e **TNC** ($< 25$).
+:::
+
+::: {.column width="50%"}
+**Diplomação Digital MEC Dual**:
+
+* *Universidades Plenas*:
+  * Livro/folha e registro interno.
+  * Assinatura XML XAdES (ICP-Brasil).
+* *Institutos de Pesquisa (Ex: IPEN)*:
+  * Tramitação externa com registradora (USP).
+* *Suporte Híbrido*:
+  * Emissão digital e física (Portaria 70/2025).
+:::
+
+::::
 
 ::: {.notes}
 Tempo acumulado: 9:30 - 10:45 (1 min 15 s).
@@ -187,24 +210,27 @@ Recapitular as 7 lições mestras. Estas diretrizes são universais e se aplicam
 
 :::: {.columns}
 
-::: {.column width="65%"}
+::: {.column width="40%"}
+<div style="text-align: center; margin-top: 15px;">
+  <a href="https://github.com/cinas-ipen/l10n_br_openeducat_capes" target="_blank">
+    <img src="qrcode_repo.png" width="280" style="border-radius: 12px; background: white; padding: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.4);"/>
+  </a>
+  <div style="font-size: 0.6em; margin-top: 12px; color: #aaa;">Acesse o repositório no GitHub</div>
+</div>
+:::
 
-* **Soberania Tecnológica**: O ecossistema `l10n_br_openeducat_capes` viabiliza uma pós-graduação moderna, livre e aderente às leis brasileiras.
+::: {.column width="60%"}
+* **Soberania Tecnológica**:
+  * Ecossistema livre e aderente às exigências da CAPES e MEC.
 * **O Livro Técnico Completo**:
   * Disponível no GitHub Pages: [momenezes.github.io/livroddd](https://momenezes.github.io/livroddd/){target="_blank"}.
-  * Contratos de código, diagramas de arquitetura e modelos detalhados.
+  * Contratos de código, diagramas e crônica dos marcos.
 * **Repositório Aberto do Projeto**:
   * [github.com/cinas-ipen/l10n_br_openeducat_capes](https://github.com/cinas-ipen/l10n_br_openeducat_capes){target="_blank"}
 
 <br/>
 
 **Muito obrigado! Aberto para perguntas.**
-:::
-
-::: {.column width="35%" style="text-align: center;"}
-[![](qrcode_repo.png){width="270px" style="border-radius: 8px; background: white; padding: 10px;"}](https://github.com/cinas-ipen/l10n_br_openeducat_capes){target="_blank"}
-
-<div style="font-size: 0.6em; margin-top: 8px; color: #aaa;">Aponte a câmera para acessar o repositório no GitHub</div>
 :::
 
 ::::

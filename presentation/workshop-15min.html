@@ -1028,7 +1028,7 @@ display:block!important;
 <li><strong>O Paradigma</strong>: Fundamentos e o Ciclo dos 6 Passos de DDD (3 min)</li>
 <li><strong>Axiomas e Modelagem</strong>: Regimento dinâmico e monorepo modular (3 min)</li>
 <li><strong>Estudo de Caso</strong>: Da arquitetura ao código no ecossistema CAPES (4 min)</li>
-<li><strong>Lições e Depuração Forense</strong>: Do banco ao frontend RevealJS (3 min)</li>
+<li><strong>Lições e Depuração Forense</strong>: Da carga de dados à integridade do ERP (3 min)</li>
 </ul>
 <aside class="notes">
 <p>Tempo acumulado: 1:00 - 2:00 (1 min). Apresentar a estrutura da sessão. Enfatizar que veremos tanto a teoria metodológica quanto casos reais de código, depuração e governança de software corporativo.</p>
@@ -1201,18 +1201,39 @@ display:block!important;
 </section>
 <section class="slide level2">
 <h2>Motores Regulatórios: PTT e Diploma Digital</h2>
+<div class="columns">
+<div class="column" style="width:50%;">
+<p><strong>Motor PTT (Produção Técnica)</strong>:</p>
+<p><span class="math display">\[\begin{aligned}
+\text{Nota} = &amp; \; 0.25 \times \text{Aderência} + 0.30 \times \text{Impacto} \\
+&amp; + 0.25 \times \text{Inovação} + 0.20 \times \text{Complexidade}
+\end{aligned}\]</span></p>
 <ul>
-<li><strong>Motor PTT (Produção Técnica e Tecnológica)</strong>:
+<li>Ponderação matricial em 4 eixos (0 a 100).</li>
+<li>Enquadramento automático:
 <ul>
-<li>Ponderação matricial: <span class="math inline">\(\text{Nota} = 0.25 \times \text{Aderência} + 0.30 \times \text{Impacto} + 0.25 \times \text{Inovação} + 0.20 \times \text{Complexidade}\)</span>.</li>
-<li>Enquadramento automático nos estratos oficiais da CAPES (T1 a T5 e TNC).</li>
-</ul></li>
-<li><strong>Diplomação Digital MEC Dual</strong>:
-<ul>
-<li><em>Universidades Plenas</em>: Emissão, assinatura XAdES (ICP-Brasil) e registro direto.</li>
-<li><em>Institutos de Pesquisa (Ex: IPEN)</em>: Tramitação externa do dossiê com universidade registradora (USP) e suporte híbrido físico/digital.</li>
+<li><strong>T1</strong> (<span class="math inline">\(\ge 85\)</span>), <strong>T2</strong> (<span class="math inline">\(\ge 70\)</span>), <strong>T3</strong> (<span class="math inline">\(\ge 55\)</span>)</li>
+<li><strong>T4</strong> (<span class="math inline">\(\ge 40\)</span>), <strong>T5</strong> (<span class="math inline">\(\ge 25\)</span>) e <strong>TNC</strong> (<span class="math inline">\(&lt; 25\)</span>).</li>
 </ul></li>
 </ul>
+</div><div class="column" style="width:50%;">
+<p><strong>Diplomação Digital MEC Dual</strong>:</p>
+<ul>
+<li><em>Universidades Plenas</em>:
+<ul>
+<li>Livro/folha e registro interno.</li>
+<li>Assinatura XML XAdES (ICP-Brasil).</li>
+</ul></li>
+<li><em>Institutos de Pesquisa (Ex: IPEN)</em>:
+<ul>
+<li>Tramitação externa com registradora (USP).</li>
+</ul></li>
+<li><em>Suporte Híbrido</em>:
+<ul>
+<li>Emissão digital e física (Portaria 70/2025).</li>
+</ul></li>
+</ul>
+</div></div>
 <aside class="notes">
 <p>Tempo acumulado: 9:30 - 10:45 (1 min 15 s). Demonstrar como as regras complexas de avaliação quadrienal da CAPES e portarias do MEC foram traduzidas em algoritmos exatos dentro do sistema.</p>
 <style type="text/css">
@@ -1314,13 +1335,23 @@ display:block!important;
 <section class="slide level2">
 <h2>Conclusão e Recursos</h2>
 <div class="columns">
-<div class="column" style="width:65%;">
+<div class="column" style="width:40%;">
+<div style="text-align: center; margin-top: 15px;">
+<a href="https://github.com/cinas-ipen/l10n_br_openeducat_capes" target="_blank"> <img role="img" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYYAAAGGAQAAAABX+xtIAAAC2UlEQVR4nO2cUYrbMBCGv6kMfVRusEdxbtAjld5MPsoeYEF5DNj8fZBkO9lSNtCYVIwejGT7A4nxjGZGk5h4rC3fHgTACSeccMKJYwkkza0fZyRJjJKUAMYcaq+9/JrrcOLrbQCgbOrTDzBiLk9KbzphqveW4ahZOXEAMZkZEASXAaV2YSxWYDGz0+GzcuIAYrFymd6uZj8zMJ2C/kYcMSsn/i0x3IyCbExgxCCmU4AxL8Ot0F9zHU48TIxSk+xlQAmwM2BW9DxIyofPyoknEmZmZmcW06+3azHwSvFqSiwGFzMzGw6elRPPIUpw1tq8u8eoGSnfv/Ka63DigSZpRolqwhkzKMWZMiTOKEXVBy7zDoiq08SZKtW8fQesOZkmfZd5B0SV72bWE0FKW0YuV913Pe+G2Cdbi3bHGYiSUmx7eCpGP/h+3g1RPXOmE9WY632gPJjMzH7mxYr5P3BWTjyLGCiuGvNgY0bAMoh4Ncb377JRywCEmcnCfNSsnHgmUWJuI36g6fQxaDoHweWEuCwGgKZTgHb48prrcOKBtvnoUm7pthKat42+mvXo8XkfRIvVoAp+89fugnTPyfRC7GUuzU3F85qOAWr0Lo/P+yDW0Pwu5xZK7nWXgE1u2zshVu2WinaPGere3cqiaoome06mD6L5cFFt2y5mveZk2scAlANVl/n/TzTb3vLtrbdVPoZV+r6f90Fs/jibaPcVsDfenMu8B2In2mrWqe5bddpyO1r1M5ZeiH1OZjtNKy3qprTdz1g6If5cJ5NgU+zm2rvMOyHuf8eyz7ll2Gy763k3xKrJqsnWsZVKNe3eXHvPyfRB3O7nW+XjWhm3vpc8Pu+E+OTDrdUxu0i9mXX327sghruxgQExI1jQ9DbDdA5QaytedB1OfL1VmY8lPgtiOocZLlaHtbeYSgHNq67DiQfaJ7+dsIvP1wgN9+G6Icz/T8YJJ5xwojviN+sy4E2nWU8jAAAAAElFTkSuQmCC" width="280" style="border-radius: 12px; background: white; padding: 12px; box-shadow: 0 4px 16px rgba(0,0,0,0.4);"> </a>
+<div style="font-size: 0.6em; margin-top: 12px; color: #aaa;">
+Acesse o repositório no GitHub
+</div>
+</div>
+</div><div class="column" style="width:60%;">
 <ul>
-<li><strong>Soberania Tecnológica</strong>: O ecossistema <code>l10n_br_openeducat_capes</code> viabiliza uma pós-graduação moderna, livre e aderente às leis brasileiras.</li>
+<li><strong>Soberania Tecnológica</strong>:
+<ul>
+<li>Ecossistema livre e aderente às exigências da CAPES e MEC.</li>
+</ul></li>
 <li><strong>O Livro Técnico Completo</strong>:
 <ul>
 <li>Disponível no GitHub Pages: <a href="https://momenezes.github.io/livroddd/" target="_blank">momenezes.github.io/livroddd</a>.</li>
-<li>Contratos de código, diagramas de arquitetura e modelos detalhados.</li>
+<li>Contratos de código, diagramas e crônica dos marcos.</li>
 </ul></li>
 <li><strong>Repositório Aberto do Projeto</strong>:
 <ul>
@@ -1329,11 +1360,6 @@ display:block!important;
 </ul>
 <p><br></p>
 <p><strong>Muito obrigado! Aberto para perguntas.</strong></p>
-</div><div class="column" style="text-align: center;">
-<p><a href="https://github.com/cinas-ipen/l10n_br_openeducat_capes" target="_blank"><img role="img" data-src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAYYAAAGGAQAAAABX+xtIAAAC2UlEQVR4nO2cUYrbMBCGv6kMfVRusEdxbtAjld5MPsoeYEF5DNj8fZBkO9lSNtCYVIwejGT7A4nxjGZGk5h4rC3fHgTACSeccMKJYwkkza0fZyRJjJKUAMYcaq+9/JrrcOLrbQCgbOrTDzBiLk9KbzphqveW4ahZOXEAMZkZEASXAaV2YSxWYDGz0+GzcuIAYrFymd6uZj8zMJ2C/kYcMSsn/i0x3IyCbExgxCCmU4AxL8Ot0F9zHU48TIxSk+xlQAmwM2BW9DxIyofPyoknEmZmZmcW06+3azHwSvFqSiwGFzMzGw6elRPPIUpw1tq8u8eoGSnfv/Ka63DigSZpRolqwhkzKMWZMiTOKEXVBy7zDoiq08SZKtW8fQesOZkmfZd5B0SV72bWE0FKW0YuV913Pe+G2Cdbi3bHGYiSUmx7eCpGP/h+3g1RPXOmE9WY632gPJjMzH7mxYr5P3BWTjyLGCiuGvNgY0bAMoh4Ncb377JRywCEmcnCfNSsnHgmUWJuI36g6fQxaDoHweWEuCwGgKZTgHb48prrcOKBtvnoUm7pthKat42+mvXo8XkfRIvVoAp+89fugnTPyfRC7GUuzU3F85qOAWr0Lo/P+yDW0Pwu5xZK7nWXgE1u2zshVu2WinaPGere3cqiaoome06mD6L5cFFt2y5mveZk2scAlANVl/n/TzTb3vLtrbdVPoZV+r6f90Fs/jibaPcVsDfenMu8B2In2mrWqe5bddpyO1r1M5ZeiH1OZjtNKy3qprTdz1g6If5cJ5NgU+zm2rvMOyHuf8eyz7ll2Gy763k3xKrJqsnWsZVKNe3eXHvPyfRB3O7nW+XjWhm3vpc8Pu+E+OTDrdUxu0i9mXX327sghruxgQExI1jQ9DbDdA5QaytedB1OfL1VmY8lPgtiOocZLlaHtbeYSgHNq67DiQfaJ7+dsIvP1wgN9+G6Icz/T8YJJ5xwojviN+sy4E2nWU8jAAAAAElFTkSuQmCC" style="border-radius: 8px; background: white; padding: 10px;" width="270"></a></p>
-<div style="font-size: 0.6em; margin-top: 8px; color: #aaa;">
-Aponte a câmera para acessar o repositório no GitHub
-</div>
 </div></div>
 <aside class="notes">
 <p>Tempo acumulado: 14:00 - 15:00 (1 min). Agradecer a atenção do público, convidar todos a acessarem o repositório escaneando o QR Code na tela e abrir a sessão para debate e perguntas.</p>
