@@ -23,41 +23,6 @@ ul.task-list li input[type="checkbox"] {
   margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
   vertical-align: middle;
 }
-/* CSS for syntax highlighting */
-html { -webkit-text-size-adjust: 100%; }
-pre > code.sourceCode { white-space: pre; position: relative; }
-pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
-pre > code.sourceCode > span:empty { height: 1.2em; }
-.sourceCode { overflow: visible; }
-code.sourceCode > span { color: inherit; text-decoration: inherit; }
-div.sourceCode { margin: 1em 0; }
-pre.sourceCode { margin: 0; }
-@media screen {
-div.sourceCode { overflow: auto; }
-}
-@media print {
-pre > code.sourceCode { white-space: pre-wrap; }
-pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
-}
-pre.numberSource code
-  { counter-reset: source-line 0; }
-pre.numberSource code > span
-  { position: relative; left: -4em; counter-increment: source-line; }
-pre.numberSource code > span > a:first-child::before
-  { content: counter(source-line);
-    position: relative; left: -1em; text-align: right; vertical-align: baseline;
-    border: none; display: inline-block;
-    -webkit-touch-callout: none; -webkit-user-select: none;
-    -khtml-user-select: none; -moz-user-select: none;
-    -ms-user-select: none; user-select: none;
-    padding: 0 4px; width: 4em;
-  }
-pre.numberSource { margin-left: 3em;  padding-left: 4px; }
-div.sourceCode
-  {   }
-@media screen {
-pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
-}
 </style>
 
 
@@ -218,11 +183,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   <li><a href="#lição-6-anatomia-da-depuração-fullstack-do-orm-ao-owl-e-ao-qweb" id="toc-lição-6-anatomia-da-depuração-fullstack-do-orm-ao-owl-e-ao-qweb" class="nav-link" data-scroll-target="#lição-6-anatomia-da-depuração-fullstack-do-orm-ao-owl-e-ao-qweb"><span class="header-section-number">6.1.6</span> Lição 6: Anatomia da Depuração Fullstack (Do ORM ao OWL e ao QWeb)</a></li>
   <li><a href="#lição-7-os-três-registros-de-comunicação-de-um-projeto-de-ti" id="toc-lição-7-os-três-registros-de-comunicação-de-um-projeto-de-ti" class="nav-link" data-scroll-target="#lição-7-os-três-registros-de-comunicação-de-um-projeto-de-ti"><span class="header-section-number">6.1.7</span> Lição 7: Os Três Registros de Comunicação de um Projeto de TI</a></li>
   </ul></li>
-  <li><a href="#anatomia-de-um-debug-forense-o-caso-dos-slides-no-revealjs" id="toc-anatomia-de-um-debug-forense-o-caso-dos-slides-no-revealjs" class="nav-link" data-scroll-target="#anatomia-de-um-debug-forense-o-caso-dos-slides-no-revealjs"><span class="header-section-number">6.2</span> Anatomia de um Debug Forense: O Caso dos Slides no RevealJS</a>
+  <li><a href="#anatomia-de-casos-reais-a-batalha-dos-dados-sintéticos-e-a-integridade-do-erp" id="toc-anatomia-de-casos-reais-a-batalha-dos-dados-sintéticos-e-a-integridade-do-erp" class="nav-link" data-scroll-target="#anatomia-de-casos-reais-a-batalha-dos-dados-sintéticos-e-a-integridade-do-erp"><span class="header-section-number">6.2</span> Anatomia de Casos Reais: A Batalha dos Dados Sintéticos e a Integridade do ERP</a>
   <ul class="collapse">
-  <li><a href="#o-problema-observado" id="toc-o-problema-observado" class="nav-link" data-scroll-target="#o-problema-observado"><span class="header-section-number">6.2.1</span> O Problema Observado</a></li>
-  <li><a href="#a-investigação-forense-na-árvore-dom" id="toc-a-investigação-forense-na-árvore-dom" class="nav-link" data-scroll-target="#a-investigação-forense-na-árvore-dom"><span class="header-section-number">6.2.2</span> A Investigação Forense na Árvore DOM</a></li>
-  <li><a href="#a-solução-canônica" id="toc-a-solução-canônica" class="nav-link" data-scroll-target="#a-solução-canônica"><span class="header-section-number">6.2.3</span> A Solução Canônica</a></li>
+  <li><a href="#caso-1-o-colapso-da-carga-inicial-e-a-armadilha-das-tabelas-isoladas" id="toc-caso-1-o-colapso-da-carga-inicial-e-a-armadilha-das-tabelas-isoladas" class="nav-link" data-scroll-target="#caso-1-o-colapso-da-carga-inicial-e-a-armadilha-das-tabelas-isoladas"><span class="header-section-number">6.2.1</span> Caso 1: O Colapso da Carga Inicial e a Armadilha das Tabelas Isoladas</a></li>
+  <li><a href="#caso-2-o-paradoxo-do-ovo-e-da-galinha-no-seletor-multiprograma-access-error" id="toc-caso-2-o-paradoxo-do-ovo-e-da-galinha-no-seletor-multiprograma-access-error" class="nav-link" data-scroll-target="#caso-2-o-paradoxo-do-ovo-e-da-galinha-no-seletor-multiprograma-access-error"><span class="header-section-number">6.2.2</span> Caso 2: O Paradoxo do Ovo e da Galinha no Seletor Multiprograma (<em>Access Error</em>)</a></li>
+  <li><a href="#caso-3-a-falha-na-emissão-do-histórico-escolar-e-o-descompasso-de-modelos" id="toc-caso-3-a-falha-na-emissão-do-histórico-escolar-e-o-descompasso-de-modelos" class="nav-link" data-scroll-target="#caso-3-a-falha-na-emissão-do-histórico-escolar-e-o-descompasso-de-modelos"><span class="header-section-number">6.2.3</span> Caso 3: A Falha na Emissão do Histórico Escolar e o Descompasso de Modelos</a></li>
   </ul></li>
   <li><a href="#o-checklist-de-7-etapas-para-o-aluno-desenvolvedor" id="toc-o-checklist-de-7-etapas-para-o-aluno-desenvolvedor" class="nav-link" data-scroll-target="#o-checklist-de-7-etapas-para-o-aluno-desenvolvedor"><span class="header-section-number">6.3</span> O Checklist de 7 Etapas para o Aluno-Desenvolvedor</a></li>
   </ul>
@@ -311,25 +276,34 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 </div>
 </section>
 </section>
-<section id="anatomia-de-um-debug-forense-o-caso-dos-slides-no-revealjs" class="level2" data-number="6.2">
-<h2 data-number="6.2" class="anchored" data-anchor-id="anatomia-de-um-debug-forense-o-caso-dos-slides-no-revealjs"><span class="header-section-number">6.2</span> Anatomia de um Debug Forense: O Caso dos Slides no RevealJS</h2>
-<p>Um dos episódios mais emblemáticos do projeto ocorreu durante a compilação dos slides executivos da apresentação (<code>apresentacao_pitch_gopg_cinas.qmd</code>) no Quarto RevealJS.</p>
-<section id="o-problema-observado" class="level3" data-number="6.2.1">
-<h3 data-number="6.2.1" class="anchored" data-anchor-id="o-problema-observado"><span class="header-section-number">6.2.1</span> O Problema Observado</h3>
-<p>Ao navegar pela apresentação compilada, o usuário detectou saltos abruptos no contador de páginas no canto inferior da tela: do slide 4 o número pulava para 7; do 9 pulava para 13; do 13 para 18; do 24 pulava de dois em dois até 36. Embora houvesse apenas cerca de 20 telas visíveis, o contador total indicava <strong>57 seções</strong>.</p>
+<section id="anatomia-de-casos-reais-a-batalha-dos-dados-sintéticos-e-a-integridade-do-erp" class="level2" data-number="6.2">
+<h2 data-number="6.2" class="anchored" data-anchor-id="anatomia-de-casos-reais-a-batalha-dos-dados-sintéticos-e-a-integridade-do-erp"><span class="header-section-number">6.2</span> Anatomia de Casos Reais: A Batalha dos Dados Sintéticos e a Integridade do ERP</h2>
+<p>No paradigma do Design-Driven Development, a prova de fogo da arquitetura não ocorre em memoriais teóricos, mas no momento em que as especificações encontram o motor do banco de dados relacional e as regras transacionais do framework.</p>
+<p>Durante o desenvolvimento do ecossistema <code>l10n_br_openeducat_capes</code>, o assistente de IA e o Arquiteto Humano enfrentaram crises reais de inicialização e carga de dados que exigiram refatorações profundas no código Python, nas views XML, nas regras de segurança e na estrutura do PostgreSQL.</p>
+<section id="caso-1-o-colapso-da-carga-inicial-e-a-armadilha-das-tabelas-isoladas" class="level3" data-number="6.2.1">
+<h3 data-number="6.2.1" class="anchored" data-anchor-id="caso-1-o-colapso-da-carga-inicial-e-a-armadilha-das-tabelas-isoladas"><span class="header-section-number">6.2.1</span> Caso 1: O Colapso da Carga Inicial e a Armadilha das Tabelas Isoladas</h3>
+<section id="o-problema-observado" class="level4" data-number="6.2.1.1">
+<h4 data-number="6.2.1.1" class="anchored" data-anchor-id="o-problema-observado"><span class="header-section-number">6.2.1.1</span> O Problema Observado</h4>
+<p>Na primeira tentativa de inicializar o container Odoo com a carga CSV de dados sintéticos do Mestrado Profissional (cenário MPTRCS), o sistema subiu aparentemente estável, mas a interface revelou um estado caótico: * Fichas de alunos e professores estavam praticamente vazias, sem histórico escolar ou disciplinas vinculadas. * O menu de configuração do OpenEduCat não listava anos acadêmicos, termos, turmas (<code>op.batch</code>) ou cursos. * Os botões inteligentes (<em>smart buttons</em>) da visão 360° falhavam ao calcular totais de créditos ou produções.</p>
 </section>
-<section id="a-investigação-forense-na-árvore-dom" class="level3" data-number="6.2.2">
-<h3 data-number="6.2.2" class="anchored" data-anchor-id="a-investigação-forense-na-árvore-dom"><span class="header-section-number">6.2.2</span> A Investigação Forense na Árvore DOM</h3>
-<p>Um desenvolvedor ingênuo tentaria forçar o contador via JavaScript ou renomear índices manualmente. O Arquiteto Humano e o Agente de IA, no entanto, inspecionaram o código HTML gerado pelo compilador:</p>
+<section id="o-diagnóstico-forense" class="level4" data-number="6.2.1.2">
+<h4 data-number="6.2.1.2" class="anchored" data-anchor-id="o-diagnóstico-forense"><span class="header-section-number">6.2.1.2</span> O Diagnóstico Forense</h4>
+<p>A IA havia caído na clássica <strong>armadilha do isolamento</strong>: os scripts preliminares de dados sintéticos geraram apenas registros nas tabelas customizadas criadas pelo projeto (<code>capes_*</code>), <strong>negligenciando a infraestrutura canônica do OpenEduCat</strong>.</p>
+<p>Em um ERP empresarial complexo como o Odoo, um discente (<code>op.student</code>) não pode existir no vácuo: ele depende de uma turma (<code>op.batch</code>), que depende de um curso (<code>op.course</code>), que por sua vez referencia um nível acadêmico (<code>op.program.level</code>), um departamento (<code>op.department</code>) e anos/termos letivos ativos (<code>op.academic.year</code>, <code>op.academic.term</code>). A omissão dessa teia de entidades tornava o banco estruturalmente manco.</p>
+</section>
+<section id="a-refatoração-de-engenharia-e-o-validador-forense" class="level4" data-number="6.2.1.3">
+<h4 data-number="6.2.1.3" class="anchored" data-anchor-id="a-refatoração-de-engenharia-e-o-validador-forense"><span class="header-section-number">6.2.1.3</span> A Refatoração de Engenharia e o Validador Forense</h4>
+<p>O Agente precisou reconstruir a esteira de dados em duas frentes:</p>
 <ol type="1">
-<li><p>No Quarto Markdown, o cabeçalho <code>##</code> gera uma seção horizontal (<code>&lt;section&gt;</code>).</p></li>
-<li><p>Dentro dos cards visuais estilizados em CSS, o texto utilizava títulos de nível 4 (<code>####</code>) para identificar os blocos:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb1"><pre class="sourceCode markdown code-with-copy"><code class="sourceCode markdown"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>::: {.card}</span>
-<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="fu">#### Núcleo Institucional e Base</span></span>
-<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Conteúdo do bloco...</span>
-<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>:::</span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div></li>
-<li><p>O parser do Pandoc/Quarto interpretava títulos dentro de seções como possíveis divisores de sub-seções ou slides verticais, encapsulando cada card dentro de uma nova tag <code>&lt;section class="card"&gt;</code> filha.</p></li>
-<li><p>O contador nativo do RevealJS contabilizava <strong>todas as tags <code>&lt;section&gt;</code> existentes no DOM</strong>. Um único slide contendo 3 cards consumia 4 índices (1 seção-mãe + 3 seções filhas).</p></li>
+<li><strong>Reescrita do Gerador Sintético (<code>scripts/gerador_dados_sinteticos.py</code>)</strong>:
+<ul>
+<li>O script foi expandido de um gerador superficial para um orquestrador determinístico de mais de 700 linhas, gerando <strong>33 entidades relacionais encadeadas na ordem exata de dependência</strong> de chaves estrangeiras.</li>
+<li>Criação de dados de infraestrutura completos, governança colegiada da CPG (comitê, membros e atas de reuniões mensais com quórum formal) e segregação do credenciamento docente entre vínculo institucional e livro-razão de categorias.</li>
+</ul></li>
+<li><strong>Criação do Script Validador Forense (<code>scripts/validar_integridade_sintetica.py</code>)</strong>:
+<ul>
+<li>Antes que qualquer arquivo CSV fosse injetado no container Odoo, um script autônomo inspecionava em memória todas as chaves estrangeiras cruzadas, integridade de CPFs (algoritmo Módulo 11) e ORCiDs (padrão ISO 7064). Somente quando o validador atestou <strong>0 erros de integridade</strong> os arquivos foram submetidos à carga via banco.</li>
+</ul></li>
 </ol>
 <div class="cell" data-layout-align="default">
 <div class="cell-output-display">
@@ -337,33 +311,71 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p></p><figure class="figure"><p></p>
 <div>
 <pre class="mermaid mermaid-js">flowchart TD
-    subgraph CodigoProblematico["Estrutura Incorreta (Inflação de Seções)"]
-        H2A["## Título do Slide"] --&gt; SecMaeA["&amp;lt;section&amp;gt; (Página)"]
-        CardA["#### Card 1"] --&gt; SecFilha1["&amp;lt;section class='card'&amp;gt; (+1 no contador)"]
-        CardB["#### Card 2"] --&gt; SecFilha2["&amp;lt;section class='card'&amp;gt; (+1 no contador)"]
-        SecMaeA -.-&gt; SecFilha1
-        SecMaeA -.-&gt; SecFilha2
+    subgraph FalhaInicial["1. Sintoma e Causa Raiz"]
+        CargaFalha["Carga CSV Falha no Container"] --&gt; CausaIsolada["Tabelas capes_* geradas isoladas&lt;br/&gt;sem infraestrutura OpenEduCat&lt;br/&gt;(Falta batch, year, department)"]
+        CausaIsolada --&gt; ErroFK["Violação de FKs &amp; Fichas Vazias"]
     end
 
-    subgraph SolucaoElegante["Estrutura Canônica (Contagem Exata)"]
-        H2B["## Título do Slide"] --&gt; SecMaeB["&amp;lt;section&amp;gt; (Página Única)"]
-        DivA["&amp;lt;div class='card-title'&amp;gt; Card 1 &amp;lt;/div&amp;gt;"]
-        DivB["&amp;lt;div class='card-title'&amp;gt; Card 2 &amp;lt;/div&amp;gt;"]
-        SecMaeB --&gt; DivA
-        SecMaeB --&gt; DivB
+    subgraph AcaoEngenharia["2. Intervenção Fullstack"]
+        RefatScript["Expansão do Gerador Sintético&lt;br/&gt;(33 entidades encadeadas)"]
+        Validador["Validador Forense Pré-Carga&lt;br/&gt;(validar_integridade.py)"]
+        FixORM["Ajustes no ORM &amp; Segurança&lt;br/&gt;(Record Rules &amp; Campos Relacionados)"]
+        RefatScript --&gt; Validador
+        Validador --&gt; FixORM
     end
+
+    subgraph SucessoProducao["3. Estabilidade em Produção"]
+        CargaSucesso["Carga Limpa no PostgreSQL&lt;br/&gt;(86 Discentes, 24 Docentes, CPG)"]
+        TestesZero["0 Erros de Integridade&lt;br/&gt;&amp; PDFs Emitidos com Sucesso"]
+        CargaSucesso --&gt; TestesZero
+    end
+
+    FalhaInicial --&gt; AcaoEngenharia
+    AcaoEngenharia --&gt; SucessoProducao
 </pre>
 </div>
 <p></p></figure><p></p>
 </div>
 </div>
 </div>
+<hr>
 </section>
-<section id="a-solução-canônica" class="level3" data-number="6.2.3">
-<h3 data-number="6.2.3" class="anchored" data-anchor-id="a-solução-canônica"><span class="header-section-number">6.2.3</span> A Solução Canônica</h3>
-<p>Substituíram-se todos os cabeçalhos de título interno <code>####</code> por tags semânticas neutras:</p>
-<div class="code-copy-outer-scaffold"><div class="sourceCode" id="cb2"><pre class="sourceCode html code-with-copy"><code class="sourceCode html"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="dt">&lt;</span><span class="kw">div</span><span class="ot"> class</span><span class="op">=</span><span class="st">"card-title"</span><span class="dt">&gt;</span>Núcleo Institucional e Base<span class="dt">&lt;/</span><span class="kw">div</span><span class="dt">&gt;</span></span></code></pre></div><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></div>
-<p>Com essa refatoração, a contagem de tags <code>&lt;section&gt;</code> no HTML reduziu-se de 57 para <strong>exatamente 22</strong>, restabelecendo a numeração sequencial perfeita (1/22, 2/22… 22/22). Compreender o funcionamento interno do compilador e do DOM é a fronteira que separa a tentativa e erro da engenharia sólida.</p>
+</section>
+<section id="caso-2-o-paradoxo-do-ovo-e-da-galinha-no-seletor-multiprograma-access-error" class="level3" data-number="6.2.2">
+<h3 data-number="6.2.2" class="anchored" data-anchor-id="caso-2-o-paradoxo-do-ovo-e-da-galinha-no-seletor-multiprograma-access-error"><span class="header-section-number">6.2.2</span> Caso 2: O Paradoxo do Ovo e da Galinha no Seletor Multiprograma (<em>Access Error</em>)</h3>
+<section id="o-problema-observado-1" class="level4" data-number="6.2.2.1">
+<h4 data-number="6.2.2.1" class="anchored" data-anchor-id="o-problema-observado-1"><span class="header-section-number">6.2.2.1</span> O Problema Observado</h4>
+<p>Após a implementação do seletor reativo de programas no Systray em OWL (para permitir que secretarias compartilhadas alternassem dinamicamente entre programas da mesma instituição), tanto o administrador quanto os secretários recebiam o erro impeditivo: <code>Access Error - Você não possui permissão para acessar o programa selecionado.</code></p>
+</section>
+<section id="a-causa-raiz-nas-regras-de-segurança-record-rules" class="level4" data-number="6.2.2.2">
+<h4 data-number="6.2.2.2" class="anchored" data-anchor-id="a-causa-raiz-nas-regras-de-segurança-record-rules"><span class="header-section-number">6.2.2.2</span> A Causa Raiz nas Regras de Segurança (<em>Record Rules</em>)</h4>
+<p>No Odoo, as <em>Record Rules</em> (<code>ir.rule</code>) injetam cláusulas <code>WHERE</code> automáticas no PostgreSQL em cada consulta. A regra inicial de isolamento estipulava que o usuário só poderia enxergar registros cujo programa correspondesse exatamente ao <code>current_program_id</code> ativo em sua sessão.</p>
+<p>Criou-se um paradoxo lógico: para que o usuário pudesse selecionar um novo programa no menu dropdown, o ORM precisava consultar a tabela <code>op.program.capes</code> para exibir as opções; contudo, a <em>Record Rule</em> bloqueava a leitura de qualquer programa que <em>ainda não estivesse selecionado</em>!</p>
+</section>
+<section id="a-solução-arquitetural" class="level4" data-number="6.2.2.3">
+<h4 data-number="6.2.2.3" class="anchored" data-anchor-id="a-solução-arquitetural"><span class="header-section-number">6.2.2.3</span> A Solução Arquitetural</h4>
+<p>A regra de segurança foi refatorada em dois níveis em <code>capes_rules.xml</code>: * <strong>Nível de Leitura (Metadata)</strong>: Permissão irrestrita de leitura sobre todos os programas declarados na relação <code>allowed_program_ids</code> daquele usuário. * <strong>Nível Transacional (Operação)</strong>: Trava de escrita e visualização detalhada de dados restrita estritamente ao <code>current_program_id</code> da sessão ativa.</p>
+<hr>
+</section>
+</section>
+<section id="caso-3-a-falha-na-emissão-do-histórico-escolar-e-o-descompasso-de-modelos" class="level3" data-number="6.2.3">
+<h3 data-number="6.2.3" class="anchored" data-anchor-id="caso-3-a-falha-na-emissão-do-histórico-escolar-e-o-descompasso-de-modelos"><span class="header-section-number">6.2.3</span> Caso 3: A Falha na Emissão do Histórico Escolar e o Descompasso de Modelos</h3>
+<section id="o-problema-observado-2" class="level4" data-number="6.2.3.1">
+<h4 data-number="6.2.3.1" class="anchored" data-anchor-id="o-problema-observado-2"><span class="header-section-number">6.2.3.1</span> O Problema Observado</h4>
+<p>Ao homologar o cenário da Universidade XYZQ, a tentativa de imprimir o Histórico Escolar Oficial em PDF quebrou com a exceção: <code>AttributeError: 'op.student' object has no attribute 'code'</code> e <code>'program_id'</code>.</p>
+</section>
+<section id="a-causa-raiz" class="level4" data-number="6.2.3.2">
+<h4 data-number="6.2.3.2" class="anchored" data-anchor-id="a-causa-raiz"><span class="header-section-number">6.2.3.2</span> A Causa Raiz</h4>
+<p>Na modelagem preliminar, a IA assumiu convenções simplistas de código legado (<code>object.code</code> e <code>o.program_id.name</code>). Na arquitetura DDD definitiva, contudo, a identificação soberana do aluno reside em <code>ra_number</code> (Registro Acadêmico perene imutável) e seu vínculo curricular reside em <code>student_course_ids</code> (haja vista que um discente pode cursar mestrado e posteriormente doutorado na mesma instituição mantendo o mesmo cadastro).</p>
+</section>
+<section id="a-refatoração-fullstack" class="level4" data-number="6.2.3.3">
+<h4 data-number="6.2.3.3" class="anchored" data-anchor-id="a-refatoração-fullstack"><span class="header-section-number">6.2.3.3</span> A Refatoração Fullstack</h4>
+<ol type="1">
+<li><strong>No Modelo Python (<code>op_student.py</code>)</strong>: Criação de campos relacionados computados e seguros (<code>code = fields.Char(related='ra_number')</code> e <code>current_program_id</code>), mantendo compatibilidade com templates legados sem violar o novo domínio.</li>
+<li><strong>Nas Views QWeb (<code>student_transcript_report.xml</code>)</strong>: Ajuste das expressões XPath para navegar na esteira de livros-razão (<code>credit_ledger_ids</code>), filtrando disciplinas incorporadas e omitindo reprovações do período de aluno especial (<code>omit_on_regular</code>).</li>
+<li><strong>Validação em Shell</strong>: Execução de bateria de testes automatizados via terminal (<code>odoo shell</code>), resultando na emissão em lote de múltiplos históricos em PDF com 100% de sucesso.</li>
+</ol>
+</section>
 </section>
 </section>
 <section id="o-checklist-de-7-etapas-para-o-aluno-desenvolvedor" class="level2" data-number="6.3">

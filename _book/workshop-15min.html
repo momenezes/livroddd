@@ -1257,25 +1257,23 @@ display:block!important;
 }</style></aside>
 </section>
 <section class="slide level2">
-<h2>Anatomia de um Debug Forense: O Caso dos Slides RevealJS</h2>
+<h2>Caso Real: A Depuração da Carga de Dados e Banco</h2>
 <ul>
-<li><strong>O Sintoma Misterioso</strong>:
+<li><strong>O Colapso Inicial da Carga Sintética</strong>:
 <ul>
-<li>O contador do RevealJS pulava números (do slide 4 ia para 7, do 9 para 13), somando 57 seções para apenas 20 telas visíveis.</li>
+<li>Primeira carga CSV falhou: a IA populou apenas tabelas <code>capes_*</code>, ignorando a infraestrutura nativa do OpenEduCat (<code>op.department</code>, <code>op.academic.year</code>, <code>op.batch</code>).</li>
+<li>Fichas sem turmas, vínculos quebrados no PostgreSQL e botões 360° inoperantes.</li>
 </ul></li>
-<li><strong>A Causa Raiz Descoberta no DOM</strong>:
+<li><strong>A Intervenção no Código e no Banco</strong>:
 <ul>
-<li>Títulos de nível 4 (<code>####</code>) dentro de cards estilizados eram interpretados pelo Pandoc como divisores de sub-seções, criando tags <code>&lt;section&gt;</code> filhas aninhadas.</li>
-<li>O contador nativo somava todas as seções do DOM.</li>
+<li><strong>Expansão do Gerador</strong>: Script reescrito para orquestrar <strong>33 entidades relacionais</strong> na ordem exata de dependência.</li>
+<li><strong>Validador Forense Pré-Carga</strong>: <code>validar_integridade_sintetica.py</code> para pré-auditar FKs, CPFs (Módulo 11) e ORCiDs antes do container subir.</li>
+<li><strong>Correções no ORM e Segurança</strong>: Criação de campos relacionados (<code>code</code>, <code>current_program_id</code>), migração com <code>odoo-bin -u</code> e abertura de <em>Record Rules</em> para leitura.</li>
 </ul></li>
-<li><strong>A Solução Elegante</strong>:
-<ul>
-<li>Substituição de <code>####</code> por <code>&lt;div class=&quot;card-title&quot;&gt;...&lt;/div&gt;</code>.</li>
-<li>Redução imediata para exatamente 22 seções sequenciais perfeitas.</li>
-</ul></li>
+<li><strong>Resultado</strong>: 86 discentes, turmas reais, CPG completa e <strong>zero erros de integridade</strong>.</li>
 </ul>
 <aside class="notes">
-<p>Tempo acumulado: 12:00 - 13:00 (1 min). Compartilhar essa rica lição de depuração: compreender as abstrações do compilador (Markdown -&gt; Pandoc -&gt; HTML -&gt; RevealJS) é o que diferencia o programador que adivinha do engenheiro que soluciona.</p>
+<p>Tempo acumulado: 12:00 - 13:00 (1 min). Explicar como o teste de estresse com dados sintéticos densos forçou a equipe e a IA a consertar modelos no ORM, regras de segurança do Odoo e chaves no PostgreSQL antes que qualquer usuário chegasse perto do sistema.</p>
 <style type="text/css">
 span.MJX_Assistive_MathML {
 position:absolute!important;

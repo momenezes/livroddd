@@ -152,20 +152,20 @@ Tempo acumulado: 10:45 - 12:00 (1 min 15 s).
 Enfatizar a superioridade de testar sistemas com dados densos e realistas. Sem esses dados, falhas sutis de permissões e relatórios nunca teriam sido descobertas em desenvolvimento.
 :::
 
-## Anatomia de um Debug Forense: O Caso dos Slides RevealJS
+## Caso Real: A Depuração da Carga de Dados e Banco
 
-* **O Sintoma Misterioso**:
-  * O contador do RevealJS pulava números (do slide 4 ia para 7, do 9 para 13), somando 57 seções para apenas 20 telas visíveis.
-* **A Causa Raiz Descoberta no DOM**:
-  * Títulos de nível 4 (`####`) dentro de cards estilizados eram interpretados pelo Pandoc como divisores de sub-seções, criando tags `<section>` filhas aninhadas.
-  * O contador nativo somava todas as seções do DOM.
-* **A Solução Elegante**:
-  * Substituição de `####` por `<div class="card-title">...</div>`.
-  * Redução imediata para exatamente 22 seções sequenciais perfeitas.
+* **O Colapso Inicial da Carga Sintética**:
+  * Primeira carga CSV falhou: a IA populou apenas tabelas `capes_*`, ignorando a infraestrutura nativa do OpenEduCat (`op.department`, `op.academic.year`, `op.batch`).
+  * Fichas sem turmas, vínculos quebrados no PostgreSQL e botões 360° inoperantes.
+* **A Intervenção no Código e no Banco**:
+  * **Expansão do Gerador**: Script reescrito para orquestrar **33 entidades relacionais** na ordem exata de dependência.
+  * **Validador Forense Pré-Carga**: `validar_integridade_sintetica.py` para pré-auditar FKs, CPFs (Módulo 11) e ORCiDs antes do container subir.
+  * **Correções no ORM e Segurança**: Criação de campos relacionados (`code`, `current_program_id`), migração com `odoo-bin -u` e abertura de *Record Rules* para leitura.
+* **Resultado**: 86 discentes, turmas reais, CPG completa e **zero erros de integridade**.
 
 ::: {.notes}
 Tempo acumulado: 12:00 - 13:00 (1 min).
-Compartilhar essa rica lição de depuração: compreender as abstrações do compilador (Markdown -> Pandoc -> HTML -> RevealJS) é o que diferencia o programador que adivinha do engenheiro que soluciona.
+Explicar como o teste de estresse com dados sintéticos densos forçou a equipe e a IA a consertar modelos no ORM, regras de segurança do Odoo e chaves no PostgreSQL antes que qualquer usuário chegasse perto do sistema.
 :::
 
 ## Sete Lições Práticas para Engenheiros e Alunos
