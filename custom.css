@@ -110,3 +110,17 @@ svg.mermaid-js {
   fill: #0f172a !important;
   font-weight: 700 !important;
 }
+
+/* 7. KaTeX Math Responsive Display */
+.katex-display {
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 0.5em 0;
+  max-width: 100%;
+  -webkit-overflow-scrolling: touch;
+}
+
+.reveal .katex-display {
+  margin: 0.5em 0 !important;
+}
+

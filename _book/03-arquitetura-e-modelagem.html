@@ -77,8 +77,22 @@ ul.task-list li input[type="checkbox"] {
 <script src="site_libs/quarto-diagram/mermaid-init.js"></script>
 <link href="site_libs/quarto-diagram/mermaid.css" rel="stylesheet">
 
-  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
-  <script defer="" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+  <script>window.backupDefine = window.define; window.define = undefined;</script><script src="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.js"></script>
+  <script>document.addEventListener("DOMContentLoaded", function () {
+ var mathElements = document.getElementsByClassName("math");
+ var macros = [];
+ for (var i = 0; i < mathElements.length; i++) {
+  var texText = mathElements[i].firstChild;
+  if (mathElements[i].tagName == "SPAN") {
+   katex.render(texText.data, mathElements[i], {
+    displayMode: mathElements[i].classList.contains('display'),
+    throwOnError: false,
+    macros: macros,
+    fleqn: false
+   });
+}}});
+  </script>
+  <script>window.define = window.backupDefine; window.backupDefine = undefined;</script><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@latest/dist/katex.min.css">
 
 <script type="text/javascript">
 const typesetMath = (el) => {
@@ -475,15 +489,15 @@ window.Quarto = {
 <section id="o-motor-da-produção-técnica-e-tecnológica-ptt" class="level3" data-number="3.4.1">
 <h3 data-number="3.4.1" class="anchored" data-anchor-id="o-motor-da-produção-técnica-e-tecnológica-ptt"><span class="header-section-number">3.4.1</span> 1. O Motor da Produção Técnica e Tecnológica (PTT)</h3>
 <p>Nos programas profissionais, a avaliação da CAPES não se restringe à produção bibliográfica convencional. O submódulo <code>l10n_br_openeducat_capes_ptt</code> implementou a taxonomia oficial da CAPES (subdividida em 4 eixos ponderados):</p>
-<p><span class="math display">\[\text{Pontuação PTT} = 0.25 \times \text{Aderência} + 0.30 \times \text{Impacto} + 0.25 \times \text{Inovação} + 0.20 \times \text{Complexidade}\]</span></p>
+<p><span class="math display">\text{Pontuação PTT} = 0.25 \times \text{Aderência} + 0.30 \times \text{Impacto} + 0.25 \times \text{Inovação} + 0.20 \times \text{Complexidade}</span></p>
 <p>Cada eixo é avaliado em uma escala de 0 a 100 pontos por pareceristas designados. O sistema consolida a nota final e realiza o enquadramento automático nos estratos:</p>
 <ul>
-<li><strong>T1</strong>: Pontuação <span class="math inline">\(\ge 85\)</span> (Impacto de referência nacional/internacional)</li>
-<li><strong>T2</strong>: Pontuação <span class="math inline">\(\ge 70\)</span> e <span class="math inline">\(&lt; 85\)</span></li>
-<li><strong>T3</strong>: Pontuação <span class="math inline">\(\ge 55\)</span> e <span class="math inline">\(&lt; 70\)</span></li>
-<li><strong>T4</strong>: Pontuação <span class="math inline">\(\ge 40\)</span> e <span class="math inline">\(&lt; 55\)</span></li>
-<li><strong>T5</strong>: Pontuação <span class="math inline">\(\ge 25\)</span> e <span class="math inline">\(&lt; 40\)</span></li>
-<li><strong>TNC (Não Classificado)</strong>: Pontuação <span class="math inline">\(&lt; 25\)</span></li>
+<li><strong>T1</strong>: Pontuação <span class="math inline">\ge 85</span> (Impacto de referência nacional/internacional)</li>
+<li><strong>T2</strong>: Pontuação <span class="math inline">\ge 70</span> e <span class="math inline">&lt; 85</span></li>
+<li><strong>T3</strong>: Pontuação <span class="math inline">\ge 55</span> e <span class="math inline">&lt; 70</span></li>
+<li><strong>T4</strong>: Pontuação <span class="math inline">\ge 40</span> e <span class="math inline">&lt; 55</span></li>
+<li><strong>T5</strong>: Pontuação <span class="math inline">\ge 25</span> e <span class="math inline">&lt; 40</span></li>
+<li><strong>TNC (Não Classificado)</strong>: Pontuação <span class="math inline">&lt; 25</span></li>
 </ul>
 </section>
 <section id="a-esteira-dual-de-diplomação-digital-mec" class="level3" data-number="3.4.2">

@@ -4,6 +4,7 @@ subtitle: "Da Arquitetura Regulatória ao Código em Sistemas de Missão Crític
 author: "Mario Olímpio de Menezes"
 format:
   revealjs:
+    html-math-method: katex
     embed-resources: true
     theme: black
     slide-number: "c/t"
