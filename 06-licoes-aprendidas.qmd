@@ -65,43 +65,137 @@ A IA havia caído na clássica **armadilha do isolamento**: os scripts prelimina
 
 Em um ERP empresarial complexo como o Odoo, um discente (`op.student`) não pode existir no vácuo: ele depende de uma turma (`op.batch`), que depende de um curso (`op.course`), que por sua vez referencia um nível acadêmico (`op.program.level`), um departamento (`op.department`) e anos/termos letivos ativos (`op.academic.year`, `op.academic.term`). A omissão dessa teia de entidades tornava o banco estruturalmente manco.
 
-#### A Refatoração de Engenharia e o Validador Forense
+#### A Refatoração de Engenharia: A Esteira de Dados Sintéticos e Validação Forense
 
-O Agente precisou reconstruir a esteira de dados em duas frentes:
+Para superar a fragilidade inicial e garantir que o software fosse testado contra as exigências do mundo real, a equipe descartou dados manuais ou genéricos e desenvolveu uma esteira procedural completa de dados sintéticos e auditoria em memória.
 
-1. **Reescrita do Gerador Sintético (`scripts/gerador_dados_sinteticos.py`)**:
+##### A Filosofia Anti-Trivialidade e a Superação da Armadilha do Isolamento
 
-   * O script foi expandido de um gerador superficial para um orquestrador determinístico de mais de 700 linhas, gerando **33 entidades relacionais encadeadas na ordem exata de dependência** de chaves estrangeiras.
-   * Criação de dados de infraestrutura completos, governança colegiada da CPG (comitê, membros e atas de reuniões mensais com quórum formal) e segregação do credenciamento docente entre vínculo institucional e livro-razão de categorias.
+Em projetos de software corporativo de grande porte assistidos por Inteligência Artificial, um dos erros mais frequentes e danosos é a realização de testes com massas de dados triviais (*"Aluno Teste 1"*, *"Professor Exemplo"* ou tabelas com apenas duas colunas preenchidas). Essa prática mascara falhas graves de integridade referencial, dependências cíclicas entre tabelas e exceções silenciosas em tempo de execução no ORM.
 
-2. **Criação do Script Validador Forense (`scripts/validar_integridade_sintetica.py`)**:
+Durante a maturação do ecossistema `l10n_br_openeducat_capes`, a superação da **Armadilha do Isolamento** exigiu compreender que, no ecossistema Odoo/OpenEduCat, nenhuma entidade acadêmica pode existir isolada:
 
-   * Antes que qualquer arquivo CSV fosse injetado no container Odoo, um script autônomo inspecionava em memória todas as chaves estrangeiras cruzadas, integridade de CPFs (algoritmo Módulo 11) e ORCiDs (padrão ISO 7064). Somente quando o validador atestou **0 erros de integridade** os arquivos foram submetidos à carga via banco.
+* Um discente (`op.student`) requer turmas (`op.batch`), cursos (`op.course`), níveis de programa (`op.program.level`), departamentos (`op.department`) e calendários letivos ativos (`op.academic.year`, `op.academic.term`).
+* Um docente (`op.faculty`) exige departamentos, áreas de conhecimento, linhas de pesquisa e vínculos funcionais formais.
+* Uma banca examinadora (`capes.thesis.committee`) requer membros internos e externos vinculados a instituições e áreas de avaliação da CAPES.
+
+Para assegurar consistência matemática e jurídica antes da injeção de dados no PostgreSQL, foi projetada uma esteira determinística de geração e auditoria forense baseada em dois scripts Python independentes, operando sobre **33 arquivos CSV relacionais encadeados**.
+
+##### Arquitetura dos Scripts Python da Esteira Sintética
 
 ```{mermaid}
-flowchart TD
-    subgraph FalhaInicial["1. Sintoma e Causa Raiz"]
-        CargaFalha["Carga CSV Falha no Container"] --> CausaIsolada["Tabelas capes_* geradas isoladas<br/>sem infraestrutura OpenEduCat<br/>(Falta batch, year, department)"]
-        CausaIsolada --> ErroFK["Violação de FKs & Fichas Vazias"]
+graph TD
+    subgraph Gerador ["1. Gerador Procedural Sintético (gerador_dados_sinteticos.py)"]
+        Seed["Semente Determinística RNG(2026)<br/>(Reprodutibilidade Científica Total)"]
+        Onomastica["Onomástica Brasileira & Censo IBGE<br/>(Prenomes, Sobrenomes, Mãe, Raça/Cor, PCD)"]
+        Algoritmos["Algoritmos Fiscais e Criptográficos<br/>(CPF Módulo 11, ORCiD ISO 7064, PDFs Base64)"]
+        Orquestrador["Orquestrador de Chaves Estrangeiras<br/>(33 Datasets CSV Encadeados)"]
     end
 
-    subgraph AcaoEngenharia["2. Intervenção Fullstack"]
-        RefatScript["Expansão do Gerador Sintético<br/>(33 entidades encadeadas)"]
-        Validador["Validador Forense Pré-Carga<br/>(validar_integridade.py)"]
-        FixORM["Ajustes no ORM & Segurança<br/>(Record Rules & Campos Relacionados)"]
-        RefatScript --> Validador
-        Validador --> FixORM
+    subgraph Datasets ["2. Repositório de Datasets (import_templates/datasets_sinteticos/)"]
+        Cen1["Cenário 1: Universidade XYZQ<br/>(4 Programas, 110 Pessoas, Coortes T1-T9)"]
+        Cen2["Cenário 2: MPTRCS / IPEN-CNEN/SP<br/>(Mestrado Profissional, 72 Pessoas, Registro USP)"]
     end
 
-    subgraph SucessoProducao["3. Estabilidade em Produção"]
-        CargaSucesso["Carga Limpa no PostgreSQL<br/>(86 Discentes, 24 Docentes, CPG)"]
-        TestesZero["0 Erros de Integridade<br/>& PDFs Emitidos com Sucesso"]
-        CargaSucesso --> TestesZero
+    subgraph Validador ["3. Validador Forense em Memória (validar_integridade_sintetica.py)"]
+        AuditOnomastica["Auditoria de CPFs, Censo e Unicidade<br/>(0 Colisões, 100% CPFs Válidos)"]
+        AuditFK["Auditoria em Grafo de Foreign Keys<br/>(Checagem Cruzada de 33 Tabelas)"]
+        AuditRegras["Auditoria de Regras Regimentais<br/>(Portaria 81/2016, Vínculos Externos, Quórum)"]
+        Atestado["Atestado Formal: 0 ERROS DETECTADOS<br/>(Aprovação Prévia à Carga no PostgreSQL)"]
     end
 
-    FalhaInicial --> AcaoEngenharia
-    AcaoEngenharia --> SucessoProducao
+    Seed --> Onomastica
+    Onomastica --> Algoritmos
+    Algoritmos --> Orquestrador
+    Orquestrador --> Cen1
+    Orquestrador --> Cen2
+    Cen1 --> AuditOnomastica
+    Cen2 --> AuditOnomastica
+    AuditOnomastica --> AuditFK
+    AuditFK --> AuditRegras
+    AuditRegras --> Atestado
+
+    style Gerador fill:#e1f5fe,stroke:#0288d1,stroke-width:2px
+    style Datasets fill:#fff9c4,stroke:#fbc02d,stroke-width:2px
+    style Validador fill:#e8f5e9,stroke:#388e3c,stroke-width:2px
+    style Seed fill:#ffffff,stroke:#0288d1,stroke-width:1px
+    style Onomastica fill:#ffffff,stroke:#0288d1,stroke-width:1px
+    style Algoritmos fill:#ffffff,stroke:#0288d1,stroke-width:1px
+    style Orquestrador fill:#ffffff,stroke:#0288d1,stroke-width:1px
+    style Cen1 fill:#ffffff,stroke:#fbc02d,stroke-width:1px
+    style Cen2 fill:#ffffff,stroke:#fbc02d,stroke-width:1px
+    style AuditOnomastica fill:#ffffff,stroke:#388e3c,stroke-width:1px
+    style AuditFK fill:#ffffff,stroke:#388e3c,stroke-width:1px
+    style AuditRegras fill:#ffffff,stroke:#388e3c,stroke-width:1px
+    style Atestado fill:#ffffff,stroke:#388e3c,stroke-width:2px
 ```
+
+##### O Gerador Procedural (`scripts/gerador_dados_sinteticos.py`)
+
+Com mais de 1.100 linhas de código Python estruturado, o script é responsável pela geração não-repetitiva, determinística e rica dos dados acadêmicos:
+
+1. **Reprodutibilidade Estrita via Semente Fixa**: Utilização de `random.Random(2026)`, garantindo que qualquer desenvolvedor, auditor ou esteira de CI/CD produza exatamente os mesmos registros, identificadores XML e valores de teste.
+2. **Onomástica Brasileira Realista e Censo CAPES**:
+
+   * Pool balanceado de prenomes masculinos e femininos, combinados com sobrenomes e conectores tradicionais brasileiros (`Alcantara`, `Bittencourt`, `Cavalcanti`, `Guimarães`, `Mascarenhas`, `Wanderley`).
+   * Filiação materna completa com sobrenome consistente (`MOTHER_FIRSTS` + `MOTHER_CONNECTORS` + `last_name`).
+   * Cobertura de 100% dos dados demográficos exigidos pelo Censo da DAV/CAPES: naturalidade (município e UF oficiais), raça/cor IBGE (`white`, `brown`, `black`, `yellow`, `indigenous`), indicadores de PCD (Pessoas com Deficiência) e logradouros reais com CEP e código de área.
+
+3. **Cálculo Algorítmico Real de CPFs (Módulo 11)**: Implementação da função `gen_cpf(seed_int)` que calcula matematicamente os dois dígitos verificadores conforme as regras da Receita Federal, evitando rejeições em validações de banco de dados.
+4. **Geração de Anexos em Base64**: Planos de trabalho discentes (`capes.work.plan`) e cartas de aceite de estágio são gerados com PDFs sintéticos válidos codificados em Base64, estressando o armazenamento de binários (*filestore*) do Odoo.
+5. **Orquestração Encadeada de 33 Datasets CSV**: O script exporta 33 arquivos numerados rigorosamente na sequência exigida para importação relacional no Odoo (desde `01a_empresa_ies` até `14c_historicos_escolares`).
+
+##### O Validador Forense em Memória (`scripts/validar_integridade_sintetica.py`)
+
+Para impedir que dados corrompidos ou inconsistentes sejam carregados no ERP, foi desenvolvido um auditor forense autônomo que processa os arquivos CSV em memória antes de qualquer injeção no PostgreSQL:
+
+1. **Varredura Completa de Foreign Keys Cruzadas**: Constrói tabelas de símbolos em memória para todas as chaves primárias e valida se cada relacionamento aponta para um registro legitimamente existente (Docentes $\rightarrow$ Departamentos, Discentes $\rightarrow$ Turmas, Vínculos $\rightarrow$ Programas, Teses $\rightarrow$ Orientadores).
+2. **Auditoria de Unicidade e Onomástica**: Verifica colisão de nomes completos em todo o universo gerado (garantindo 0 duplicidades entre docentes e discentes) e audita a decomposição correta dos campos `first_name`, `middle_name` e `last_name`.
+3. **Auditoria Regulatória da Portaria CAPES nº 81/2016**:
+
+   * Distingue vínculos internos (`link_type == 'internal'`) de vínculos externos (`link_type == 'external'`).
+   * Para vínculos internos, assegura a integridade de `program_id/id`.
+   * Para vínculos externos, valida o preenchimento obrigatório da IES Externa (`external_ies_name`), Programa Externo (`external_program_name`) e código SNPG (`external_snpg_code`), permitindo auditar o teto de 3 credenciamentos permanentes.
+
+4. **Verificação de Regras Temporais e Prazos**: Audita se os prazos de quarentena de aluno especial (36 meses) e datas de ingresso/término respeitam as vigências das versões curriculares.
+5. **Atestado Formal de Conformidade**: O script emite um relatório conclusivo e só encerra com código `0` quando o dataset atinge **100% de conformidade e 0 erros detectados**.
+
+##### Decisões de Design nos Dois Cenários de Validação
+
+A esteira sintética materializou dois cenários institucionais complementares, cobrindo todo o espectro da pós-graduação nacional:
+
+###### Cenário 1: Universidade XYZQ (Universidade Multiprograma Complexa)
+
+Projetado para estressar a governança descentralizada, concorrência e isolamento departamental de grandes instituições:
+
+* **Escopo e Dimensão**: 4 Programas de Pós-Graduação (3 Acadêmicos: Ciência da Computação, Física Aplicada e Biologia Celular; 1 Profissional: Engenharia de Software), totalizando **110 identidades soberanas** (25 docentes e 85 discentes).
+* **Escalonamento Histórico em Coortes (T1 a T9)**: Distribuição dos discentes ao longo de múltiplos anos letivos, abrangendo todo o ciclo de vida acadêmico:
+
+  * Alunos Egressos/Titulados (defesas concluídas, diplomas emitidos e histórico consolidado).
+  * Alunos Regulares em fase final de defesa de tese/dissertação.
+  * Alunos em fase de qualificação e cumprimento de créditos.
+  * Alunos Ingressantes recém-matriculados.
+  * Alunos Especiais cursando disciplinas isoladas.
+* **Corpo Docente Compartilhado e Vínculos Interinstitucionais**: Docentes com credenciamento simultâneo em dois programas da mesma IES e com atuação em instituições parceiras externas (USP, UNICAMP, UNESP, UNIFESP, UFABC e IPT), exercitando em escala as restrições da Portaria CAPES nº 81/2016.
+* **Validação do Seletor Systray (OWL)**: Prova empírica de que secretarias de departamentos distintos visualizam exclusivamente seus discentes e turmas, enquanto a Pró-Reitoria de Pós-Graduação comuta entre programas ou mantém visão consolidada irrestrita.
+
+###### Cenário 2: MPTRCS / IPEN-CNEN/SP (Instituto de Pesquisa Especializado)
+
+Projetado para validar as especificidades de um Mestrado Profissional de excelência sediado em Instituto de Pesquisa:
+
+* **Escopo e Dimensão**: Programa de Mestrado Profissional em Tecnologia das Radiações em Ciências da Saúde (MPTRCS), sediado no Instituto de Pesquisas Energéticas e Nucleares (IPEN-CNEN/SP), totalizando **72 identidades soberanas** (12 docentes e 60 discentes).
+* **Tramitação Híbrida e Registro Externo (USP)**: Validação da expedição de diplomas por Instituto de Pesquisa sem autonomia universitária própria, exigindo que o registro do diploma seja remetido para escrituração externa na universidade registradora parceira (Universidade de São Paulo - USP), com número de registro, folha e processo externo.
+* **Quarentena e Convalidação de Aluno Especial**: Modelagem de discentes que iniciaram a trajetória cursando disciplinas isoladas (`subject_special_quarantine`), prestaram processo seletivo regular e tiveram seus créditos legitimamente incorporados (`subject_special_incorporated`) mediante requerimento formal homologado pela Comissão de Pós-Graduação (CPG).
+* **Esteira Densa de Produtos Técnico-Tecnológicos (PTT)**: Avaliação de patentes, relatórios técnicos, softwares e protocolos clínicos aplicados à área de saúde e tecnologia nuclear, processados pela matriz de 4 eixos (100 pontos) do Qualis Tecnológico (estratos T1 a T5).
+
+##### Implicações Técnicas e Regulatórias dos Dados Sintéticos
+
+A execução e validação dessa esteira de dados sintéticos trouxe impactos decisivos para a robustez da plataforma:
+
+1. **Blindagem do ORM contra Valores Nulos (*NoneType*)**: A presença de históricos reais forçou a criação de tratamentos defensivos em campos computados (`@api.depends`) no Python, eliminando quebras quando alunos ainda não possuem orientador, coorientador ou data de defesa agendada.
+2. **Validação das Regras de Registro (*Record Rules*)**: Demonstrou matematicamente no PostgreSQL que nenhuma consulta (`SELECT`) vaza dados confidenciais de alunos entre programas distintos quando governada pelo contexto da sessão (`current_program_id`).
+3. **Estabilidade de Relatórios QWeb e PDFs Oficiais**: Assegurou que a emissão de Históricos Escolares Consolidados e Dossiês de Diplomação suporte discentes com dezenas de disciplinas cursadas, aprovações, trancamentos e convalidações sem truncamento ou falha de paginação.
+4. **Verificação dos Endpoints REST Fonte Prata**: Testou a exportação JSON sob as rotas `/api/capes/v1/dav/*` com dezenas de discentes e docentes simultâneos, comprovando a eficácia dos mecanismos de cache e conformidade com o dicionário de 305 metadados da CAPES.
 
 ---
 
